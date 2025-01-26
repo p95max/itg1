@@ -9,7 +9,7 @@ while True:
         user_fuel_quant = int(input("Enter how many fuel was used in liter: "))
         break
     except ValueError:
-        print("Wrong value! Use numbers!")
+        print("Wrong value!  Use numbers!")
 
 print()
 avarage_cons = user_fuel_quant / user_distan * 100
