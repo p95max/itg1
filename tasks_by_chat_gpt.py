@@ -14,6 +14,7 @@
 # even_numbers = [num for num in numbers if num % 2 == 0]
 # print("Your max. number is: ", max(numbers))
 import re
+from itertools import count
 from os import remove
 
 # 2 Напиши программу, которая принимает от пользователя строку и выводит самое длинное слово в этой строке.
@@ -425,4 +426,101 @@ from os import remove
 # cube = make_power(3)
 # print(square(4))  # Вывод: 16 (4^2)
 # print(cube(2))    # Вывод: 8 (2^3)
+
+# Задача: Калькулятор скидок
+# Напишите функцию calculate_discount, которая принимает два аргумента:
+# price — исходная цена товара (число).
+# discount — размер скидки в процентах (число от 0 до 100).
+# Функция должна возвращать итоговую цену после применения скидки. Если скидка меньше 0 или больше 100, функция должна вернуть сообщение об ошибке.
+# Подсказка:
+# Используйте формулу: итоговая_цена = цена - (цена * скидка / 100).
+
+# def calculate_discount(price, discount):
+#     if discount < 0 or discount > 100:
+#         return "Error value!"
+#     else:
+#         return price - (price * discount / 100)
+#
+# final_price = calculate_discount(1000, 50)
+# print(final_price)  # Вывод: 800.0 (1000 - 20% = 800)
+#
+# invalid_discount = calculate_discount(1000, 110)
+# print(invalid_discount)
+
+# Задача: Калькулятор для строк
+# Напишите функцию string_calculator, которая принимает две строки и возвращает:
+# Объединённую строку, где сначала идёт первая строка, а затем вторая.
+# Длину каждой строки в виде кортежа.
+# Количество слов в каждой строке в виде кортежа (слово — это последовательность символов, разделённая пробелами).
+
+# def string_calc(str1, str2):
+#     combined = str1 + str2
+#     lengths = (len(str1), len(str2))
+#     word_counts = (len(str1.split()), len(str2.split()))
+#
+#     return combined, lengths, word_counts
+#
+# result = string_calc("Hello world", "Python is great")
+# print(result)
+
+# Задача: Расчёт налога на товары
+# Напиши функцию make_tax_calculator(tax_rate), которая принимает налоговую ставку (в процентах) и
+# возвращает функцию, добавляющую этот налог к цене товара.
+
+# def make_tax_calculator(tax_rate):
+#     if tax_rate < 0:
+#         return "Invavid error"
+#
+#     def plus_tax(price):
+#         return price + (price * tax_rate / 100)
+#     return plus_tax
+#
+# apply_19_percent_tax = make_tax_calculator(19)
+# apply_7_percent_tax = make_tax_calculator(7)
+#
+# print(apply_19_percent_tax(100))  # Вывод: 119.0 (100 + 19%)
+# print(apply_7_percent_tax(200))   # Вывод: 214.0 (200 + 7%)
+
+
+# Напиши функцию make_currency_converter(rate), которая принимает курс обмена валюты (например, 1 EUR → 1.1 USD)
+# и возвращает функцию, которая переводит сумму из одной валюты в другую.
+
+# def make_currency_converter(rate):
+#     if rate <= 0:
+#         return "Invalid rate!"
+#     def convert(amount):
+#         return round(amount * rate, 2)
+#     return convert
+#
+# eur_to_usd = make_currency_converter(1.1)  # Курс: 1 EUR = 1.1 USD
+# usd_to_eur = make_currency_converter(0.91) # Курс: 1 USD = 0.91 EUR
+
+# print(eur_to_usd(100))  # Вывод: 110.0 (100 EUR → 110 USD)
+# print(usd_to_eur(110))  # Вывод: 100.1 (110 USD → 100.1 EUR)
+
+
+
+# # Создай декоратор log_calls, который перед каждым вызовом функции выводит её имя и переданные аргументы.
+# def log_calls(func):
+#     def wrapper(*args, **kwargs):
+#         return func(*args, **kwargs)
+#     return wrapper
+#
+# @log_calls
+# def add(a, b):
+#     return a + b
+#
+# @log_calls
+# def greet(name):
+#     return f"Привет, {name}!"
+#
+# print(add(3, 5))
+# # Вывод:
+# # Вызов функции add с аргументами: (3, 5)
+# # 8
+#
+# print(greet("Алиса"))
+# # Вывод:
+# # Вызов функции greet с аргументами: ('Алиса',)
+# # Привет, Алиса!
 
