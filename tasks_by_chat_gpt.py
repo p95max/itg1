@@ -524,3 +524,124 @@ from os import remove
 # # Вызов функции greet с аргументами: ('Алиса',)
 # # Привет, Алиса!
 
+
+# Задача: Проверка числа
+# Напиши программу, которая:
+#
+# Принимает одно число.
+# Использует конструкцию match для того, чтобы:
+# Если число больше 0, вывести "Число положительное".
+# Если число меньше 0, вывести "Число отрицательное".
+# Если число равно 0, вывести "Число равно нулю".
+
+# def check_number(num):
+#     if num > 0:
+#                 print(f"Number {num} is pos")
+#     elif num < 0:
+#                 print(f"Number {num} is neg")
+#     else:
+#         print(f"Number {num} is 0")
+#
+# while True:
+#     user_number = input("enter any number: ")
+#     if user_number.lower() == "q":
+#         print("exit")
+#         break
+#
+#     try:
+#         number = float(user_number)
+#         check_number(number)
+#     except ValueError:
+#         print("Value error!")
+
+# Задание:
+# Пользователь вводит число.
+# Программа определяет:
+# Четное или нечетное (even / odd).
+# Простое или составное (prime / composite).
+# Если ввод не число, программа выводит ошибку.
+# Можно выйти из программы, введя "q".
+
+# def check_number(num):
+#     if num == 0:
+#         print(f"Number is 0")
+#     elif num % 2 == 0:
+#         print(f"Number {num} is even")
+#     else:
+#         print(f"Number {num} is odd")
+#
+# while True:
+#     user_value = input("Enter your number: ")
+#     if user_value.lower() == "q":
+#         print("exit")
+#         break
+#
+#     try:
+#         number = float(user_value)
+#         check_number(number)
+#     except ValueError:
+#         print("Your number is invalid")
+
+
+# Задача: Анализ числовой последовательности
+# Напишем программу, которая:
+# Принимает от пользователя последовательность чисел, разделенных пробелами.
+# Определяет минимальное, максимальное и среднее значение.
+# Выводит все уникальные числа в отсортированном порядке.
+# Вычисляет разницу между самым большим и самым маленьким числом.
+# def num_analise(numbers):
+#
+#     min_num = min(numbers)
+#     max_num = max(numbers)
+#     avarage_num = sum(numbers) / len(numbers)
+#     dif_sum = max_num - min_num
+#
+#     print(f"Min: {min_num}")
+#     print(f"Max: {max_num}")
+#     print(f"Average: {avarage_num:.2f}")
+#     print(f"Difference (max - min): {dif_sum}")
+#
+# user_input = input("Enter your combination: ")
+# numbers = list(map(int, user_input.split()))
+#
+# num_analise(numbers)
+# Enter numbers: 4 8 2 8 3 4 1 9 2
+# Min: 1
+# Max: 9
+# Average: 4.11
+# Sorted unique numbers: [1, 2, 3, 4, 8, 9]
+# Range (max - min): 8
+
+# Задача: Подсчет слов в тексте
+# Напишем программу, которая:
+# Запрашивает у пользователя текст.
+# Подсчитывает количество слов в тексте.
+# Определяет самое длинное слово.
+# Подсчитывает, сколько раз встречается каждое слово.
+# from collections import Counter
+#
+# def words_count(text):
+#     words = text.split()
+#     words_quantity = len(words)
+#     longest_word = max(words, key=len)
+#     word_freq = Counter(words)
+#
+#     print(f"Words quantity in text: {words_quantity}")
+#     print(f"Longest word in text: {longest_word}")
+#     print(f"Word frequency: {word_freq} ")
+#
+#
+# user_input = input("Enter your text: ")
+# text = user_input
+#
+# words_count(text)
+
+# Enter text: This is a simple simple test
+# Word count: 5
+# Longest word: simple
+# Word frequency:
+#   This: 1
+#   is: 1
+#   a: 1
+#   simple: 2
+#   test: 1
