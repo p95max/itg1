@@ -645,3 +645,73 @@ from os import remove
 #   a: 1
 #   simple: 2
 #   test: 1
+
+# class Rectangle:
+#
+#     def __init__(self, width, height):
+#             self.width = width
+#             self.height = height
+#
+#     def area(self):
+#         return self.height * self.width
+#
+#     def perimiter(self):
+#         return 2 * (self.width + self.height)
+#
+# rect = Rectangle(5, 10)
+# print("Square:", rect.area())
+# print("Perimiter:", rect.perimiter())
+
+# class BankAccount:
+#
+#     def __init__(self, owner, balance):
+#         self.owner = owner
+#         self.balance = balance
+#
+#     def deposit(self, amount):
+#         if amount > 0:
+#             self.balance += amount
+#             print(f"Deposit by {amount}, current balance:{self.balance}")
+#         else:
+#             print("Error value")
+#
+#     def withdraw(self, amount):
+#         if amount > 0:
+#             if self.balance >= amount:
+#                 self.balance -= amount
+#                 print(f"Withraw by {amount}, current balance:{self.balance}")
+#             else:
+#                 print("Not enough money on deposit")
+#
+#     def display_balance(self):
+#         print(f"Client {self.owner} has balance: {self.balance}")
+#
+#
+# bank = BankAccount("Mike", 1000)
+# print(bank.deposit(200))
+# print(bank.withdraw(500))
+# print(bank.display_balance())
+
+
+# class Car:
+#
+#     def __init__(self, brand, model, year, miliage):
+#         self.brand = brand
+#         self.model = model
+#         self.year = year
+#         self.miliage = miliage
+#
+#     def add_distance(self, distance):
+#         if distance > 0:
+#             self.miliage += distance
+#             return f"Distance '{distance}' km, current miliage {self.miliage} km"
+#         else:
+#             return "Wrong value"
+#
+#     def car_info(self):
+#         return f"{self.brand} {self.model}({self.year}), miliage: {self.miliage} km"
+#
+#
+# my_car = Car("Lexus", "LX570", 2020, 5000)
+# print(my_car.add_distance(5000))
+print(my_car.car_info())
