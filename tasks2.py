@@ -150,5 +150,61 @@
 # print(f"Заказ '№{my_order2.order_number}', статус '{my_order2.status}', список заказа: {my_order2.dish_list},"
 #       f" Итоговая сумма: {my_order2.total_sum} ")
 
+# Задача: Система управления парковкой
+# Создайте класс ParkingLot, который моделирует парковку с ограниченным количеством мест.
+# У парковки есть определённые свойства и методы для управления машинами.
+# Свойства:
+# Количество мест — целое число, задаётся при создании парковки (например, 5 мест).
+# Список припаркованных машин — список номеров машин (строки, например, "A123BC", "X456YZ").
+# Статус парковки — строка, может быть "открыта" или "закрыта".
 
-
+# class ParkingLot:
+#     def __init__(self, total_places):
+#         self.total_places = total_places
+#         self.parked_cars = []
+#         self.parking_status = "открыта"
+#
+#     def park_car(self, car_name, car_number):
+#         if self.parking_status != "открыта":
+#             print("Ошибка: парковка закрыта")
+#             return
+#         if len(self.parked_cars) >= self.total_places:
+#             print("Ошибка: нет свободных мест")
+#             return
+#         if (car_name, car_number) in self.parked_cars:
+#              print(f"Ошибка: машина {car_number} уже на парковке")
+#              return
+#
+#         self.parked_cars.append((car_name, car_number))
+#         print(f"Авто '{car_name} - {car_number}' припаркована")
+#
+#     def remove_car(self, car_number):
+#         self.parked_cars = [car for car in self.parked_cars if car_number not in car]
+#         print(f"Авто '{car_number}' покинуло парковку")
+#
+#     def change_status(self):
+#         if self.parking_status == "открыта":
+#             self.parking_status = "закрыта"
+#             print("Парковка", self.parking_status)
+#         if self.parking_status == "закрыта":
+#             self.parking_status = "открыта"
+#
+#     def show_free_places(self):
+#         return self.total_places - len(self.parked_cars)
+#
+#     def show_cars(self):
+#         print("Список авто на парковке на данный момент:", self.parked_cars)
+#
+# park = ParkingLot(4)
+#
+# park.park_car("Lexus", "AX057")
+# park.park_car("BMW", "AA055")
+# park.remove_car("AX057")
+# park.change_status()
+# park.park_car("Toyota", "AX047")
+# park.change_status()
+# park.park_car("Niva", "BB303")
+# park.park_car("Niva", "BB303")
+#
+# print("Свободных мест:", park.show_free_places())
+# park.show_cars()
