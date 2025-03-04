@@ -208,3 +208,71 @@
 #
 # print("Свободных мест:", park.show_free_places())
 # park.show_cars()
+
+
+# Задача: Система аренды велосипедов
+# Создайте класс BikeRental, который моделирует пункт проката велосипедов.
+# У пункта есть определённые свойства и методы для управления велосипедами и арендой.
+# Свойства:
+# Количество велосипедов — целое число, общее число доступных велосипедов (задаётся при создании).
+# Список арендованных велосипедов — словарь, где ключ — имя клиента (строка), а значение — количество
+# арендованных им велосипедов (целое число).
+# Стоимость аренды за час — число с плавающей точкой, одинаково для всех велосипедов (задаётся при создании, например, 5.0).
+# Статус пункта — строка, может быть "открыт" или "закрыт".
+
+# class BikeRental:
+#     def __init__(self, total_bikes, price_per_hour):
+#         self.total_bikes = total_bikes
+#         self.price_per_hour = price_per_hour
+#         self.bikes_in_use = {}
+#         self.rental_status = "open"
+#         self.bikes_count = 0
+#
+#     def rent_bike(self, client_name, total_rent_time):
+#         if self.rental_status != "open":
+#             print("Error! Bike rental is close!")
+#             return
+#         if len(self.bikes_in_use) >= self.total_bikes:
+#             print("Error! No free bikes to rent!")
+#             return
+#
+#         total_price = total_rent_time * self.price_per_hour
+#         total_price = round(total_price, 2)
+#
+#         self.bikes_in_use[client_name] = {
+#             "Rent time": total_rent_time,
+#             "Total price": total_price
+#         }
+#         self.bikes_count += 1
+#         print(f"Client '{client_name}' rented bike for {total_rent_time} hours, total price: {total_price}$")
+#
+#     def return_bike(self, client_name):
+#         if client_name in self.bikes_in_use:
+#             del self.bikes_in_use[client_name]
+#             self.bikes_count -= 1
+#             print(f"Client '{client_name}' returned bike")
+#
+#     def change_status(self):
+#         if self.rental_status == "open":
+#             self.rental_status = "close"
+#             print(f"Status changed to '{self.rental_status}'")
+#         else:
+#             self.rental_status = "open"
+#             print(f"Status changed to '{self.rental_status}'")
+#
+#     def get_available_bikes(self):
+#         return self.total_bikes - self.bikes_count
+#
+#
+# bike = BikeRental(5, 5.50)
+#
+# bike.rent_bike("Max", 3)
+# bike.rent_bike("Carl", 4)
+# bike.rent_bike("Michael", 2.5)
+# bike.return_bike("Carl")
+#
+# print("Available bikes:", bike.get_available_bikes())
+# print("Current bikes in use:",bike.bikes_in_use)
+#
+# bike.change_status()
+# bike.change_status()
