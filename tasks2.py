@@ -4,7 +4,7 @@
 # Метод для добавления новой оценки.
 # Метод для вычисления среднего балла.
 # Метод для определения, является ли студент отличником (средний балл >= 4.5).
-
+from itertools import product
 
 
 # class Student:
@@ -276,3 +276,91 @@
 #
 # bike.change_status()
 # bike.change_status()
+
+# Задача: Система управления заказами
+# Создай систему управления заказами для интернет-магазина. Тебе нужно реализовать классы для товаров, заказов и покупателей.
+# Класс Product (Товар):
+# Атрибуты: name (название), price (цена), quantity (количество на складе).
+# Метод __str__(), возвращающий строковое представление товара.
+# Класс Order (Заказ):
+# Атрибуты: products (список товаров в заказе), total_price (общая стоимость заказа).
+# Метод add_product(product, quantity), который добавляет товар в заказ, если он есть в наличии.
+# Метод remove_product(product), который удаляет товар из заказа.
+# Метод checkout(), который уменьшает количество товаров на складе и очищает заказ.
+# Класс Customer (Покупатель):
+# Атрибуты: name (имя), orders (список заказов).
+# Метод place_order(order), который добавляет заказ в список покупателя.
+
+# class Product:
+#     def __init__(self, name, price, quantity):
+#         self.name = name
+#         self.price = price
+#         self.quantity = quantity
+#
+#     def __str__(self):
+#         return f"Product '{self.name}' with price '{self.price}$' in quantity '{self.quantity}' in storage"
+#
+# class Order:
+#     def __init__(self):
+#         self.products = []
+#         self.total_price = 0
+#
+#     def add_product(self, product, quantity):
+#         if product.quantity >= quantity:
+#             self.products.append((product, quantity))
+#             product.quantity -= quantity
+#             self.total_price += product.price * quantity
+#             print(f"Product '{product.name}' in quantity '{quantity}' added to order!")
+#         else:
+#             print("Not enough products on storage!")
+#
+#     def remove_product(self, product):
+#         self.products = [prod for prod in self.products if product not in prod]
+#         print(f"Product '{product.name}' was deleted")
+#
+#     def show_order(self):
+#         if not self.products:
+#             print("No products in order!")
+#         else:
+#             print("Products in order:")
+#         for product, quantity in self.products:
+#             print(f"Product '{product.name}' in quantity '{quantity}' in order")
+#         print(f"total price {self.total_price}$")
+#
+#     def __str__(self):
+#         if not self.products:
+#             return "Order is empty."
+#         product_list = [f"{product.name} x {quantity} - {product.price * quantity}$" for product, quantity in self.products]
+#         return f"Order:{product_list} Total price: {self.total_price}$"
+#
+# class Customer:
+#     def __init__(self, name):
+#         self.name = name
+#         self.customer_orders = []
+#
+#     def create_order(self, order):
+#         self.customer_orders.append(order)
+#         print(f"Order for '{self.name}' is created!")
+#
+#     def view_orders(self):
+#         for order in self.customer_orders:
+#             print(order)
+#
+#     def __str__(self):
+#         return f"Customer {self.name}"
+#
+#
+# milk = Product("Milk", 2.50, 5)
+# cake = Product("Cake", 5.50, 3)
+# beer = Product("Beer", 3, 7)
+# cumstomer1 = Customer("John Wick")
+#
+# order1 = Order()
+# order1.add_product(milk, 4)
+# order1.add_product(cake, 1)
+# order1.add_product(beer, 2)
+# order1.remove_product(cake)
+# order1.show_order()
+#
+# cumstomer1.create_order(order1)
+# cumstomer1.view_orders()
