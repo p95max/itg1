@@ -1,19 +1,15 @@
-
 import requests
-import json
 
 def set_city():
     while True:
         try:
             print("API OpenWeatherMap")
-            user_input = str(input("Enter city: "))
+            user_input = input("Enter city: ")
             if user_input:
                 return user_input
             else:
                 print("City name cannot be empty. Please try again.")
 
-        except ValueError:
-            return None
         except KeyboardInterrupt:
             print("\nInput was interrupted.")
             return None
@@ -23,25 +19,27 @@ def set_city():
 
 def check_data(city, api_key):
     url = 'http://api.weatherapi.com/v1/current.json'
-    params = {
+    while True:
+        params = {
         'key': api_key,
         'q': city,
         'aqi': 'no'
     }
 
-    try:
-        response = requests.get(url, params=params)
-        response.raise_for_status()  # Проверяем, нет ли ошибок в ответе
-        return response.json()
-    except requests.exceptions.HTTPError as e:
-        if response.status_code == 400:
-            print(f"Error: City '{city}' not found. Please try again.")
-        else:
-            print(f"Failed to fetch weather data: {e}")
-        return None
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to fetch weather data: {e}")
-        return None
+        try:
+            response = requests.get(url, params=params)
+            response.raise_for_status()
+            return response.json()
+
+        except requests.exceptions.HTTPError:
+            if response.status_code == 400:
+                print(f"Error - City '{city}' not found. Please try again.")
+                city = set_city()
+            else:
+                print(f"HTTP error: {response.status_code}. Please try again.")
+
+        except requests.exceptions.RequestException as e:
+            print(f"Connection error: {e}. Please check your internet and try again.")
 
 def main():
     api_key = "1b6cb79e8dfe4a76aa9151908242907"
