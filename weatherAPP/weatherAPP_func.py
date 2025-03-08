@@ -13,9 +13,6 @@ def set_city():
         except KeyboardInterrupt:
             print("\nInput was interrupted.")
             return None
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            return None
 
 def check_data(city, api_key):
     url = 'http://api.weatherapi.com/v1/current.json'
