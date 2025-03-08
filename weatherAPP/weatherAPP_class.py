@@ -25,24 +25,23 @@ class WeatherApp:
 
     def check_data(self):
         url = 'http://api.weatherapi.com/v1/current.json'
-        while True:
-            params = {'key': self.api_key, 'q': self.city, 'aqi': 'no'}
+        params = {'key': self.api_key, 'q': self.city, 'aqi': 'no'}
 
-            try:
-                response = requests.get(url, params=params)
-                response.raise_for_status()
-                return response.json()
+        try:
+            response = requests.get(url, params=params)
+            response.raise_for_status()
+            return response.json()
 
-            except requests.exceptions.HTTPError:
-                if response.status_code == 400:
-                    print(f"Error - City '{self.city}' not found. Please try again.")
-                    self.set_city()
-                    return self.check_data()
-                else:
-                    print(f"HTTP error: {response.status_code}. Please try again.")
+        except requests.exceptions.HTTPError:
+            if response.status_code == 400:
+                print(f"Error - City '{self.city}' not found. Please try again.")
+                self.set_city()
+                return self.check_data()
+            else:
+                print(f"HTTP error: {response.status_code}. Please try again.")
 
-            except requests.exceptions.RequestException as e:
-                print(f"Connection error: {e}. Please check your internet and try again.")
+        except requests.exceptions.RequestException as e:
+            print(f"Connection error: {e}. Please check your internet and try again.")
 
     def display_weather(self, info):
         if not info:

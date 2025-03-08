@@ -19,27 +19,27 @@ def set_city():
 
 def check_data(city, api_key):
     url = 'http://api.weatherapi.com/v1/current.json'
-    while True:
-        params = {
-        'key': api_key,
-        'q': city,
-        'aqi': 'no'
-    }
 
-        try:
-            response = requests.get(url, params=params)
-            response.raise_for_status()
-            return response.json()
+    params = {
+    'key': api_key,
+    'q': city,
+    'aqi': 'no'
+}
 
-        except requests.exceptions.HTTPError:
-            if response.status_code == 400:
-                print(f"Error - City '{city}' not found. Please try again.")
-                city = set_city()
-            else:
-                print(f"HTTP error: {response.status_code}. Please try again.")
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
 
-        except requests.exceptions.RequestException as e:
-            print(f"Connection error: {e}. Please check your internet and try again.")
+    except requests.exceptions.HTTPError:
+        if response.status_code == 400:
+            print(f"Error - City '{city}' not found. Please try again.")
+            city = set_city()
+        else:
+            print(f"HTTP error: {response.status_code}. Please try again.")
+
+    except requests.exceptions.RequestException as e:
+        print(f"Connection error: {e}. Please check your internet and try again.")
 
 def main():
     api_key = "1b6cb79e8dfe4a76aa9151908242907"
