@@ -3,7 +3,7 @@ import requests
 def set_city():
     while True:
         try:
-            print("API OpenWeatherMap")
+            print("--------------API OpenWeatherMap--------------")
             user_input = input("Enter city: ")
             if user_input:
                 return user_input
@@ -43,8 +43,8 @@ def check_data(city, api_key):
 
 def main():
     api_key = "1b6cb79e8dfe4a76aa9151908242907"
-    city = set_city()
 
+    city = set_city()
     info = check_data(city, api_key)
     if not info:
         return
