@@ -8,7 +8,7 @@ class GithubRepositorySearcher:
     def enter_keyword(self):
         while True:
             try:
-
+                print("---Github Repository Searcher by keyword---")
                 user_keyword = input("Enter keyword: ")
                 if user_keyword:
                     self.keyword = user_keyword
