@@ -10,12 +10,11 @@ class BankUser:
 
     def open_new_account(self, acc_name):
         if self.user_name not in self.user_accounts:
-            self.user_accounts[self.user_name] = []
+            self.user_accounts[self.user_name] = {}
 
-        self.user_accounts[self.user_name].append({
-            "Account name": acc_name,
+        self.user_accounts[self.user_name][acc_name] = {
             "Total balance": self.user_balance
-        })
+        }
 
         print(f"User '{self.user_name}' created new account '{acc_name}'")
 
