@@ -81,7 +81,7 @@ class Banking:
                     self.user_accounts = json.load(file)
                 print("Banking data loaded successfully.")
             except json.JSONDecodeError:
-                print("Error reading banking data file, starting fresh.")
+                print("Error reading banking data file")
                 self.user_accounts = {}
         else:
             print("No banking data found.")
