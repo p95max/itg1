@@ -109,10 +109,12 @@ while True:
             acc_name = acc_name.lower()
             user.banking.open_new_account(acc_name)
         case "3":
+            acc_name = input("Enter Account name and sum for top up from account: ")
             amount = int(input("Enter Account name and sum for top up account: "))
             user.banking.add_funds(acc_name, amount)
         case "4":
-            amount = int(input("Enter Account name and sum for top up account: "))
+            acc_name = input("Enter Account name and sum for withdraw from account: ")
+            amount = int(input("Enter Account name and sum for withdraw from account: "))
             user.banking.withdraw_funds(acc_name, amount)
         case "5":
             acc_name = input("Enter account name for deleting: ")
