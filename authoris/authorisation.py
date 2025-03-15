@@ -1,28 +1,37 @@
 import json
 
 class UserRegistration:
+    """Feature for new user registration"""
     users = {}
     def __init__(self):
         self.name = None
         self.password = None
         self.age = None
 
+
         self.load_from_file()
-        self.valid_username_userage()
+
+    def register_for_main_menu(self):
+        """Method for registration in main menu"""
+        self.valid_username()
+        self.valid_userage()
         self.valid_userpass()
 
-    def valid_username_userage(self):
+    def valid_username(self):
+        """Username validation"""
         while True:
-            self.name = input("Enter your name: ")
+            self.name = input("Enter your name:\nName: ")
             self.name = self.name.lower()
             if self.name in UserRegistration.users:
-                print("Name is already taken! Choose another!")
+                print(f"Name {self.name} is already taken! Choose another!")
             else:
                 break
 
+    def valid_userage(self):
+        """User age validation"""
         while True:
             try:
-                self.age = int(input("Enter your age: "))
+                self.age = int(input("Enter your age:\nYour age: "))
                 if self.age >= 18:
                     break
                 else:
@@ -31,9 +40,15 @@ class UserRegistration:
                 print("Error! Use only numbers!")
 
     def valid_userpass(self):
+        """User password validation"""
         while True:
-            user_pass = input("Enter pass: ")
-            check_user_pass = input("Enter pass again: ")
+
+            user_pass = input("Enter your password\n(min. 4 symbols): ")
+            if len(user_pass) < 4:
+                print("Your password is too short! Minimum 4 symbols!")
+                continue
+
+            check_user_pass = input("\nEnter your password again: ")
             if user_pass == check_user_pass:
                 self.password = user_pass
                 self.save_user_data()
@@ -43,25 +58,20 @@ class UserRegistration:
                 print("Passwords not match! Try again!")
 
     def save_user_data(self):
+        """Save user data in dict"""
         UserRegistration.users[self.name] = {
                  "Password": self.password,
                  "Age": self.age
              }
 
     def save_in_file(self):
-        try:
-            with open("users.json", "r") as file:
-                existing_data = json.load(file)
-        except (FileNotFoundError, json.JSONDecodeError):
-            existing_data = {}
-
-        existing_data.update(UserRegistration.users)
-
+        """Save user data in file"""
         with open("users.json", "w") as file:
-            json.dump(existing_data, file, indent=4)
+            json.dump(UserRegistration.users, file, indent=4)
             print("Data saved successfully!")
 
     def load_from_file(self):
+        """Load user data from file"""
         try:
             with open("users.json", "r") as file:
                 UserRegistration.users = json.load(file)
@@ -71,17 +81,89 @@ class UserRegistration:
             print("No previous user data was found")
 
     def show_user_list(self):
-        return UserRegistration.users
+        """Show current users from dict/file"""
+        return f"Current users:\n{UserRegistration.users}"
 
     def clear_users(self):
-        UserRegistration.users = {}
+        """Clear dict and file"""
+        saver = input("Are you sure? All data will be deleted!\n(Print 'Y'/'N'): ")
+        if saver == "Y":
+            UserRegistration.users = {}
+            print("Database is cleared!")
+            self.save_in_file()
+        else:
+            print("Returning to main menu")
+            return
+
+class UserAuthorisation():
+    """Feature for user authorisation"""
+
+    def __init__(self):
+        self.current_user = None
+
+    def authoris_for_main_menu(self):
+        """Method for user authorisation for main menu"""
+        self.valid_username()
+        self.valid_userpass()
+
+    def valid_username(self):
+        """Username validation before authorisation"""
+        while True:
+            self.current_user = input("Enter your name: ")
+            self.current_user = self.current_user.lower()
+            if self.current_user in UserRegistration.users:
+                print(f"User '{self.current_user}' found!")
+                break
+            else:
+                print(f"User '{self.current_user}' not found!")
+                return
+
+    def valid_userpass(self):
+        """User password validation"""
+        while True:
+
+            user_pass = input("Enter pass (min. 4 symbols): ")
+            if len(user_pass) < 4:
+                print("Your password is too short! Minimum 4 symbols!")
+                continue
+            if user_pass == UserRegistration.users[self.current_user]['Password']:
+                print(f"Correct password '{self.current_user}', access granted!")
+                return True
+            else:
+                print("Wrong pass!")
 
 
 def main():
+    """Contains main menu"""
+    user_reg = UserRegistration()
+    user_auth = UserAuthorisation()
 
-    registration = UserRegistration()
-    print("Saved users:\n", registration.show_user_list())
-    # registration.clear_users()
+    while True:
+        user_input = input(
+            "1. Show all users.\n"
+            "2. User registration.\n"
+            "3. User authorisation.\n"
+            "4. Clear all users.\n"
+            "5. Exit.\n"
+            "Your choise(1-5): "
+        )
+
+        match user_input:
+            case "1":
+                print(user_reg.show_user_list())
+            case "2":
+                user_reg.register_for_main_menu()
+            case "3":
+                user_auth.authoris_for_main_menu()
+            case "4":
+                user_reg.clear_users()
+            case "5":
+                print("Exiting program")
+                break
+            case _:
+                print("Invalid option, please try again.")
 
 if __name__ == '__main__':
     main()
+
+
