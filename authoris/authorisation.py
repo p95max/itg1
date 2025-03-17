@@ -1,9 +1,8 @@
 import json
 import logging
 
-
 def install_logging():
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger("user_actions")
     handler = logging.StreamHandler()
     file_handler = logging.FileHandler(f"{"user_actions"}.log", mode='w')
 
@@ -26,7 +25,6 @@ class UserRegistration:
         self.name = None
         self.password = None
         self.age = None
-
 
         self.load_from_file()
 
@@ -185,10 +183,10 @@ def main():
                 case "4":
                     user_reg.clear_users()
                 case "5":
-                    logger.info("Exiting program")
+                    logger.warning("Exiting program")
                     break
                 case _:
-                    logger.info("Invalid option, please try again.")
+                    logger.error("Invalid option, please try again.")
 
         except Exception as e:
             logger.error(f"An error occurred: {e}")
