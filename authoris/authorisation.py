@@ -7,7 +7,7 @@ def install_logging():
     handler = logging.StreamHandler()
     file_handler = logging.FileHandler(f"{"user_actions"}.log", mode='w')
 
-    formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
+    formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s - %(asctime)s", datefmt="%Y-%m-%d %H:%M:%S")
 
     handler.setFormatter(formatter)
     file_handler.setFormatter(formatter)
@@ -192,6 +192,8 @@ def main():
 
         except Exception as e:
             logger.error(f"An error occurred: {e}")
+        except KeyboardInterrupt:
+            logger.warning("User close app!")
 
 if __name__ == '__main__':
     main()
