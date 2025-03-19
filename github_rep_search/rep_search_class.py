@@ -1,6 +1,5 @@
 import requests
 
-
 class GithubRepositorySearcher:
     def __init__(self):
         self.keyword = None

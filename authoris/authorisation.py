@@ -1,27 +1,26 @@
 import json
 import logging
 
-def install_logging():
-    logger = logging.getLogger("user_actions")
-    handler = logging.StreamHandler()
-    file_handler = logging.FileHandler(f"{"user_actions"}.log", mode='w')
 
-    formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s - %(asctime)s", datefmt="%Y-%m-%d %H:%M:%S")
+logger = logging.getLogger("user_actions")
+handler = logging.StreamHandler()
+file_handler = logging.FileHandler(f"{"user_actions"}.log", mode='w')
 
-    handler.setFormatter(formatter)
-    file_handler.setFormatter(formatter)
+formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s - %(asctime)s", datefmt="%Y-%m-%d %H:%M:%S")
 
-    logger.addHandler(handler)
-    logger.addHandler(file_handler)
-    logger.setLevel(logging.INFO)
+handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
 
-    return logger
+logger.addHandler(handler)
+logger.addHandler(file_handler)
+logger.setLevel(logging.INFO)
+
+
 
 class UserRegistration:
     """Feature for new user registration"""
     users = {}
-    def __init__(self, logger):
-        self.logger = logger
+    def __init__(self):
         self.name = None
         self.password = None
         self.age = None
@@ -40,7 +39,7 @@ class UserRegistration:
             self.name = input("Enter your name:\nName: ")
             self.name = self.name.lower()
             if self.name in UserRegistration.users:
-                self.logger.warning(f"Name {self.name} is already taken! Choose another!")
+                print(f"Name {self.name} is already taken! Choose another!")
             else:
                 break
 
@@ -52,17 +51,16 @@ class UserRegistration:
                 if self.age >= 18:
                     break
                 else:
-                    self.logger.warning("You are too young!")
+                    print("You are too young!")
             except ValueError:
-                self.logger.error("Error! Use only numbers!")
+                logger.error("Error! Use only numbers!")
 
     def valid_userpass(self):
         """User password validation"""
         while True:
-
             user_pass = input("Enter your password\n(min. 4 symbols): ")
             if len(user_pass) < 4:
-                self.logger.warning("Your password is too short! Minimum 4 symbols!")
+                print("Your password is too short! Minimum 4 symbols!")
                 continue
 
             check_user_pass = input("\nEnter your password again: ")
@@ -72,7 +70,7 @@ class UserRegistration:
                 self.save_in_file()
                 break
             else:
-                self.logger.warning("Passwords not match! Try again!")
+                print("Passwords not match! Try again!")
 
     def save_user_data(self):
         """Save user data in dict"""
@@ -85,23 +83,23 @@ class UserRegistration:
         try:
             with open("users.json", "w") as file:
                 json.dump(UserRegistration.users, file, indent=4)
-                self.logger.info("Data saved successfully!")
+                print("Data saved successfully!")
         except IOError as e:
-            self.logger.error(f"Failed to save data: {e}")
+            logger.error(f"Failed to save data: {e}")
 
     def load_from_file(self):
         """Load user data from file"""
         try:
             with open("users.json", "r") as file:
                 UserRegistration.users = json.load(file)
-                self.logger.info("Data load successfully!")
+                print("Data load successfully!")
 
         except (FileNotFoundError, json.JSONDecodeError):
-            self.logger.warning("No previous user data was found")
+            logger.warning("No previous user data was found")
 
     def show_user_list(self):
         """Show current users from dict/file"""
-        return f"Current users:\n{UserRegistration.users}"
+        return f"Current users:{self.users}"
 
     def clear_users(self):
         saver = input("Are you sure? All data will be deleted!\n(Print 'Y'/'N'): ")
@@ -110,18 +108,17 @@ class UserRegistration:
             UserRegistration.users = {}
             try:
                 self.save_in_file()  # Сначала сохраняем
-                self.logger.warning("Database is cleared!")
+                logger.warning("Database is cleared!")
             except IOError as e:
-                self.logger.error(f"Failed to clear database: {e}")
+                logger.error(f"Failed to clear database: {e}")
         else:
-            self.logger.info("Returning to main menu")
+            print("Returning to main menu")
             return
 
 class UserAuthorisation():
     """Feature for user authorisation"""
 
-    def __init__(self, logger):
-        self.logger = logger
+    def __init__(self):
         self.current_user = None
 
     def authoris_for_main_menu(self):
@@ -135,10 +132,10 @@ class UserAuthorisation():
             self.current_user = input("Enter your name: ")
             self.current_user = self.current_user.lower()
             if self.current_user in UserRegistration.users:
-                self.logger.info(f"User '{self.current_user}' found!")
+                print(f"User '{self.current_user}' found!")
                 break
             else:
-                self.logger.warning(f"User '{self.current_user}' not found!")
+                print(f"User '{self.current_user}' not found!")
                 return
 
     def valid_userpass(self):
@@ -147,20 +144,19 @@ class UserAuthorisation():
 
             user_pass = input("Enter pass (min. 4 symbols): ")
             if len(user_pass) < 4:
-                self.logger.warning("Your password is too short! Minimum 4 symbols!")
+                print("Your password is too short! Minimum 4 symbols!")
                 continue
             if user_pass == UserRegistration.users[self.current_user]['Password']:
-                self.logger.info(f"Correct password '{self.current_user}', access granted!")
+                print(f"Correct password '{self.current_user}', access granted!")
                 return True
             else:
-                self.logger.warning("Wrong pass!")
+                print("Wrong pass!")
 
 
 def main():
     """Contains main menu"""
-    logger = install_logging()
-    user_reg = UserRegistration(logger)
-    user_auth = UserAuthorisation(logger)
+    user_reg = UserRegistration()
+    user_auth = UserAuthorisation()
 
     while True:
         try:
@@ -175,7 +171,7 @@ def main():
 
             match user_input:
                 case "1":
-                    logger.info(user_reg.show_user_list())
+                    print(user_reg.show_user_list())
                 case "2":
                     user_reg.register_for_main_menu()
                 case "3":
