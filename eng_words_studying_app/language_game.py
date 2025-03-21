@@ -27,13 +27,11 @@ class Translator:
     def api_check(self):
         try:
             response = requests.get(self.api, timeout=3)
-            print(f'api доступен')
+            logger.info("API доступен")
         except requests.Timeout:
-            print("Timeout error!")
-            logger.error("Timeout error!")
+            logger.error("API Timeout error!")
         except requests.ConnectionError:
-            print("Connection error")
-            logger.error("Connection error!")
+            logger.error("API Connection error!")
 
     def get_translation(self, word):
         params = {"q": word, "langpair": "ru|en"}
@@ -59,11 +57,12 @@ class LanguageGame:
 
         return info
 
-    def random_word(self, count = 3):
-        random_words = ["apple", "table", "chair", "bottle", "window", "book", "computer", "car", "street", "house"]
-        result = random.sample(random_words, min(count, len(random_words)))
-        result = list(map(str.lower, result))
-        return result
+    def random_word(self, count=3):
+        words_source = self.words_list if len(self.words_list) > 10 else [
+            "apple", "table", "chair", "bottle", "window", "book", "computer", "car", "street", "house"
+        ]
+        result = random.sample(words_source, min(count, len(words_source)))
+        return list(map(str.lower, result))
 
     def play(self):
         username = input("Enter your username: ")
@@ -101,9 +100,8 @@ class LanguageGame:
 
     def stat(self):
         try:
-            with open(r"stat.json", "w") as file:
-                json.dump(self.counter, file, indent=4)
-                json.dump(self.tryes, file, indent=4)
+            with open("stat.json", "w") as file:
+                json.dump({"counter": self.counter, "tryes": self.tryes}, file, indent=4)
                 logger.info("Информация сохранена")
         except IOError as e:
             logger.error(f"Failed to save data: {e}")
@@ -129,12 +127,17 @@ class LeaderBoard:
             logger.info("Пользователи сохранены!")
 
     def load_players(self):
-        with open("players.json", "r") as file:
-            info = json.load(file)
-            for username, player in info.items():
-                self.players[username] = Player(**player)
+        try:
+            with open("players.json", "r") as file:
+                info = json.load(file)
+                for username, player in info.items():
+                    self.players[username] = Player(**player)
 
             logger.info("Список пользователей загружен!")
+
+        except (FileNotFoundError, json.JSONDecodeError):
+            logger.warning("Файл players.json отсутствует или повреждён. Создан новый список")
+            self.players = {}
 
     def add_player(self, username):
         if username in self.players:
