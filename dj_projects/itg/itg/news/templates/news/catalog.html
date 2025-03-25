@@ -10,6 +10,16 @@
 <h1>Каталог новостей</h1>
 <p>Всего новостей: {{ news_count }}</p>
 <p>Всего пользователей: {{ users_count }}</p>
+ <nav>
+      <ul>
+          {% for item in menu %}
+              <li>{{ item }}</li>
+              {% if not forloop.last %}
+                  <hr>
+              {% endif %}
+          {% endfor %}
+      </ul>
+  </nav>
 
 </body>
 </html>
