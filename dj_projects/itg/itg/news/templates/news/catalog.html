@@ -6,14 +6,14 @@
     <title>Каталог</title>
 </head>
 <body>
-
 <h1>Каталог новостей</h1>
+
 <p>Всего новостей: {{ news_count }}</p>
 <p>Всего пользователей: {{ users_count }}</p>
  <nav>
       <ul>
           {% for item in menu %}
-              <li>{{ item }}</li>
+              <li>{{ item.title }}</li>
               {% if not forloop.last %}
                   <hr>
               {% endif %}
