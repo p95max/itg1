@@ -26,4 +26,7 @@ def get_news_by_id(request, news_id):
 def get_category_by_name(request, slug):
     return HttpResponse(f"Категория {slug}")
 
+def main(request):
+    return render(request, 'main.html')
+
 

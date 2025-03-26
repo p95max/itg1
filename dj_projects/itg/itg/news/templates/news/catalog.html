@@ -1,3 +1,5 @@
+{% load static %}
+{% load upper_words %}
 <!DOCTYPE html>
 <!-- ЭТО ТОЧНО ДАННЫЕ ИЗ ШАБЛОНА -->
 <html lang="ru">
@@ -14,13 +16,15 @@
  <nav>
       <ul>
           {% for item in menu %}
-              <li>{{ item.title }}</li>
+              <li>{% upper_words item.title %}</li>
               {% if not forloop.last %}
-                  <hr>
+                <hr>
               {% endif %}
           {% endfor %}
       </ul>
   </nav>
+
+<img src="{% static 'images/image_original.jpeg' %}" alt="image">
 
 </body>
 </html>
