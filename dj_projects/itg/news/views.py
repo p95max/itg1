@@ -6,7 +6,7 @@ def main(request):
     info = {
         "articles_count": articles_count,
     }
-    return render(request, 'news/main.html', context=info)
+    return render(request, 'news/catalog.html', context=info)
 
 def article_detail(request, id):
     article = Article.objects.get(id=id)
@@ -18,7 +18,7 @@ def article_list(request):
 
 def total_articles(request):
     articles_count = Article.objects.count()
-    return render(request, 'news/main.html', {"articles_count": articles_count})
+    return render(request, 'news/catalog.html', {"articles_count": articles_count})
 
 
 
