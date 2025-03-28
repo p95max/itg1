@@ -3,23 +3,29 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Все новости</title>
+    <title>Архив новостей</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<h1>Все новости</h1>
-<h2>Текущее количество статей: {{ articles_count }}</h2>
-<p><a href="{% url 'catalog' %}">Назад к каталогу</a></p>
+<a id="top"></a>
 
+<h1>Архив новостей</h1>
+<h2>Текущее количество статей: {{ articles_count }}</h2>
+<p><a class="backlink" href="{% url 'catalog' %}">Назад к главной странице</a></p><br>
+
+<div class="all_news_content">
 <ul>
 {% for item in news %}
     <li>
         <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
-        <p>{{ item.content }}</p>
         {% for value in item.tags.all %}
             <p>{{ value.name }}</p>
         {% endfor %}
     </li>
 {% endfor %}
 </ul>
+</div>
+
+<a href="#top">Наверх</a>
 </body>
 </html>

@@ -3,24 +3,38 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>РВ</title>
+    <title>FN</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<h1>Ровные новости</h1>
-<h3>Последние новости</h3>
-<ul>
-{% for item in news %}
-    <li>
-        <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
-        <p>{{ item.content }}</p>
-        {% for value in item.tags.all %}
-            <p>{{ value.name }}</p>
-        {% endfor %}
-    </li>
-{% endfor %}
-</ul><br>
+<h1>Fun news</h1>
 
-<p>Текущее количество статей: {{ articles_count }}</p>
-<p><a href="{% url 'all_news' %}">Показать все новости</a></p>
+<div class="container">
+    <section class="menu">
+        <ul>
+            <p> Меню навигации</p>
+            <li><a href="{% url 'catalog' %}">Каталог</a></li>
+            <li><a href="{% url 'all_news' %}">Все новости</a></li>
+        </ul>
+    </section>
+
+    <section class="news">
+        <h3>Последние новости</h3>
+        <ul>
+        {% for item in news %}
+            <li>
+                <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
+
+                {% for value in item.tags.all %}
+                    <p>{{ value.name }}</p>
+                {% endfor %}
+            </li>
+        {% endfor %}
+        </ul>
+        <p>Текущее количество статей: {{ articles_count }}</p>
+        <a href="{% url 'all_news' %}">Показать архив новостей</a>
+    </section>
+</div>
+
 </body>
 </html>
