@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Article
 
-def main(request):
+def catalog(request):
     articles_count = Article.objects.count()                # articles quantity
     info = {
         "articles_count": articles_count,
