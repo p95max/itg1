@@ -8,19 +8,31 @@
     <title>Каталог</title>
 </head>
 <body>
+
 <img src="{% static 'images/image_original.jpeg' %}" alt="image">
+
 <h1>Каталог новостей</h1>
 
 <p>Текущее количество статей: {{ articles_count }}</p>
+
+<ul>
+{% for item in news %}
+<li><a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
+<p>{{item.content}}</p>
+
+
+    {% for value in item.tags.all %}
+    <p>{{ value.name }} </p>
+    {% endfor %}
+
+</li>
+{% endfor %}
+    </ul>
 
 <a href="/news/articles/"> Открыть все статьи </a><br>
 <a href="/news/article/1"> Открыть статью 1 </a><br>
 <a href="/news/article/2"> Открыть статью 2 </a><br>
 <a href="/news/article/3"> Открыть статью 3 </a><br>
-
-
-
-
 
 </body>
 </html>
