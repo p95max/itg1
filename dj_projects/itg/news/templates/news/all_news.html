@@ -3,11 +3,13 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>РВ</title>
+    <title>Все новости</title>
 </head>
 <body>
-<h1>Ровные новости</h1>
-<h3>Последние новости</h3>
+<h1>Все новости</h1>
+<h2>Текущее количество статей: {{ articles_count }}</h2>
+<p><a href="{% url 'catalog' %}">Назад к каталогу</a></p>
+
 <ul>
 {% for item in news %}
     <li>
@@ -18,9 +20,6 @@
         {% endfor %}
     </li>
 {% endfor %}
-</ul><br>
-
-<p>Текущее количество статей: {{ articles_count }}</p>
-<p><a href="{% url 'all_news' %}">Показать все новости</a></p>
+</ul>
 </body>
 </html>
