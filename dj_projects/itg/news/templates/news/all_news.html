@@ -3,29 +3,45 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Архив новостей</title>
+    <title>Все новости</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<a id="top"></a>
+<h1>Ровные новости</h1>
 
-<h1>Архив новостей</h1>
-<h2>Текущее количество статей: {{ articles_count }}</h2>
-<p><a class="backlink" href="{% url 'catalog' %}">Назад к главной странице</a></p><br>
+<div class="container">
+    <nav class="menu">
+        <ul>
+            <li><a href="{% url 'catalog' %}">Каталог</a></li>
+            <li><a href="{% url 'all_news' %}">Все новости</a></li>
+            <li><a href="{% url 'about' %}">О нас</a></li>
+        </ul>
+    </nav>
 
-<div class="all_news_content">
-<ul>
-{% for item in news %}
-    <li>
-        <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
-        {% for value in item.tags.all %}
-            <p>{{ value.name }}</p>
-        {% endfor %}
-    </li>
-{% endfor %}
-</ul>
+    <div class="news">
+        <h3>Все новости</h3>
+        {% if news %}
+            <ul>
+            {% for item in news %}
+                <li>
+                    <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
+                    {% if item.tags.all %}
+                        <span class="tags">
+                            (Теги:
+                            {% for tag in item.tags.all %}
+                                {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                            )
+                        </span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Новостей пока нет.</p>
+        {% endif %}
+        <p>Всего статей: {{ articles_count }}</p>
+    </div>
 </div>
-
-<a href="#top">Наверх</a>
 </body>
 </html>

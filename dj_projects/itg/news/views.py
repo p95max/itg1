@@ -26,8 +26,17 @@ def article_detail(request, id):
         return render(request, 'news/error.html', {'message': 'Статья не найдена'})
     return render(request, 'news/article_detail.html', {'article': article})
 
-def about_us(request):
-    return render(request, 'news/about_us.html')
+def about(request):
+    context = {
+        'title': 'О нас',
+        'description': 'Мы — команда проекта "Ровные новости", цель которого — предоставлять актуальные и интересные новости.',
+        'contacts': {
+            'email': 'info@rovnyenovosti.ru',
+            'phone': '+7 (123) 456-78-90',
+            'address': 'г. Москва, ул. Примерная, д. 10',
+        },
+    }
+    return render(request, 'news/about.html', context=context)
 
 
 
