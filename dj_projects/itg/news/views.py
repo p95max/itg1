@@ -29,14 +29,18 @@ def article_detail(request, id):
 def about(request):
     context = {
         'title': 'О нас',
-        'description': 'Мы — команда проекта "Ровные новости", цель которого — предоставлять актуальные и интересные новости.',
+        'description': 'Мы — команда проекта "Fun news", цель которого — предоставлять актуальные и интересные новости.',
         'contacts': {
-            'email': 'info@rovnyenovosti.ru',
-            'phone': '+7 (123) 456-78-90',
-            'address': 'г. Москва, ул. Примерная, д. 10',
-        },
+            'email': 'info@fun_news.com',
+            'phone': '+8 (888) 888-88-88',
+            'address': 'г.Харьков, ул. Академика Павлова, д.10 офис 510',
+           },
+        "latitude": 49.9935,  # Харьков
+        "longitude": 36.2304
     }
     return render(request, 'news/about.html', context=context)
+
+
 
 
 

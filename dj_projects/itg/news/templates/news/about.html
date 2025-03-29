@@ -5,20 +5,22 @@
     <meta charset="UTF-8">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-<h1>Ровные новости</h1>
+<h1>Fun news</h1>
 
 <div class="container">
-    <nav class="nav-menu">
+    <nav class="menu">
         <ul>
-            <li><a href="{% url 'catalog' %}">Каталог</a></li>
+            <li><a href="{% url 'catalog' %}">Главная</a></li>
             <li><a href="{% url 'all_news' %}">Все новости</a></li>
             <li><a href="{% url 'about' %}">О нас</a></li>
         </ul>
     </nav>
 
-    <div class="news_container">
+    <div class="news">
         <h3>{{ title }}</h3>
         <p>{{ description }}</p>
         <h4>Контактная информация</h4>
@@ -29,5 +31,21 @@
         </ul>
     </div>
 </div>
+
+<h3>Наш адрес</h3>
+<p>{{ address }}</p>
+
+<div id="map" style="width: 640px; height: 300px; margin-left: 620px;"></div>
+
+<script>
+    var map = L.map('map').setView([{{ latitude }}, {{ longitude }}], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    L.marker([{{ latitude }}, {{ longitude }}]).addTo(map)
+        .bindPopup("{{ company_name }}")
+        .openPopup();
+</script>
+
 </body>
 </html>
