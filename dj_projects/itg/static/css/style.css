@@ -1,18 +1,18 @@
-/* catalog.html */
+
 
 body {
   background: #ccc;
   padding: 10px;
 }
 
-h1 {
+h1, h3 {
   text-align: center;
 }
 
 .container {
     display: flex;
-    justify-content: center; /* Центрируем контейнер */
-    align-items: flex-start; /* Выровнять по верхнему краю */
+    justify-content: center;
+    align-items: flex-start;
     max-width: 1200px;
     margin: auto;
     gap: 20px;
@@ -20,7 +20,7 @@ h1 {
 
 .menu {
     width: 15%;
-    height: 66%;
+    height: 73%;
     background: gray;
     color: white;
     padding: 5px;
@@ -33,16 +33,26 @@ h1 {
 }
 
 .news {
-    width: 57%;
-    margin-left: auto; /* Центрируем новости */
-    margin-right: auto;
+    width: 700px;
+    margin-left: 200px;
     text-align: justify;
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
+    line-height: 1.6;
+    word-spacing: 0.05em;
+    hyphens: auto;
 }
 
-/* all.news.html */
+.sidebar {
+    min-height: 600px;
+    flex: 1;
+    background: #f8f9fa;
+    padding: 15px;
+    margin-left: 220px;
+    border-radius: 5px;
+}
+
 
 .all_news_content {
     width: 50%;
@@ -57,4 +67,46 @@ h1 {
 
 .backlink {
     font-size: 20px;
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-wrapper {
+    display: flex;
+}
+
+.news {
+    flex: 3;
+}
+
+.sidebar {
+    height:600px;
+    flex: 1;
+    background: #f8f9fa;
+    padding: 15px;
+    margin-left: 500px;
+    border-radius: 5px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 8px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.tags a {
+    color: #28a745;
+    text-decoration: none;
 }

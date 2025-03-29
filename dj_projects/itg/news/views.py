@@ -1,21 +1,25 @@
-from django.shortcuts import render
-from .models import Article
+from django.shortcuts import render, get_object_or_404
+from .models import Article, Tag
 
 def catalog(request):
     articles_count = Article.objects.count()
-    news = Article.objects.all().prefetch_related('tags', 'category')[:3]
+    news = Article.objects.all().prefetch_related('tags', 'category')[:5]
+    all_tags = Tag.objects.all()
     context = {
         "articles_count": articles_count,
         'news': news,
+        "all_tags": all_tags,
     }
     return render(request, 'news/catalog.html', context=context)
 
 def all_news(request):
     articles_count = Article.objects.count()
     news = Article.objects.all().prefetch_related('tags', 'category')
+    all_tags = Tag.objects.all()
     context = {
         "articles_count": articles_count,
         'news': news,
+        "all_tags": all_tags,
     }
     return render(request, 'news/all_news.html', context=context)
 
@@ -40,14 +44,14 @@ def about(request):
     }
     return render(request, 'news/about.html', context=context)
 
-
-
-
-
-
-
-
-
-
-
-
+def news_by_tag(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    news = Article.objects.filter(tags=tag)
+    all_tags = Tag.objects.all()
+    context = {
+        "news": news,
+        "articles_count": news.count(),
+        "all_tags": all_tags,
+        "selected_tag": tag_name
+    }
+    return render(request, 'news/all_news.html', context)

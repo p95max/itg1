@@ -10,6 +10,7 @@
 <h1>Fun news</h1>
 
 <div class="container">
+    <!-- Основное меню -->
     <section class="menu">
         <ul>
             <li><a href="{% url 'all_news' %}">Все новости</a></li>
@@ -17,28 +18,48 @@
         </ul>
     </section>
 
-    <section class="news">
-        <h3>Последние новости</h3>
-        <ul>
-        {% for item in news %}
-            <li>
-                <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
+    <div class="content-wrapper">
+        <!-- Новости -->
+        <section class="news">
+            <h3>Последние новости</h3>
+            {% if news %}
+                <ul>
+                    {% for item in news %}
+                        <li>
+                            <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
+                            {% if item.tags.all %}
+                                <span class="tags">
+                                    (Теги:
+                                    {% for tag in item.tags.all %}
+                                        <a href="{% url 'news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    )
+                                </span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <a href="{% url 'all_news' %}">Архив новостей</a>
+                <p>Текущее количество статей: {{ articles_count }}</p>
+            {% else %}
+                <p>Нет новостей для отображения.</p>
+            {% endif %}
+        </section>
 
-                {% if item.tags.all %}
-                        <span class="tags">
-                            (Теги:
-                            {% for tag in item.tags.all %}
-                                {{ tag.name }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                            )
-                        </span>
-                    {% endif %}
-            </li>
-        {% endfor %}
-        </ul>
-        <p>Текущее количество статей: {{ articles_count }}</p>
-        <a href="{% url 'all_news' %}">Показать архив новостей</a>
-    </section>
+        <!-- Меню тегов справа -->
+        <aside class="sidebar">
+            <h3>Новости по тегам</h3>
+            {% if all_tags %}
+                <ul>
+                    {% for tag in all_tags %}
+                        <li><a href="{% url 'news_by_tag' tag.name %}">{{ tag.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Нет доступных тегов.</p>
+            {% endif %}
+        </aside>
+    </div>
 </div>
 
 </body>

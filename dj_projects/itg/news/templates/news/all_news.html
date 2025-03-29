@@ -3,45 +3,53 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Все новости</title>
+    <title>FN - Новости</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 <h1>Fun news</h1>
 
 <div class="container">
-    <nav class="menu">
+    <!-- Основное меню -->
+    <section class="menu">
         <ul>
             <li><a href="{% url 'catalog' %}">Главная</a></li>
-            <li><a href="{% url 'all_news' %}">Все новости</a></li>
             <li><a href="{% url 'about' %}">О нас</a></li>
         </ul>
-    </nav>
+    </section>
 
-    <div class="news">
-        <h3>Все новости</h3>
-        {% if news %}
-            <ul>
-            {% for item in news %}
-                <li>
-                    <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
-                    {% if item.tags.all %}
-                        <span class="tags">
-                            (Теги:
-                            {% for tag in item.tags.all %}
-                                {{ tag.name }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                            )
-                        </span>
-                    {% endif %}
-                </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>Новостей пока нет.</p>
-        {% endif %}
-        <p>Всего статей: {{ articles_count }}</p>
+    <div class="content-wrapper">
+        <!-- Новости по тегу -->
+        <section class="news">
+            <h3>Архив новостей: {{ selected_tag }}</h3>
+            {% if news %}
+                <ul>
+                    {% for item in news %}
+                        <li>
+                            <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Нет новостей с этим тегом.</p>
+            {% endif %}
+        </section>
+
+        <!-- Меню тегов справа -->
+        <aside class="sidebar">
+            <h3>Новости по тегам</h3>
+            {% if all_tags %}
+                <ul>
+                    {% for tag in all_tags %}
+                        <li><a href="{% url 'news_by_tag' tag.name %}">{{ tag.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Нет доступных тегов.</p>
+            {% endif %}
+        </aside>
     </div>
 </div>
+
 </body>
 </html>
