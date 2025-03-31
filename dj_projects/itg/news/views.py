@@ -55,3 +55,7 @@ def news_by_tag(request, tag_name):
         "selected_tag": tag_name
     }
     return render(request, 'news/all_news.html', context)
+
+def article_by_slug(request, slug):
+    article = get_object_or_404(Article, slug = slug)
+    return render(request, 'news/article_detail.html', {'article': article})
