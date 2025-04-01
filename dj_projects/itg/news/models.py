@@ -27,15 +27,10 @@ class ArticleUserMananger(models.Manager):
         return self.get_queryset().all().order_by('title')
 
     def create(self, **kwargs):
-        """
-        Переопределение метода create для автоматической генерации slug на основе title.
-        """
+
         if 'slug' not in kwargs:
             kwargs['slug'] = slugify(kwargs.get('title')) if kwargs.get('title') else None
         return super().create(**kwargs)
-
-
-
 
 
 class Category(models.Model):

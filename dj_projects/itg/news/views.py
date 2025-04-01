@@ -3,7 +3,7 @@ from .models import Article, Tag
 
 def catalog(request):
     articles_count = Article.objects.count()
-    news = Article.objects.all().prefetch_related('tags', 'category')[:5]
+    news = Article.objects.all().prefetch_related('tags').select_related('category')[:5]
     all_tags = Tag.objects.all()
     context = {
         "articles_count": articles_count,
