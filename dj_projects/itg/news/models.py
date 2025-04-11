@@ -3,14 +3,14 @@ from django.utils.text import slugify
 
 
 class Article(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, verbose_name='Заголовок')
+    content = models.TextField(verbose_name='Содержание')
+    publication_date = models.DateTimeField(verbose_name='Дата публикации')
+    views = models.IntegerField(default=0, verbose_name='Просмотры')
+    category = models.ForeignKey("Category", on_delete=models.CASCADE, verbose_name='Категория')
+    tags = models.ManyToManyField("Tag", related_name='article',  verbose_name='Теги')
+    is_active = models.BooleanField(default=True,  verbose_name='Теги')
     slug = models.SlugField(blank=True)
-    content = models.TextField()
-    publication_date = models.DateTimeField()
-    views = models.IntegerField(default=0)
-    category = models.ForeignKey("Category", on_delete=models.CASCADE)
-    tags = models.ManyToManyField("Tag", related_name='article')
-    is_active = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -19,6 +19,30 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = 'Статья'  # единственное число для отображения в админке
+        verbose_name_plural = 'Статьи'  # мн. число для отображения в админке
+
+class Category(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Категория'  # единственное число для отображения в админке
+        verbose_name_plural = 'Категории'  # мн. число для отображения в админке
+
+class Tag(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Тег'  # единственное число для отображения в админке
+        verbose_name_plural = 'Теги'  # мн. число для отображения в админке
 
 class ArticleUserMananger(models.Manager):
     def get_queryset(self):
@@ -32,16 +56,3 @@ class ArticleUserMananger(models.Manager):
         if 'slug' not in kwargs:
             kwargs['slug'] = slugify(kwargs.get('title')) if kwargs.get('title') else None
         return super().create(**kwargs)
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-
-    def __str__(self):
-        return self.name
-
-class Tag(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-
-    def __str__(self):
-        return self.name
