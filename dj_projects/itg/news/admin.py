@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter, FieldListFilter
-
 from .models import Article, Category, Tag
 
 class ArticleSpiderFilter(FieldListFilter):
@@ -32,12 +31,16 @@ class TagInline(admin.TabularInline):
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'category', 'publication_date', 'views', 'is_active')
-    list_filter = ('category', 'is_active', ('title', ArticleSpiderFilter))
-    list_per_page = 15                                              #кон-во статей на стр
-    list_display_links = ('id',)                                    #ссылка на поле
+    list_filter = ('category', 'is_active',)
+    list_per_page = 15                                                                      #кон-во статей на стр
+    list_display_links = ('id',)                                                            #ссылка на поле
     search_fields = ('title', 'content')
     fields = ('title', 'content', 'category', 'tags', 'is_active')
-    ordering = ('-views',)                                          #сортировка по
+    ordering = ('-views',)                                                                  #сортировка по
+    readonly_fields = ('views',)
+    list_editable = ('title', 'category',)
+    actions_on_top = True
+    save_as = True
 
     inlines = [TagInline]
     actions = [make_inactive]
