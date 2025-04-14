@@ -5,10 +5,12 @@ def catalog(request):
     articles_count = Article.objects.count()
     news = Article.objects.all().prefetch_related('tags').select_related('category')[:5]
     all_tags = Tag.objects.all()
+    all_categories = Category.objects.all()
     context = {
         "articles_count": articles_count,
         'news': news,
         "all_tags": all_tags,
+        "all_categories": all_categories,
     }
     return render(request, 'news/catalog.html', context=context)
 
@@ -16,18 +18,17 @@ def all_news(request):
     articles_count = Article.objects.count()
     news = Article.objects.all().prefetch_related('tags', 'category')
     all_tags = Tag.objects.all()
+    all_categories = Category.objects.all()
     context = {
         "articles_count": articles_count,
         'news': news,
         "all_tags": all_tags,
+        "all_categories": all_categories,
     }
     return render(request, 'news/all_news.html', context=context)
 
 def article_detail(request, id):
-    try:
-        article = Article.objects.get(id=id)
-    except Article.DoesNotExist:
-        return render(request, 'news/error.html', {'message': 'Статья не найдена'})
+    article = Article.objects.get(id=id)
     return render(request, 'news/article_detail.html', {'article': article})
 
 def about(request):
@@ -59,10 +60,16 @@ def news_by_tag(request, tag_name):
 def news_by_category(request, category_name):
     category = get_object_or_404(Category, name=category_name)
     news = Article.objects.filter(category=category, is_active=True)
-    return render(request, 'news/news_list.html', {
+    all_tags = Tag.objects.all()
+    all_categories = Category.objects.all()
+    context = {
         'news': news,
         'filter': f"Категория: {category.name}",
-    })
+        "all_tags": all_tags,
+        "all_categories": all_categories,
+    }
+    return render(request, 'news/by_category.html', context)
+
 
 def article_by_slug(request, slug):
     article = get_object_or_404(Article, slug = slug)
