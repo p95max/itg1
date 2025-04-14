@@ -38,7 +38,7 @@
                                     </a>)
                                 </span>
                             {% endif %}
-
+                            <br>
                             {% if item.tags.all %}
                                 <span class="tags">
                                     (Теги:
@@ -64,6 +64,7 @@
                     {% for tag in all_tags %}
                         <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
                     {% endfor %}
+
                 </ul>
             {% else %}
                 <p>Нет доступных тегов.</p>
