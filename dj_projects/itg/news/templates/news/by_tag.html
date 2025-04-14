@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Новости по категории</title>
+    <title>Новости по тегу</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
@@ -18,8 +18,10 @@
 
     <div class="content-wrapper">
         <section class="news">
+
             <h2>"{{ filter }}"</h2>
         <p>"{{ filter }}" имеет '{{ articles_count }}' статей</p>
+
             {% if news %}
                 <ul>
                     {% for item in news %}

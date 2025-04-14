@@ -73,7 +73,7 @@
             {% if all_categories %}
                 <ul>
                     {% for category in all_categories %}
-                        <li><a href="{% url 'news:news_by_category' category.name %}">{{ category.name }}</a></li>
+                        <li><a href="{% url 'news:news_by_category' category.name %}">{{ category.name }} </a></li>
                     {% endfor %}
                 </ul>
             {% else %}

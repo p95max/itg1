@@ -49,27 +49,32 @@ def news_by_tag(request, tag_name):
     tag = get_object_or_404(Tag, name=tag_name)
     news = Article.objects.filter(tags=tag)
     all_tags = Tag.objects.all()
+    articles_count = news.count()
+    all_categories = Category.objects.all()
     context = {
         "news": news,
-        "articles_count": news.count(),
+        "articles_count": articles_count,
+        'filter': f"Тег {tag.name}",
         "all_tags": all_tags,
-        "selected_tag": tag_name
+        "selected_tag": tag_name,
+        "all_categories": all_categories,
     }
-    return render(request, 'news/all_news.html', context)
+    return render(request, 'news/by_tag.html', context)
 
 def news_by_category(request, category_name):
     category = get_object_or_404(Category, name=category_name)
     news = Article.objects.filter(category=category, is_active=True)
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
+    articles_count = news.count()
     context = {
         'news': news,
         'filter': f"Категория: {category.name}",
         "all_tags": all_tags,
         "all_categories": all_categories,
+        "articles_count": articles_count
     }
     return render(request, 'news/by_category.html', context)
-
 
 def article_by_slug(request, slug):
     article = get_object_or_404(Article, slug = slug)
