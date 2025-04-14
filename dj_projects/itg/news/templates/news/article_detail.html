@@ -7,16 +7,31 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+ <!-- Контент статьи -->
 <div class="all_news_content">
     <h1>{{ article.title }}</h1>
     <p>{{ article.content }}</p>
-    <h3>Теги:</h3>
-    <ul>
-    {% for tag in article.tags.all %}
-        <li>{{ tag.name }}</li>
-    {% endfor %}
-    </ul>
+
+ <!-- Новости по тегу -->
+<h3>Теги:</h3>
+<ul>
+{% for tag in article.tags.all %}
+    <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
+{% endfor %}
+</ul>
+
+ <!-- Новости по категории -->
+<h3>Категория:</h3>
+{% if article.category %}
+    <a href="{% url 'news:news_by_category' article.category.name %}">
+        {{ article.category.name }}
+    </a>
+{% else %}
+    <p>Нет категории</p>
+{% endif %}
+
 </div>
+
     <a class="backlink" href="{% url 'news:catalog' %}">Назад к каталогу</a>
 </body>
 </html>

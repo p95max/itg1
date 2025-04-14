@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Article, Tag
+from .models import Article, Tag, Category
 
 def catalog(request):
     articles_count = Article.objects.count()
@@ -55,6 +55,14 @@ def news_by_tag(request, tag_name):
         "selected_tag": tag_name
     }
     return render(request, 'news/all_news.html', context)
+
+def news_by_category(request, category_name):
+    category = get_object_or_404(Category, name=category_name)
+    news = Article.objects.filter(category=category, is_active=True)
+    return render(request, 'news/news_list.html', {
+        'news': news,
+        'filter': f"Категория: {category.name}",
+    })
 
 def article_by_slug(request, slug):
     article = get_object_or_404(Article, slug = slug)
