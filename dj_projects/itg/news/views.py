@@ -59,7 +59,7 @@ def news_by_tag(request, tag_name):
         "selected_tag": tag_name,
         "all_categories": all_categories,
     }
-    return render(request, 'news/by_tag.html', context)
+    return render(request, 'news/category_and_tag.html', context)
 
 def news_by_category(request, category_name):
     category = get_object_or_404(Category, name=category_name)
@@ -74,7 +74,7 @@ def news_by_category(request, category_name):
         "all_categories": all_categories,
         "articles_count": articles_count
     }
-    return render(request, 'news/by_category.html', context)
+    return render(request, 'news/category_and_tag.html', context)
 
 def article_by_slug(request, slug):
     article = get_object_or_404(Article, slug = slug)
