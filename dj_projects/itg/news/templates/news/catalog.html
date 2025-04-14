@@ -13,8 +13,8 @@
     <!-- Основное меню -->
     <section class="menu">
         <ul>
-            <li><a href="{% url 'all_news' %}">Все новости</a></li>
-            <li><a href="{% url 'about' %}">О нас</a></li>
+            <a href="{% url 'news:all_news' %}">Все новости</a><br>
+            <a href="{% url 'news:about' %}">О нас</a>
         </ul>
     </section>
 
@@ -26,12 +26,12 @@
                 <ul>
                     {% for item in news %}
                         <li>
-                            <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
+                            <a href="{% url 'news:article_detail' item.id %}">{{ item.title }}</a>
                             {% if item.tags.all %}
                                 <span class="tags">
                                     (Теги:
                                     {% for tag in item.tags.all %}
-                                        <a href="{% url 'news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                                        <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                                     {% endfor %}
                                     )
                                 </span>
@@ -39,7 +39,7 @@
                         </li>
                     {% endfor %}
                 </ul>
-                <a href="{% url 'all_news' %}">Архив новостей</a>
+                <a href="{% url 'news:all_news' %}">Архив новостей</a>
                 <p>Текущее количество статей: {{ articles_count }}</p>
             {% else %}
                 <p>Нет новостей для отображения.</p>
@@ -52,7 +52,7 @@
             {% if all_tags %}
                 <ul>
                     {% for tag in all_tags %}
-                        <li><a href="{% url 'news_by_tag' tag.name %}">{{ tag.name }}</a></li>
+                        <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
                     {% endfor %}
                 </ul>
             {% else %}

@@ -4,6 +4,7 @@ from django.urls import path
 from news.views import catalog, all_news, article_detail, about, news_by_tag, article_by_slug
 
 app_name = 'news'
+
 urlpatterns = [
     path('', catalog, name='catalog'),                                                                # Главная страница
     path('news/all/', all_news, name='all_news'),                                                     # Все новости

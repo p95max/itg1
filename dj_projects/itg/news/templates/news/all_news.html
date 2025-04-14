@@ -13,8 +13,8 @@
     <!-- Основное меню -->
     <section class="menu">
         <ul>
-            <li><a href="{% url 'catalog' %}">Главная</a></li>
-            <li><a href="{% url 'about' %}">О нас</a></li>
+            <li><a href="{% url 'news:catalog' %}">Главная</a></li>
+            <li><a href="{% url 'news:about' %}">О нас</a></li>
         </ul>
     </section>
 
@@ -26,7 +26,7 @@
                 <ul>
                     {% for item in news %}
                         <li>
-                            <a href="{% url 'article_detail' item.id %}">{{ item.title }}</a>
+                            <a href="{% url 'news:article_detail' item.id %}">{{ item.title }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -41,7 +41,7 @@
             {% if all_tags %}
                 <ul>
                     {% for tag in all_tags %}
-                        <li><a href="{% url 'news_by_tag' tag.name %}">{{ tag.name }}</a></li>
+                        <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
                     {% endfor %}
                 </ul>
             {% else %}
