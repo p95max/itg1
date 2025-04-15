@@ -1,16 +1,16 @@
 {% extends 'news/base.html' %}
 
-{% block title %}Каталог новостей{% endblock %}
+{% block title %}Результаты поиска{% endblock %}
 
 {% block content %}
 <section class="news">
-    <h3>Последние новости</h3>
+    <h3>{{ filter }}</h3>
+    <h1>Последние новости:</h1>
     {% if page_obj %}
         <ul>
             {% for item in page_obj %}
                 <li>
-{#                    <a href="{% url 'news:article_detail' item.id %}">{{ item.title }}</a>#}
-                <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
+                    <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
                     {% if item.category %}
                         <span class="category">
                             (Категория:

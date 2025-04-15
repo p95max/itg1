@@ -9,14 +9,7 @@ class Command(BaseCommand):
     help = "Обновить слаги для всех статей"
 
     def handle(self, *args, **kwargs):
-        def unique_slugify(title, instance_id=None):
-            base_slug = slugify(title)
-            slug = base_slug
-            num = 1
-            while Article.objects.exclude(id=instance_id).filter(slug=slug).exists():
-                slug = f"{base_slug}-{num}"
-                num += 1
-            return slug
+        pass
 
         # # Очистка слагов
         # articles = Article.objects.all()

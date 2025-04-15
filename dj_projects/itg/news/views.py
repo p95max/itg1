@@ -99,13 +99,19 @@ def search_news(request):
 
     if searched_text:
         articles = Article.objects.filter(
-            ( Q(title__icontains=searched_text) & Q(is_active=True) )
+            Q(title__icontains=searched_text),
+            is_active=True
         )
 
+    # Пагинация
+    paginator = Paginator(articles, 5)  # 5 элементов на странице
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'news': articles,
-        'filter': f"Результаты поиска: '{searched_text}'",
+        'page_obj': page_obj,
         'articles_count': articles.count(),
+        'filter': f"Результаты поиска: '{searched_text}'",
         'all_tags': Tag.objects.all(),
         'all_categories': Category.objects.all(),
     }
