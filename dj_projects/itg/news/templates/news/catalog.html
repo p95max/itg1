@@ -3,9 +3,12 @@
 {% block title %}Результаты поиска{% endblock %}
 
 {% block content %}
+
 <section class="news">
     <h3>{{ filter }}</h3>
-    <h1>Последние новости:</h1>
+    {% if request.path == '/news/' %}
+            <h1>Последние новости:</h1>
+        {% endif %}
     {% if page_obj %}
         <ul>
             {% for item in page_obj %}

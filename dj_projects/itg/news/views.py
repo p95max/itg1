@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.db.models.functions import Lower
 
 from .models import Article, Tag, Category
 
@@ -103,8 +104,7 @@ def search_news(request):
             is_active=True
         )
 
-    # Пагинация
-    paginator = Paginator(articles, 5)  # 5 элементов на странице
+    paginator = Paginator(articles, 5)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
