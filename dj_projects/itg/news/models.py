@@ -10,12 +10,23 @@ class Article(models.Model):
     category = models.ForeignKey("Category", on_delete=models.CASCADE, verbose_name='Категория')
     tags = models.ManyToManyField("Tag", related_name='article',  verbose_name='Теги')
     is_active = models.BooleanField(default=True,  verbose_name='Теги')
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            base_slug = slugify(self.title)
+            slug = base_slug
+            num = 1
+            while Article.objects.exclude(id=self.id).filter(slug=slug).exists():
+                slug = f"{base_slug}-{num}"
+                num += 1
+            self.slug = slug
         super().save(*args, **kwargs)
+
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:
+    #         self.slug = slugify(self.title)
+    #     super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

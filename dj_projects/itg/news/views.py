@@ -25,8 +25,11 @@ def catalog(request):
     }
     return render(request, 'news/catalog.html', context=context)
 
-def article_detail(request, id):
-    article = get_object_or_404(Article, id=id)
+    # def article_detail(request, id):
+    # # article = get_object_or_404(Article, id=id)
+
+def article_detail(request, slug):
+    article = get_object_or_404(Article, slug=slug)
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
 
