@@ -1,88 +1,41 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>FN - Новости по фильтру</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-<h1>Fun news</h1>
+{% extends 'news/base.html' %}
 
-<div class="container">
-    <!-- Основное меню -->
-    <section class="menu">
+{% block title %}FN - Новости по фильтру{% endblock %}
+
+{% block content %}
+<section class="news">
+    <h3>{{ filter }}</h3>
+    <p>Всего статей: {{ articles_count }}</p>
+
+    {% if news %}
         <ul>
-            <a href="{% url 'news:catalog' %}">Главная</a><br>
-            <a href="{% url 'news:about' %}">О нас</a>
+            {% for item in news %}
+                <li>
+                    <a href="{% url 'news:article_detail' item.id %}">{{ item.title }}</a>
+
+                    {% if item.category %}
+                        <span class="category">
+                            (Категория:
+                            <a href="{% url 'news:news_by_category' item.category.name %}">
+                                {{ item.category.name }}
+                            </a>)
+                        </span>
+                    {% endif %}
+                    <br>
+                    {% if item.tags.all %}
+                        <span class="tags">
+                            (Теги:
+                            {% for tag in item.tags.all %}
+                                <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                            )
+                        </span>
+                    {% endif %}
+                </li>
+            {% endfor %}
         </ul>
-    </section>
-
-    <div class="content-wrapper">
-        <!-- Новости по фильтру -->
-        <section class="news">
-            <h3>{{ filter }}</h3>
-            <p>Всего статей: {{ articles_count }}</p>
-
-            {% if news %}
-                <ul>
-                    {% for item in news %}
-                        <li>
-                            <a href="{% url 'news:article_detail' item.id %}">{{ item.title }}</a>
-
-                            {% if item.category %}
-                                <span class="category">
-                                    (Категория:
-                                    <a href="{% url 'news:news_by_category' item.category.name %}">
-                                        {{ item.category.name }}
-                                    </a>)
-                                </span>
-                            {% endif %}
-                            <br>
-                            {% if item.tags.all %}
-                                <span class="tags">
-                                    (Теги:
-                                    {% for tag in item.tags.all %}
-                                        <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
-                                    {% endfor %}
-                                    )
-                                </span>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>Нет новостей для отображения.</p>
-            {% endif %}
-        </section>
-
-        <!-- Меню тегов и категорий (справа) -->
-        <aside class="sidebar">
-            <h3>Новости по тегам</h3>
-            {% if all_tags %}
-                <ul>
-                    {% for tag in all_tags %}
-                        <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
-                    {% endfor %}
-
-                </ul>
-            {% else %}
-                <p>Нет доступных тегов.</p>
-            {% endif %}
-
-            <h3>Новости по категориям</h3>
-            {% if all_categories %}
-                <ul>
-                    {% for category in all_categories %}
-                        <li><a href="{% url 'news:news_by_category' category.name %}">{{ category.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>Нет доступных категорий.</p>
-            {% endif %}
-        </aside>
-    </div>
-</div>
-
-</body>
-</html>
+    {% else %}
+        <p>Нет новостей для отображения.</p>
+    {% endif %}
+</section>
+{% endblock %}
