@@ -7,6 +7,7 @@
     <h2>{{ article.title }}</h2>
     <p>{{ article.content }}</p>
 
+
     {% if article.tags.all %}
         <p><strong>Теги:</strong></p>
         <ul>
@@ -23,7 +24,7 @@
         Нет категории
     {% endif %}
     </p>
-
+       <p>Количество просмотров этой статьи: '{{ article.views }}'</p>
     <a class="backlink" href="{% url 'news:catalog' %}">← Назад к главной</a>
 </section>
 {% endblock %}

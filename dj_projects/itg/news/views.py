@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.core.paginator import Paginator
+
 from .models import Article, Tag, Category
 
 def catalog(request):
@@ -25,8 +26,20 @@ def catalog(request):
     return render(request, 'news/catalog.html', context=context)
 
 def article_detail(request, id):
-    article = Article.objects.get(id=id)
-    return render(request, 'news/article_detail.html', {'article': article})
+    article = get_object_or_404(Article, id=id)
+    all_tags = Tag.objects.all()
+    all_categories = Category.objects.all()
+
+    article.views += 1              #cчётчик просмотров
+    article.save()
+
+    context = {
+        "article": article,
+        "all_tags": all_tags,
+        "all_categories": all_categories,
+    }
+
+    return render(request, 'news/article_detail.html', context=context)
 
 def about(request):
     context = {
