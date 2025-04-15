@@ -1,3 +1,4 @@
+/* Основные стили страницы */
 body {
     background: #ccc;
     padding: 10px;
@@ -5,10 +6,16 @@ body {
     font-family: Arial, sans-serif;
 }
 
+/* Заголовки */
 h1, h2, h3, h4 {
     text-align: center;
 }
 
+.main-header {
+    margin-left: 100px;
+}
+
+/* Контейнер для страницы */
 .container {
     display: flex;
     max-width: 1200px;
@@ -16,6 +23,7 @@ h1, h2, h3, h4 {
     gap: 20px;
 }
 
+/* Меню */
 .menu {
     flex: 0 0 200px;
     background: gray;
@@ -38,6 +46,7 @@ h1, h2, h3, h4 {
     margin-bottom: 10px;
 }
 
+/* Основной контент */
 .content-wrapper {
     display: flex;
     flex: 1;
@@ -55,6 +64,7 @@ h1, h2, h3, h4 {
     text-align: justify;
 }
 
+/* Боковая панель */
 .sidebar {
     flex: 1;
     background: #f8f9fa;
@@ -82,6 +92,7 @@ h1, h2, h3, h4 {
     text-decoration: none;
 }
 
+/* Контент для новостей */
 .all_news_content {
     max-width: 800px;
     margin: 30px auto;
@@ -92,6 +103,7 @@ h1, h2, h3, h4 {
     text-align: justify;
 }
 
+/* Ссылка на обратную страницу */
 .backlink {
     font-size: 18px;
     display: inline-block;
@@ -104,6 +116,7 @@ h1, h2, h3, h4 {
     text-decoration: underline;
 }
 
+/* Форма поиска */
 .search-form {
     margin-bottom: 20px;
 }

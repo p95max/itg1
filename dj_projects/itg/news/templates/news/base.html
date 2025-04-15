@@ -7,13 +7,15 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<h1>Fun news</h1>
+<h1 class="main_header">Fun news</h1>
 
 <div class="container">
-    <!-- Меню слева -->
+    <!-- Меню навигации -->
     <section class="menu">
         <ul>
+            {% if not request.path == '/news/' %}
             <li><a href="{% url 'news:catalog' %}">Главная</a></li>
+            {% endif %}
             <li><a href="{% url 'news:about' %}">О нас</a></li>
         </ul>
     </section>
@@ -30,6 +32,7 @@
                 <button type="submit">Найти</button>
             </form>
 
+        <!-- Панель поиска по тегам -->
             <h3>Новости по тегам</h3>
             {% if all_tags %}
                 <ul>
@@ -41,6 +44,7 @@
                 <p>Нет доступных тегов.</p>
             {% endif %}
 
+        <!-- Панель поиска по категориям -->
             <h3>Новости по категориям</h3>
             {% if all_categories %}
                 <ul>
