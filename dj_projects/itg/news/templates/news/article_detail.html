@@ -1,37 +1,29 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ article.title }}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
- <!-- Контент статьи -->
-<div class="all_news_content">
-    <h1>{{ article.title }}</h1>
+{% extends 'news/base.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<section class="news">
+    <h2>{{ article.title }}</h2>
     <p>{{ article.content }}</p>
 
- <!-- Новости по тегу -->
-<h3>Теги:</h3>
-<ul>
-{% for tag in article.tags.all %}
-    <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
-{% endfor %}
-</ul>
+    {% if article.tags.all %}
+        <p><strong>Теги:</strong></p>
+        <ul>
+            {% for tag in article.tags.all %}
+                <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
- <!-- Новости по категории -->
-<h3>Категория:</h3>
-{% if article.category %}
-    <a href="{% url 'news:news_by_category' article.category.name %}">
-        {{ article.category.name }}
-    </a>
-{% else %}
-    <p>Нет категории</p>
-{% endif %}
+    <p><strong>Категория:</strong>
+    {% if article.category %}
+        <a href="{% url 'news:news_by_category' article.category.name %}">{{ article.category.name }}</a>
+    {% else %}
+        Нет категории
+    {% endif %}
+    </p>
 
-</div>
-
-    <a class="backlink" href="{% url 'news:catalog' %}">Назад к каталогу</a>
-</body>
-</html>
+    <a class="backlink" href="{% url 'news:catalog' %}">← Назад к главной</a>
+</section>
+{% endblock %}

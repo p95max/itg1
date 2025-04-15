@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Fun news{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<h1>Fun news</h1>
+
+<div class="container">
+    <!-- Меню слева -->
+    <section class="menu">
+        <ul>
+            <li><a href="{% url 'news:catalog' %}">Главная</a></li>
+            <li><a href="{% url 'news:about' %}">О нас</a></li>
+        </ul>
+    </section>
+
+    <!-- Контент и боковая панель -->
+    <div class="content-wrapper">
+        {% block content %}{% endblock %}
+
+        <aside class="sidebar">
+            <h4>Поиск по новостям</h4>
+            <form method="get" action="{% url 'news:search_news' %}" class="search-form">
+                <input type="text" name="text" placeholder="Поиск" required>
+                <br>
+                <button type="submit">Найти</button>
+            </form>
+
+            <h3>Новости по тегам</h3>
+            {% if all_tags %}
+                <ul>
+                    {% for tag in all_tags %}
+                        <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Нет доступных тегов.</p>
+            {% endif %}
+
+            <h3>Новости по категориям</h3>
+            {% if all_categories %}
+                <ul>
+                    {% for category in all_categories %}
+                        <li><a href="{% url 'news:news_by_category' category.name %}">{{ category.name }} </a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Нет доступных категорий.</p>
+            {% endif %}
+        </aside>
+    </div>
+</div>
+</body>
+</html>

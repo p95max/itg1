@@ -1,31 +1,28 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from django.core.paginator import Paginator
 from .models import Article, Tag, Category
 
 def catalog(request):
     articles_count = Article.objects.count()
-    news = Article.objects.all().prefetch_related('tags').select_related('category')[:5]
+    news = Article.objects.all().prefetch_related('tags').select_related('category')[:10]
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
+
+    news_list = Article.objects.filter(is_active=True).order_by('-publication_date')
+    paginator = Paginator(news_list, 10)  # 5 статей на страницу
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         "articles_count": articles_count,
         'news': news,
         "all_tags": all_tags,
         "all_categories": all_categories,
+        'page_obj': page_obj,
     }
     return render(request, 'news/catalog.html', context=context)
-
-def all_news(request):
-    articles_count = Article.objects.count()
-    news = Article.objects.all().prefetch_related('tags', 'category')
-    all_tags = Tag.objects.all()
-    all_categories = Category.objects.all()
-    context = {
-        "articles_count": articles_count,
-        'news': news,
-        "all_tags": all_tags,
-        "all_categories": all_categories,
-    }
-    return render(request, 'news/all_news.html', context=context)
 
 def article_detail(request, id):
     article = Article.objects.get(id=id)
@@ -79,3 +76,22 @@ def news_by_category(request, category_name):
 def article_by_slug(request, slug):
     article = get_object_or_404(Article, slug = slug)
     return render(request, 'news/article_detail.html', {'article': article})
+
+def search_news(request):
+    searched_text = request.GET.get('text')
+    articles = []
+
+    if searched_text:
+        articles = Article.objects.filter(
+            ( Q(title__icontains=searched_text) & Q(is_active=True) )
+        )
+
+    context = {
+        'news': articles,
+        'filter': f"Результаты поиска: '{searched_text}'",
+        'articles_count': articles.count(),
+        'all_tags': Tag.objects.all(),
+        'all_categories': Category.objects.all(),
+    }
+
+    return render(request, 'news/catalog.html', context)
