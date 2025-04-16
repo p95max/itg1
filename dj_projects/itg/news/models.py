@@ -67,3 +67,10 @@ class ArticleUserMananger(models.Manager):
         if 'slug' not in kwargs:
             kwargs['slug'] = slugify(kwargs.get('title')) if kwargs.get('title') else None
         return super().create(**kwargs)
+
+class Like(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='likes')
+    ip_address = models.GenericIPAddressField()
+
+    def __str__(self):
+        return f'Like for article "{self.article.title}" by {self.ip_address}'

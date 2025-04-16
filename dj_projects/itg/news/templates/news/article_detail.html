@@ -7,7 +7,7 @@
     <h2>{{ article.title }}</h2>
     <p>{{ article.content }}</p>
 
-
+{#            Теги#}
     {% if article.tags.all %}
         <p><strong>Теги:</strong></p>
         <ul>
@@ -16,7 +16,7 @@
             {% endfor %}
         </ul>
     {% endif %}
-
+{#            Категории #}
     <p><strong>Категория:</strong>
     {% if article.category %}
         <a href="{% url 'news:news_by_category' article.category.name %}">{{ article.category.name }}</a>
@@ -24,7 +24,22 @@
         Нет категории
     {% endif %}
     </p>
+{#            Лайки#}
+<form method="POST" action="{% url 'news:toggle_like' article.id %}" class="search-form">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary">
+    {% if request.META.REMOTE_ADDR in liked_ips %}
+      Убрать "Нравится"
+    {% else %}
+      Нравиться
+    {% endif %}
+  </button>
+</form>
+
+
        <p>Количество просмотров этой статьи: '{{ article.views }}'</p>
+
+
     <a class="backlink" href="{% url 'news:catalog' %}">← Назад к главной</a>
 </section>
 {% endblock %}

@@ -1,9 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
-from django.db.models.functions import Lower
 
-from .models import Article, Tag, Category
+from .models import Article, Tag, Category, Like
 
 def catalog(request):
     articles_count = Article.objects.count()
@@ -33,6 +32,7 @@ def article_detail(request, slug):
     article = get_object_or_404(Article, slug=slug)
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
+    liked_ips = article.likes.values_list('ip_address', flat=True)
 
     article.views += 1              #cчётчик просмотров
     article.save()
@@ -41,6 +41,7 @@ def article_detail(request, slug):
         "article": article,
         "all_tags": all_tags,
         "all_categories": all_categories,
+        "liked_ips": liked_ips,
     }
 
     return render(request, 'news/article_detail.html', context=context)
@@ -90,10 +91,6 @@ def news_by_category(request, category_name):
     }
     return render(request, 'news/category_and_tag.html', context)
 
-def article_by_slug(request, slug):
-    article = get_object_or_404(Article, slug = slug)
-    return render(request, 'news/article_detail.html', {'article': article})
-
 def search_news(request):
     searched_text = request.GET.get('text')
     articles = []
@@ -117,3 +114,24 @@ def search_news(request):
     }
 
     return render(request, 'news/catalog.html', context)
+
+def toggle_like(request, article_id):
+    # Получаем IP-адрес пользователя
+    ip_address = request.META.get('REMOTE_ADDR')
+
+    # Ищем статью
+    article = get_object_or_404(Article, id=article_id)
+
+    # Проверяем, есть ли уже лайк от этого IP
+    existing_like = Like.objects.filter(article=article, ip_address=ip_address)
+
+    if existing_like.exists():
+        # Убираем лайк, если он есть
+        existing_like.delete()
+    else:
+        # Добавляем новый лайк
+        Like.objects.create(article=article, ip_address=ip_address)
+
+    # Перенаправляем обратно на детальную страницу статьи
+    return redirect('news:article_detail', slug=article.slug)
+
