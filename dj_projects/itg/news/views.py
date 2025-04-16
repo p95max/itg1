@@ -151,3 +151,17 @@ def toggle_favorite(request, article_id):
 
     return redirect('news:article_detail', slug=article.slug)
 
+def favourites(request):
+    ip_address = request.META.get('REMOTE_ADDR')
+    favourites_articles = Favourite.objects.filter(ip_address=ip_address)
+    all_tags = Tag.objects.all()
+    all_categories = Category.objects.all()
+
+    context = {
+        "all_tags": all_tags,
+        "all_categories": all_categories,
+        'favourites_articles': favourites_articles,
+    }
+
+    return render(request, 'news/favourites.html', context)
+

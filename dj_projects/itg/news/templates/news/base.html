@@ -16,6 +16,7 @@
             {% if not request.path == '/news/' %}
             <li><a href="{% url 'news:catalog' %}">Главная</a></li>
             {% endif %}
+            <li><a href="{% url 'news:favourites' %}">Избранное</a></li>
             <li><a href="{% url 'news:about' %}">О нас</a></li>
         </ul>
     </section>

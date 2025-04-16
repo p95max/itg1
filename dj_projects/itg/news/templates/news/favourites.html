@@ -1,0 +1,24 @@
+{% extends 'news/base.html' %}
+
+{% block title %} Избранные статьи {% endblock %}
+
+{% block content %}
+
+<section class="news">
+    <h2>Избранные статьи</h2>
+    {% if favourites_articles %}
+        <ul>
+            {% for favourite in favourites_articles %}
+                <li>
+                    <a href="{% url 'news:article_detail' slug=favourite.article.slug %}">
+                        {{ favourite.article.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>У вас нет избранных статей.</p>
+    {% endif %}
+</section>
+
+{% endblock %}
