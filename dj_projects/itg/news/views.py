@@ -1,3 +1,4 @@
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -154,13 +155,27 @@ def toggle_favorite(request, article_id):
 def favourites(request):
     ip_address = request.META.get('REMOTE_ADDR')
     favourites_articles = Favourite.objects.filter(ip_address=ip_address)
+    favourites_articles_count = favourites_articles.count()
+
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
+
+    if request.method == 'POST':
+        article_id = request.POST.get('article_id')
+        if article_id:
+            favourite_to_remove = Favourite.objects.filter(article_id=article_id, ip_address=ip_address)
+            if favourite_to_remove.exists():
+                favourite_to_remove.delete()
+            else:
+                return HttpResponseBadRequest("Статья не найдена в избранном.")
+
+        return redirect('news:favourites')
 
     context = {
         "all_tags": all_tags,
         "all_categories": all_categories,
         'favourites_articles': favourites_articles,
+        'favourites_count': favourites_articles_count,
     }
 
     return render(request, 'news/favourites.html', context)

@@ -7,15 +7,21 @@
 <section class="news">
     <h2>Избранные статьи</h2>
     {% if favourites_articles %}
-        <ul>
+        <ul style="display: flex; flex-wrap: wrap; gap: 20px;"> <!-- Использование flex для ul -->
             {% for favourite in favourites_articles %}
-                <li>
-                    <a href="{% url 'news:article_detail' slug=favourite.article.slug %}">
+                <li style="list-style: none; display: flex; align-items: center;"> <!-- Flex для li -->
+                    <a href="{% url 'news:article_detail' slug=favourite.article.slug %}" style="margin-right: 10px;">
                         {{ favourite.article.title }}
                     </a>
+                    <form method="POST" action="{% url 'news:favourites' %}" style="display:inline;" class="search-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="article_id" value="{{ favourite.article.id }}">
+                        <button type="submit" class="btn btn-danger">Удалить из избранного</button>
+                    </form>
                 </li>
             {% endfor %}
         </ul>
+        <p>Всего статей: {{ favourites_count }}</p>  <!-- Отображение количества избранных статей -->
     {% else %}
         <p>У вас нет избранных статей.</p>
     {% endif %}
