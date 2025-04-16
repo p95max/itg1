@@ -141,3 +141,14 @@ h1, h2, h3, h4 {
 .search-form button:hover {
     background-color: #0056b3;
 }
+
+/*Блок лайков и закладок*/
+.buttons-container {
+    display: flex;
+    gap: 10px;  /* Расстояние между кнопками */
+}
+
+/* Стиль для формы поиска (если нужно) */
+.search-form {
+    margin: 0; /* Убираем отступы у форм */
+}

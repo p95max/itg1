@@ -24,18 +24,33 @@
         Нет категории
     {% endif %}
     </p>
-{#            Лайки#}
-<form method="POST" action="{% url 'news:toggle_like' article.id %}" class="search-form">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-primary">
-    {% if request.META.REMOTE_ADDR in liked_ips %}
-      Убрать "Нравится"
-    {% else %}
-      Нравиться
-    {% endif %}
-  </button>
-</form>
 
+    {# Лайки и закладки #}
+<div class="buttons-container" style="display: flex; gap: 10px;">
+    {# Лайки #}
+    <form method="POST" action="{% url 'news:toggle_like' article.id %}" class="search-form">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">
+            {% if request.META.REMOTE_ADDR in liked_ips %}
+                Убрать "Нравится"
+            {% else %}
+                Нравиться
+            {% endif %}
+        </button>
+    </form>
+
+    {# Избранное #}
+    <form method="POST" action="{% url 'news:toggle_favorite' article.id %}" class="search-form">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">
+            {% if request.META.REMOTE_ADDR in favourite_ips %}
+                Убрать с закладок
+            {% else %}
+                Добавить в закладки
+            {% endif %}
+        </button>
+    </form>
+</div>
 
        <p>Количество просмотров этой статьи: '{{ article.views }}'</p>
 

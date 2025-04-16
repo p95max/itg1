@@ -74,3 +74,13 @@ class Like(models.Model):
 
     def __str__(self):
         return f'Like for article "{self.article.title}" by {self.ip_address}'
+
+class Favourite(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='favourites')
+    ip_address = models.GenericIPAddressField()
+
+    class Meta:
+        unique_together = ['article', 'ip_address']
+
+    def __str__(self):
+        return f'Favourite for article "{self.article.title}"'
