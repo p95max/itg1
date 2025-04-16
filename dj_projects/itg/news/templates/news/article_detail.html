@@ -34,7 +34,7 @@
             {% if request.META.REMOTE_ADDR in liked_ips %}
                 Убрать "Нравится"
             {% else %}
-                Нравиться
+                Нравиться ({{ article.likes_count }})
             {% endif %}
         </button>
     </form>
@@ -46,14 +46,13 @@
             {% if request.META.REMOTE_ADDR in favourite_ips %}
                 Убрать с закладок
             {% else %}
-                Добавить в закладки
+                Добавить в закладки ({{ article.favourites_count }})
             {% endif %}
         </button>
     </form>
 </div>
 
        <p>Количество просмотров этой статьи: '{{ article.views }}'</p>
-
 
     <a class="backlink" href="{% url 'news:catalog' %}">← Назад к главной</a>
 </section>

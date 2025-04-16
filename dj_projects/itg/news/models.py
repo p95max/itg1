@@ -9,6 +9,8 @@ class Article(models.Model):
     views = models.IntegerField(default=0, verbose_name='Просмотры')
     category = models.ForeignKey("Category", on_delete=models.CASCADE, verbose_name='Категория')
     tags = models.ManyToManyField("Tag", related_name='article',  verbose_name='Теги')
+    likes_count = models.IntegerField(default=0)
+    favourites_count = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True,  verbose_name='Теги')
     slug = models.SlugField(blank=True, null=True)
 
@@ -71,6 +73,7 @@ class ArticleUserMananger(models.Manager):
 class Like(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='likes')
     ip_address = models.GenericIPAddressField()
+    likes_count = models.IntegerField(default=0)
 
     def __str__(self):
         return f'Like for article "{self.article.title}" by {self.ip_address}'
@@ -78,6 +81,7 @@ class Like(models.Model):
 class Favourite(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='favourites')
     ip_address = models.GenericIPAddressField()
+    favourites_count = models.IntegerField(default=0)
 
     class Meta:
         unique_together = ['article', 'ip_address']

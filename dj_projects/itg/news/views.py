@@ -9,6 +9,8 @@ def catalog(request):
     news = Article.objects.all().prefetch_related('tags').select_related('category')[:10]
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
+    likes_count = Like.objects.count()
+    favourites_count = Favourite.objects.count()
 
     news_list = Article.objects.filter(is_active=True).order_by('-publication_date')
     paginator = Paginator(news_list, 10)  # 5 статей на страницу
@@ -18,10 +20,12 @@ def catalog(request):
 
     context = {
         "articles_count": articles_count,
-        'news': news,
+        "news": news,
         "all_tags": all_tags,
         "all_categories": all_categories,
-        'page_obj': page_obj,
+        "page_obj": page_obj,
+        "likes_count": likes_count,
+        "favourites_count": favourites_count,
     }
     return render(request, 'news/catalog.html', context=context)
 
@@ -123,8 +127,12 @@ def toggle_like(request, article_id):
     existing_like = Like.objects.filter(article=article, ip_address=ip_address)
     if existing_like.exists():
         existing_like.delete()
+        article.likes_count -= 1
     else:
         Like.objects.create(article=article, ip_address=ip_address)
+        article.likes_count += 1
+
+    article.save()
 
     return redirect('news:article_detail', slug=article.slug)
 
@@ -134,8 +142,12 @@ def toggle_favorite(request, article_id):
     existing_favourite = Favourite.objects.filter(article=article, ip_address=ip_address)
     if existing_favourite.exists():
         existing_favourite.delete()
+        article.favourites_count -= 1
     else:
         Favourite.objects.create(article=article, ip_address=ip_address)
+        article.favourites_count += 1
+
+    article.save()
 
     return redirect('news:article_detail', slug=article.slug)
 
