@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
 
-from .models import Article, Tag, Category, Like, Favourite
+from .models import Article, Tag, Category, Like, Favourite, Comment
 
 def catalog(request):
     articles_count = Article.objects.count()
@@ -42,6 +42,12 @@ def article_detail(request, slug):
 
     article.views += 1              #cчётчик просмотров
     article.save()
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        text = request.POST.get('text')
+        if name and text:
+            Comment.objects.create(article=article, name=name, text=text)
 
     context = {
         "article": article,
