@@ -40,6 +40,7 @@ def article_detail(request, slug):
     all_categories = Category.objects.all()
     liked_ips = article.likes.values_list('ip_address', flat=True)
     favourite_ips = article.favourites.values_list('ip_address', flat=True)
+    reset_comment_flag(request)
 
     article.views += 1              #cчётчик просмотров
     article.save()
@@ -154,7 +155,6 @@ def toggle_like(request, article_id):
 
     return HttpResponseBadRequest("Invalid request")
 
-
 def toggle_favorite(request, article_id):
     ip_address = request.META.get('REMOTE_ADDR')
     article = get_object_or_404(Article, id=article_id)
@@ -207,19 +207,12 @@ def favourites(request):
 def post_comment(request, article_id):
     if request.method == "POST":
         comment_text = request.POST.get('comment')
-
-        # Проверка, был ли отправлен комментарий
         if request.session.get('comment_submitted', False):
             messages.error(request, "Комментарий уже был отправлен.")
             return redirect('news:article', article_id=article_id)
-
-        # Создаем новый комментарий
         new_comment = Comment(article_id=article_id, text=comment_text)
         new_comment.save()
-
-        # Сохраняем флаг, чтобы предотвратить дублирование
         request.session['comment_submitted'] = True
-
         messages.success(request, "Комментарий успешно отправлен!")
         return redirect('news:article', article_id=article_id)
 
