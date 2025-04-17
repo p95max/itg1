@@ -4,61 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Fun news{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<h1 class="main_header">Fun news</h1>
+<body class="bg-light">
 
-<div class="container">
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Fun news</h1>
+
     <!-- Меню навигации -->
-    <section class="menu">
-        <ul>
+    <nav class="mb-4">
+        <ul class="nav justify-content-center">
             {% if not request.path == '/news/' %}
-            <li><a href="{% url 'news:catalog' %}">Главная</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'news:catalog' %}">Главная</a>
+                </li>
             {% endif %}
-            <li><a href="{% url 'news:favourites' %}">Избранное</a></li>
-            <li><a href="{% url 'news:about' %}">О нас</a></li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'news:favourites' %}">Избранное</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'news:about' %}">О нас</a>
+            </li>
         </ul>
-    </section>
+    </nav>
 
-    <!-- Контент и боковая панель -->
-    <div class="content-wrapper">
+    <div class="row">
+        <!-- Контент -->
+        <div class="col-md-8">
+            {% block content %}{% endblock %}
+        </div>
 
-        {% block content %}{% endblock %}
-    <!-- Поиск по фразе -->
-        <aside class="sidebar">
-            <h4>Поиск по новостям</h4>
-            <form method="get" action="{% url 'news:search_news' %}" class="search-form">
-                <input type="text" name="text" placeholder="Поиск" required>
-                <br>
-                <button type="submit">Найти</button>
-            </form>
+        <!-- Боковая панель -->
+        <aside class="col-md-4">
+            <!-- Форма поиска -->
+            <div class="card mb-3 p-3">
+                <h5>Поиск по новостям</h5>
+                <form method="get" action="{% url 'news:search_news' %}" class="d-flex flex-column">
+                    <input type="text" name="text" class="form-control mb-2" placeholder="Поиск" required>
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                </form>
+            </div>
 
-        <!-- Панель поиска по тегам -->
-            <h3>Новости по тегам</h3>
-            {% if all_tags %}
-                <ul>
-                    {% for tag in all_tags %}
-                        <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>Нет доступных тегов.</p>
-            {% endif %}
+            <!-- Теги -->
+            <div class="card mb-3 p-3">
+                <h5>Новости по тегам</h5>
+                {% if all_tags %}
+                    <ul class="list-unstyled">
+                        {% for tag in all_tags %}
+                            <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Нет доступных тегов.</p>
+                {% endif %}
+            </div>
 
-        <!-- Панель поиска по категориям -->
-            <h3>Новости по категориям</h3>
-            {% if all_categories %}
-                <ul>
-                    {% for category in all_categories %}
-                        <li><a href="{% url 'news:news_by_category' category.name %}">{{ category.name }} </a></li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>Нет доступных категорий.</p>
-            {% endif %}
+            <!-- Категории -->
+            <div class="card mb-3 p-3">
+                <h5>Новости по категориям</h5>
+                {% if all_categories %}
+                    <ul class="list-unstyled">
+                        {% for category in all_categories %}
+                            <li><a href="{% url 'news:news_by_category' category.name %}">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Нет доступных категорий.</p>
+                {% endif %}
+            </div>
         </aside>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

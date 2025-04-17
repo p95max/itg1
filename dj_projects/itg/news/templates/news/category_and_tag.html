@@ -11,7 +11,6 @@
         <ul>
             {% for item in news %}
                 <li>
-{#                    <a href="{% url 'news:article_detail' item.id %}">{{ item.title }}</a>#}
                     <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
                     {% if item.category %}
                         <span class="category">

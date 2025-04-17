@@ -7,9 +7,9 @@
 <section class="news">
     <h2>Избранные статьи</h2>
     {% if favourites_articles %}
-        <ul style="display: flex; flex-wrap: wrap; gap: 20px;"> <!-- Использование flex для ul -->
+        <ul style="display: flex; flex-wrap: wrap; gap: 20px;">
             {% for favourite in favourites_articles %}
-                <li style="list-style: none; display: flex; align-items: center;"> <!-- Flex для li -->
+                <li style="list-style: none; display: flex; align-items: center;">
                     <a href="{% url 'news:article_detail' slug=favourite.article.slug %}" style="margin-right: 10px;">
                         {{ favourite.article.title }}
                     </a>
@@ -21,7 +21,7 @@
                 </li>
             {% endfor %}
         </ul>
-        <p>Всего статей: {{ favourites_count }}</p>  <!-- Отображение количества избранных статей -->
+        <p>Всего статей: {{ favourites_count }}</p>
     {% else %}
         <p>У вас нет избранных статей.</p>
     {% endif %}

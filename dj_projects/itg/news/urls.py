@@ -7,15 +7,15 @@ from news.views import (catalog, article_detail, about, news_by_tag,
 app_name = 'news'
 
 urlpatterns = [
-    path('', catalog, name='catalog'),
-    path('article/<slug:slug>/', article_detail, name='article_detail'),
+    path('', catalog, name='catalog'),                                                                # главная страница
+    path('article/<slug:slug>/', article_detail, name='article_detail'),                              # статья полностью
     path('news/tag/<str:tag_name>/', news_by_tag, name='news_by_tag'),                                # Новости по тегу
     path('news/category/<str:category_name>/', news_by_category, name='news_by_category'),            # Новости по категории
     path('about/', about, name='about'),                                                              # Страница "О нас"
     path('search/', search_news, name='search_news'),                                                 # форма поиска
     path('toggle_like/<int:article_id>/', toggle_like, name='toggle_like'),                           # лайк под статьей
     path('toggle_favourite/<int:article_id>/', toggle_favorite, name='toggle_favorite'),              # избранное под статьей
-    path('favoutires/', favourites, name='favourites'),                                     # избранное стр.
+    path('favoutires/', favourites, name='favourites'),                                               # избранное стр.
 ]
 
 
