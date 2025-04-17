@@ -7,7 +7,7 @@
     <h2>{{ article.title }}</h2>
     <p>{{ article.content }}</p>
 
-{#            Теги#}
+    {# Теги #}
     {% if article.tags.all %}
         <p><strong>Теги:</strong></p>
         <ul>
@@ -16,71 +16,65 @@
             {% endfor %}
         </ul>
     {% endif %}
-{#            Категории #}
+
+    {# Категории #}
     <p><strong>Категория:</strong>
-    {% if article.category %}
-        <a href="{% url 'news:news_by_category' article.category.name %}">{{ article.category.name }}</a>
-    {% else %}
-        Нет категории
-    {% endif %}
+        {% if article.category %}
+            <a href="{% url 'news:news_by_category' article.category.name %}">{{ article.category.name }}</a>
+        {% else %}
+            Нет категории
+        {% endif %}
     </p>
 
     {# Лайки и закладки #}
-<div class="buttons-container" style="display: flex; gap: 10px;">
-    {# Лайки #}
-    <form method="POST" action="{% url 'news:toggle_like' article.id %}" class="search-form">
+    <div class="buttons-container d-flex gap-3">
+        {# Лайк #}
+        <form id="like-form-{{ article.id }}" data-article-id="{{ article.id }}">
+            {% csrf_token %}
+            <button type="button" class="btn {% if request.META.REMOTE_ADDR in liked_ips %}btn-success{% else %}btn-outline-success{% endif %}" id="like-btn-{{ article.id }}">
+                👍 Нравится <span id="like-count-{{ article.id }}">{{ article.likes_count }}</span>
+            </button>
+        </form>
+
+        {# Закладки #}
+        <form id="favourite-form-{{ article.id }}" data-article-id="{{ article.id }}">
+            {% csrf_token %}
+            <button type="button" class="btn {% if request.META.REMOTE_ADDR in favourite_ips %}btn-warning{% else %}btn-outline-warning{% endif %}" id="favourite-btn-{{ article.id }}">
+                ⭐ В избранное <span id="favourite-count-{{ article.id }}">{{ article.favourites_count }}</span>
+            </button>
+        </form>
+    </div>
+
+    <p>Количество просмотров этой статьи: {{ article.views }}</p>
+
+    {# Комментарии #}
+    <form method="post" class="mb-4">
         {% csrf_token %}
-        <button type="submit" class="btn btn-primary">
-            {% if request.META.REMOTE_ADDR in liked_ips %}
-                Убрать "Нравится"
-            {% else %}
-                Нравиться ({{ article.likes_count }})
-            {% endif %}
-        </button>
+        <div class="mb-3">
+            <label for="name" class="form-label">Имя</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Введите ваше имя" required>
+        </div>
+        <div class="mb-3">
+            <label for="text" class="form-label">Комментарий</label>
+            <textarea class="form-control" id="text" name="text" rows="4" placeholder="Ваш комментарий..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
     </form>
 
-    {# Избранное #}
-    <form method="POST" action="{% url 'news:toggle_favorite' article.id %}" class="search-form">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary">
-            {% if request.META.REMOTE_ADDR in favourite_ips %}
-                Убрать с закладок
-            {% else %}
-                Добавить в закладки ({{ article.favourites_count }})
-            {% endif %}
-        </button>
-    </form>
-</div>
-
-       <p>Количество просмотров этой статьи: '{{ article.views }}'</p>
-
-<form method="post" class="mb-4">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="name" class="form-label">Имя</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Введите ваше имя" required>
-    </div>
-    <div class="mb-3">
-        <label for="text" class="form-label">Комментарий</label>
-        <textarea class="form-control" id="text" name="text" rows="4" placeholder="Ваш комментарий..." required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Отправить</button>
-</form>
-
-<h5 class="mt-5 mb-3">Комментарии:</h5>
-{% if article.comments.all %}
-    <div class="list-group">
-        {% for comment in article.comments.all %}
-            <div class="list-group-item">
-                <h6 class="mb-1">{{ comment.name }}</h6>
-                <p class="mb-1">{{ comment.text }}</p>
-                <small class="text-muted">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
-            </div>
-        {% endfor %}
-    </div>
-{% else %}
-    <p>Пока нет комментариев.</p>
-{% endif %}
+    <h5 class="mt-5 mb-3">Комментарии:</h5>
+    {% if article.comments.all %}
+        <div class="list-group">
+            {% for comment in article.comments.all %}
+                <div class="list-group-item">
+                    <h6 class="mb-1">{{ comment.name }}</h6>
+                    <p class="mb-1">{{ comment.text }}</p>
+                    <small class="text-muted">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Пока нет комментариев.</p>
+    {% endif %}
 
     <a class="backlink" href="{% url 'news:catalog' %}">← Назад к главной</a>
 </section>

@@ -2,7 +2,8 @@ from tkinter.font import names
 
 from django.urls import path
 from news.views import (catalog, article_detail, about, news_by_tag,
-                        news_by_category, search_news, toggle_like, toggle_favorite, favourites)
+                        news_by_category, search_news, toggle_like, toggle_favorite,
+                        favourites, post_comment)
 
 app_name = 'news'
 
@@ -16,6 +17,7 @@ urlpatterns = [
     path('toggle_like/<int:article_id>/', toggle_like, name='toggle_like'),                           # лайк под статьей
     path('toggle_favourite/<int:article_id>/', toggle_favorite, name='toggle_favorite'),              # избранное под статьей
     path('favoutires/', favourites, name='favourites'),                                               # избранное стр.
+    path('article/<int:article_id>/comment/', post_comment, name='post_comment'),
 ]
 
 

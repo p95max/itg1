@@ -1,7 +1,8 @@
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib import messages
 
 from .models import Article, Tag, Category, Like, Favourite, Comment
 
@@ -134,34 +135,46 @@ def search_news(request):
     return render(request, 'news/catalog.html', context)
 
 def toggle_like(request, article_id):
-    ip_address = request.META.get('REMOTE_ADDR')
-    article = get_object_or_404(Article, id=article_id)
-    existing_like = Like.objects.filter(article=article, ip_address=ip_address)
-    if existing_like.exists():
-        existing_like.delete()
-        article.likes_count -= 1
-    else:
-        Like.objects.create(article=article, ip_address=ip_address)
-        article.likes_count += 1
+    if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
+        ip_address = request.META.get('REMOTE_ADDR')
+        article = get_object_or_404(Article, id=article_id)
+        liked = False
 
-    article.save()
+        existing_like = Like.objects.filter(article=article, ip_address=ip_address)
+        if existing_like.exists():
+            existing_like.delete()
+            article.likes_count -= 1
+        else:
+            Like.objects.create(article=article, ip_address=ip_address)
+            article.likes_count += 1
+            liked = True
 
-    return redirect('news:article_detail', slug=article.slug)
+        article.save()
+        return JsonResponse({'likes_count': article.likes_count, 'liked': liked})
+
+    return HttpResponseBadRequest("Invalid request")
+
 
 def toggle_favorite(request, article_id):
     ip_address = request.META.get('REMOTE_ADDR')
     article = get_object_or_404(Article, id=article_id)
     existing_favourite = Favourite.objects.filter(article=article, ip_address=ip_address)
+
     if existing_favourite.exists():
         existing_favourite.delete()
         article.favourites_count -= 1
+        liked = False
     else:
         Favourite.objects.create(article=article, ip_address=ip_address)
         article.favourites_count += 1
+        liked = True
 
     article.save()
 
-    return redirect('news:article_detail', slug=article.slug)
+    return JsonResponse({
+        'favourites_count': article.favourites_count,
+        'liked': liked
+    })
 
 def favourites(request):
     ip_address = request.META.get('REMOTE_ADDR')
@@ -190,4 +203,27 @@ def favourites(request):
     }
 
     return render(request, 'news/favourites.html', context)
+
+def post_comment(request, article_id):
+    if request.method == "POST":
+        comment_text = request.POST.get('comment')
+
+        # Проверка, был ли отправлен комментарий
+        if request.session.get('comment_submitted', False):
+            messages.error(request, "Комментарий уже был отправлен.")
+            return redirect('news:article', article_id=article_id)
+
+        # Создаем новый комментарий
+        new_comment = Comment(article_id=article_id, text=comment_text)
+        new_comment.save()
+
+        # Сохраняем флаг, чтобы предотвратить дублирование
+        request.session['comment_submitted'] = True
+
+        messages.success(request, "Комментарий успешно отправлен!")
+        return redirect('news:article', article_id=article_id)
+
+def reset_comment_flag(request):
+    if 'comment_submitted' in request.session:
+        del request.session['comment_submitted']
 
