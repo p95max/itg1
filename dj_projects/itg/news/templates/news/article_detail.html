@@ -76,6 +76,21 @@
         <p>Пока нет комментариев.</p>
     {% endif %}
 
+
+    <hr>
+    <h3>Похожие статьи</h3>
+    <ul>
+      {% for sim in similar_articles %}
+        <li>
+          <a href="{% url 'news:article_detail' slug=sim.slug %}">
+            {{ sim.title }}
+          </a>
+        </li>
+      {% empty %}
+        <p>Похожие статьи не найдены.</p>
+      {% endfor %}
+    </ul>
+
     <a class="backlink" href="{% url 'news:catalog' %}">← Назад к главной</a>
 </section>
 {% endblock %}

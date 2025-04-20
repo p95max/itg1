@@ -4,11 +4,10 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
 
-from .models import Article, Tag, Category, Like, Favourite, Comment
+from news.models import Article, Tag, Category, Like, Favourite, Comment
 
 def catalog(request):
     articles_count = Article.objects.count()
-    news = Article.objects.all().prefetch_related('tags').select_related('category')[:10]
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
     likes_count = Like.objects.count()
@@ -22,7 +21,6 @@ def catalog(request):
 
     context = {
         "articles_count": articles_count,
-        "news": news,
         "all_tags": all_tags,
         "all_categories": all_categories,
         "page_obj": page_obj,
@@ -45,6 +43,12 @@ def article_detail(request, slug):
     article.views += 1              #cчётчик просмотров
     article.save()
 
+    # Похожие статьи
+    similar_articles = Article.objects.filter(
+        Q(category=article.category) |
+        Q(tags__in=article.tags.all())
+    ).exclude(id=article.id).distinct().order_by('-publication_date')[:3]
+
     if request.method == 'POST':
         name = request.POST.get('name')
         text = request.POST.get('text')
@@ -57,6 +61,7 @@ def article_detail(request, slug):
         "all_categories": all_categories,
         "liked_ips": liked_ips,
         "favourite_ips": favourite_ips,
+        "similar_articles": similar_articles,
     }
 
     return render(request, 'news/article_detail.html', context=context)
@@ -152,8 +157,8 @@ def toggle_like(request, article_id):
 
         article.save()
         return JsonResponse({'likes_count': article.likes_count, 'liked': liked})
-
-    return HttpResponseBadRequest("Invalid request")
+    else:
+        return HttpResponseBadRequest("Invalid request")
 
 def toggle_favorite(request, article_id):
     ip_address = request.META.get('REMOTE_ADDR')
