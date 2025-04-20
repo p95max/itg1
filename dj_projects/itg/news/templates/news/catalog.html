@@ -56,5 +56,16 @@
             {% endif %}
         </span>
     </div>
+
+{#    Форма сортировки статтей#}
+    <form method="get" class="mb-4">
+    <label for="sort">Сортировать по:</label>
+    <select name="sort" id="sort" onchange="this.form.submit()">
+    <option value="date" {% if sort == "date" %}selected{% endif %}>Дате</option>
+    <option value="views" {% if sort == "views" %}selected{% endif %}>Просмотрам</option>
+    <option value="likes" {% if sort == "likes" %}selected{% endif %}>Лайкам</option>
+    </select>
+    </form>
+
 </section>
 {% endblock %}
