@@ -242,12 +242,17 @@ def add_article(request):
             content = form.cleaned_data['content']
             title = form.cleaned_data['title']
 
-            Article.objects.create(content=content, title=title, publication_date=datetime.now(),
-                                   category_id=1)
+            Article.objects.create(content = content,
+                                   title=title,
+                                   publication_date=datetime.now(),
+                                   category_id = 1)
+
             return HttpResponseRedirect('/news')
 
     form = ArticleForm()
-    context = {'form': form}
+    context = {
+        'form': form,
+    }
 
     return render(request, 'news/add_article.html', context)
 
