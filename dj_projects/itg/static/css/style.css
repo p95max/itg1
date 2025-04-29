@@ -65,3 +65,11 @@ h1, h5 {
     bottom: 50px;
     left: 50px;
 }
+
+.card .category-title {
+    color: #0d6efd; /* насыщенный синий (Bootstrap Primary) */
+}
+
+.card .tag-title {
+    color: #fd7e14; /* тёплый оранжевый (Bootstrap Orange) */
+}
