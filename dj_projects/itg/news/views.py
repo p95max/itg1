@@ -1,8 +1,11 @@
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
+from .forms import ArticleForm
+from .models import Article
+from datetime import datetime
 
 from news.models import Article, Tag, Category, Like, Favourite, Comment
 
@@ -38,7 +41,6 @@ def catalog(request):
         "sort": sort_by,
     }
     return render(request, 'news/catalog.html', context=context)
-
 
 def article_detail(request, slug):
     article = get_object_or_404(Article, slug=slug)
@@ -232,4 +234,23 @@ def post_comment(request, article_id):
 def reset_comment_flag(request):
     if 'comment_submitted' in request.session:
         del request.session['comment_submitted']
+
+def add_article(request):
+    if request.method == "POST":
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data['content']
+            title = form.cleaned_data['title']
+
+            Article.objects.create(content=content, title=title, publication_date=datetime.now(),
+                                   category_id=1)
+            return HttpResponseRedirect('/news')
+
+    form = ArticleForm()
+    context = {'form': form}
+
+    return render(request, 'news/add_article.html', context)
+
+
+
 

@@ -39,7 +39,8 @@
         {# Закладки #}
         <form id="favourite-form-{{ article.id }}" data-article-id="{{ article.id }}">
             {% csrf_token %}
-            <button type="button" class="btn {% if request.META.REMOTE_ADDR in favourite_ips %}btn-warning{% else %}btn-outline-warning{% endif %}" id="favourite-btn-{{ article.id }}">
+                <button type="button" class="btn {% if request.META.REMOTE_ADDR in favourite_ips %}btn-warning
+                {% else %}btn-outline-warning{% endif %}" id="favourite-btn-{{ article.id }}">
                 ⭐ В избранное <span id="favourite-count-{{ article.id }}">{{ article.favourites_count }}</span>
             </button>
         </form>
@@ -76,7 +77,7 @@
         <p>Пока нет комментариев.</p>
     {% endif %}
 
-
+{#    Похожие статьи#}
     <hr>
     <h3>Похожие статьи</h3>
     <ul>
