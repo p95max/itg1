@@ -1,11 +1,14 @@
 {% extends 'news/base.html' %}
 
-{% block title %} Добавить статью: {% endblock %}
+{% block title %}Добавить статью{% endblock %}
 
 {% block content %}
+<div class="card p-4 mb-4">
+    <h4 class="mb-3">Добавить новую статью</h4>
     <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-2">Опубликовать</button>
     </form>
+</div>
 {% endblock %}

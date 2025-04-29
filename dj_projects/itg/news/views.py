@@ -6,7 +6,6 @@ from django.contrib import messages
 from .forms import ArticleForm
 from .models import Article
 from datetime import datetime
-
 from news.models import Article, Tag, Category, Like, Favourite, Comment
 
 def catalog(request):
@@ -250,8 +249,12 @@ def add_article(request):
             return HttpResponseRedirect('/news')
 
     form = ArticleForm()
+    all_tags = Tag.objects.all()
+    all_categories = Category.objects.all()
     context = {
         'form': form,
+        "all_tags": all_tags,
+        "all_categories": all_categories,
     }
 
     return render(request, 'news/add_article.html', context)
