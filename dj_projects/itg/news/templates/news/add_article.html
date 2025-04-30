@@ -11,25 +11,54 @@
         <div class="mb-3">
             <label for="title" class="form-label">Заголовок</label>
             {{ form.title }}
+            {% if form.title.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.title.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
 
         <div class="mb-3">
             <label for="content" class="form-label">Содержание</label>
             {{ form.content }}
+            {% if form.content.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.content.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
 
         <div class="mb-3">
             <label for="image" class="form-label">Изображение</label>
             {{ form.image }}
+            {% if form.image.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.image.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
 
         <div class="mb-3">
             <label for="category" class="form-label">Категория</label>
             <select name="category" class="form-select">
+                <option value="">Выберите категорию</option>
                 {% for category in all_categories %}
                     <option value="{{ category.id }}" {% if category.id == form.category.value %}selected{% endif %}>{{ category.name }}</option>
                 {% endfor %}
             </select>
+            {% if form.category.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.category.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
 
         <div class="mb-3">
@@ -38,7 +67,8 @@
                 {% for tag in all_tags %}
                     <div class="col mb-2">
                         <div class="form-check">
-                            <input type="checkbox" name="tags" value="{{ tag.id }}" class="form-check-input" id="tag-{{ tag.id }}">
+                            <input type="checkbox" name="tags" value="{{ tag.id }}" class="form-check-input" id="tag-{{ tag.id }}"
+                                {% if tag.id in form.tags.value %}checked{% endif %}>
                             <label class="form-check-label" for="tag-{{ tag.id }}" style="font-weight: 600; color: #007bff; cursor: pointer;">
                                 {{ tag.name }}
                             </label>
@@ -46,6 +76,13 @@
                     </div>
                 {% endfor %}
             </div>
+            {% if form.tags.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.tags.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
 
         <button type="submit" class="btn btn-primary mt-2">Опубликовать</button>

@@ -235,20 +235,44 @@ def reset_comment_flag(request):
         del request.session['comment_submitted']
 
 def add_article(request):
+    all_tags = Tag.objects.all()
+    all_categories = Category.objects.all()
+
     if request.method == "POST":
         form = ArticleForm(request.POST, request.FILES)
+
         if form.is_valid():
-            form.save()  # Форма автоматически сохранит статью, включая категорию
+            article = form.save(commit=False)
+
+            category_id = request.POST.get('category')
+            if not category_id:
+                form.add_error('category', 'Выберите категорию.')
+
+            tags = request.POST.getlist('tags')
+            if not tags:
+                form.add_error('tags', 'Выберите хотя бы один тег.')
+
+            if form.errors:
+                return render(request, 'news/add_article.html', {
+                    'form': form,
+                    'all_tags': all_tags,
+                    'all_categories': all_categories,
+                })
+
+            article.category = Category.objects.get(id=category_id)
+            article.save()
+            article.tags.set(Tag.objects.filter(id__in=tags))
+
             return HttpResponseRedirect('/news')
 
     form = ArticleForm()
-    all_tags = Tag.objects.all()
-    all_categories = Category.objects.all()
+
     context = {
         'form': form,
-        "all_tags": all_tags,
-        "all_categories": all_categories,
+        'all_tags': all_tags,
+        'all_categories': all_categories,
     }
+
     return render(request, 'news/add_article.html', context)
 
 
