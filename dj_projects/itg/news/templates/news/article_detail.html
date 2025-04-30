@@ -5,6 +5,10 @@
 {% block content %}
 <section class="news">
     <h2>{{ article.title }}</h2>
+{% if article.image %}
+    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid mb-3">
+{% endif %}
+
     <p>{{ article.content }}</p>
 
     {# Теги #}

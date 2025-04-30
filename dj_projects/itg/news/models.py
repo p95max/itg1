@@ -1,11 +1,13 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.text import slugify
+from django.utils import timezone
 
 
 class Article(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     content = models.TextField(verbose_name='Содержание')
-    publication_date = models.DateTimeField(verbose_name='Дата публикации')
+    publication_date = models.DateTimeField(default=timezone.now, verbose_name='Дата публикации')
     views = models.IntegerField(default=0, verbose_name='Просмотры')
     category = models.ForeignKey("Category", on_delete=models.CASCADE, verbose_name='Категория')
     tags = models.ManyToManyField("Tag", related_name='article',  verbose_name='Теги')
@@ -13,6 +15,10 @@ class Article(models.Model):
     favourites_count = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True,  verbose_name='Теги')
     slug = models.SlugField(blank=True, null=True)
+    image = models.ImageField(upload_to='articles/%Y/%m/%d/',
+                              validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'jpeg'])],
+                              blank=True,
+                              null=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:

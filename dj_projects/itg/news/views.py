@@ -236,16 +236,9 @@ def reset_comment_flag(request):
 
 def add_article(request):
     if request.method == "POST":
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            content = form.cleaned_data['content']
-            title = form.cleaned_data['title']
-
-            Article.objects.create(content = content,
-                                   title=title,
-                                   publication_date=datetime.now(),
-                                   category_id = 1)
-
+            form.save()  # Форма автоматически сохранит статью, включая категорию
             return HttpResponseRedirect('/news')
 
     form = ArticleForm()
@@ -256,8 +249,8 @@ def add_article(request):
         "all_tags": all_tags,
         "all_categories": all_categories,
     }
-
     return render(request, 'news/add_article.html', context)
+
 
 
 
