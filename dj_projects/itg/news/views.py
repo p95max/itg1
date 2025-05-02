@@ -239,6 +239,7 @@ def add_article(request):
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
 
+# Добавить статью
     if request.method == "POST":
         form = ArticleForm(request.POST, request.FILES)
 
@@ -268,18 +269,7 @@ def add_article(request):
 
     form = ArticleForm()
 
-    context = {
-        'form': form,
-        'all_tags': all_tags,
-        'all_categories': all_categories,
-    }
-
-    return render(request, 'news/add_article.html', context)
-
-def add_article_JSON(request):
-    all_tags = Tag.objects.all()
-    all_categories = Category.objects.all()
-
+# Добавить статью из json file
     if request.method == 'POST' and request.FILES['json_file']:
         json_file = request.FILES['json_file']
         data = json.load(json_file)
@@ -290,13 +280,17 @@ def add_article_JSON(request):
 
             )
             article.save()
-        return HttpResponseRedirect(request, 'news/')
+        return HttpResponseRedirect('/news/')
 
     context = {
+        'form': form,
         'all_tags': all_tags,
         'all_categories': all_categories,
     }
-    return render(request, 'news/add_article_JSON.html', context)
+
+    return render(request, 'news/add_article.html', context)
+
+
 
 
 

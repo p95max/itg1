@@ -2,7 +2,7 @@ from tkinter.font import names
 from django.urls import path
 from news.views import (catalog, article_detail, about, news_by_tag,
                         news_by_category, search_news, toggle_like, toggle_favorite,
-                        favourites, post_comment, add_article, add_article_JSON)
+                        favourites, post_comment, add_article,)
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -20,7 +20,6 @@ urlpatterns = [
     path('favoutires/', favourites, name='favourites'),                                               # избранное стр.
     path('article/<int:article_id>/comment/', post_comment, name='post_comment'),                     # добавить комент
     path('add/', add_article, name='add_article'),                                                    # добавить новую статью
-    path('add_json/', add_article_JSON, name='add_article_JSON'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -3,71 +3,61 @@
 {% block title %}Добавить статью{% endblock %}
 
 {% block content %}
-<div class="card p-4 mb-4">
-    <h4 class="mb-3">Добавить новую статью</h4>
-    <form method="post" enctype="multipart/form-data">
+<h2>Добавить статью</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
 
-        {% csrf_token %}
+    {{ form.title.label_tag }}<br>
+    {{ form.title }}<br><br>
 
-        <div class="mb-3">
-            <label for="title" class="form-label">Заголовок</label>
-            {{ form.title }}
-            {% for error in form.title.errors %}
-                <div class="invalid-feedback">{{ error }}</div>
-            {% endfor %}
-        </div>
+    {{ form.content.label_tag }}<br>
+    {{ form.content }}<br><br>
 
-        <div class="mb-3">
-            <label for="content" class="form-label">Содержание</label>
-            {{ form.content }}
-            {% for error in form.content.errors %}
-                <div class="invalid-feedback">{{ error }}</div>
-            {% endfor %}
-        </div>
+    {{ form.image.label_tag }}<br>
+    {{ form.image }}<br><br>
 
-        <div class="mb-3">
-            <label for="image" class="form-label">Изображение</label>
-            {{ form.image }}
-            {% for error in form.image.errors %}
-                <div class="invalid-feedback">{{ error }}</div>
-            {% endfor %}
-        </div>
+    <label for="category">Категория</label><br>
+    <select name="category">
+        <option value="">-- выберите --</option>
+        {% for category in all_categories %}
+            <option value="{{ category.id }}" {% if category.id == form.category.value %}selected{% endif %}>
+                {{ category.name }}
+            </option>
+        {% endfor %}
+    </select><br><br>
 
-        <div class="mb-3">
-            <label for="category" class="form-label">Категория</label>
-            <select name="category" class="form-select">
-                <option value="">Выберите категорию</option>
-                {% for category in all_categories %}
-                    <option value="{{ category.id }}" {% if category.id == form.category.value %}
-                            selected{% endif %}>{{ category.name }}</option>
-                {% endfor %}
-            </select>
-            {% for error in form.category.errors %}
-                <div class="invalid-feedback">{{ error }}</div>
-            {% endfor %}
-        </div>
-
-        <div class="mb-3">
-            <label for="tags" class="form-label">Теги</label>
-            <div class="row row-cols-1 row-cols-md-4">
-                {% for tag in all_tags %}
-                    <div class="col mb-2">
-                        <div class="form-check">
-                            <input type="checkbox" name="tags" value="{{ tag.id }}" class="form-check-input" id="tag-{{ tag.id }}"
-                                {% if tag in form.cleaned_data.tags.all %}checked{% endif %}>
-                            <label class="form-check-label" for="tag-{{ tag.id }}" style="font-weight: 600; color: #007bff; cursor: pointer;">
-                                {{ tag.name }}
-                            </label>
-                        </div>
+    <label class="form-label">Теги</label>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+            {% for tag in all_tags %}
+                <div class="col mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" name="tags" value="{{ tag.id }}"
+                            id="tag-{{ tag.id }}" class="form-check-input"
+                            {% if tag in form.cleaned_data.tags.all %}checked{% endif %}>
+                        <label class="form-check-label" for="tag-{{ tag.id }}">
+                            {{ tag.name }}
+                        </label>
                     </div>
-                {% endfor %}
-            </div>
-            {% for error in form.tags.errors %}
-                <div class="invalid-feedback">{{ error }}</div>
+                </div>
             {% endfor %}
         </div>
 
-        <button type="submit" class="btn btn-primary mt-2">Опубликовать</button>
-    </form>
-</div>
+    <br><button type="submit">Опубликовать</button>
+</form>
+
+<br>
+
+<h2>Добавить статьи через JSON файл</h2>
+<form method="post" enctype="multipart/form-data" action="{% url 'news:add_article' %}">
+            {% csrf_token %}
+            <div class="form-group mt-4">
+                <label class="form-label fw-bold">Ваш .json файл:</label>
+                    <input type="file" name="json_file" class="form-control" accept=".json">
+            </div>
+
+      <button type="submit" class="btn btn-success mt-2">
+        <i class="bi bi-upload">Загрузить</i>
+    </button>
+
+</form>
 {% endblock %}
