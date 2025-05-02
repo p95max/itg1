@@ -1,7 +1,9 @@
 from django import forms
-from .models import Article
+from .models import Article, Category, Tag
+
 
 class ArticleForm(forms.ModelForm):
+
     class Meta:
         model = Article
         fields = ['title', 'content', 'image', 'category', 'tags']
@@ -19,3 +21,23 @@ class ArticleForm(forms.ModelForm):
             'category': 'Категория',
             'tags': 'Теги'
         }
+
+class ArticleUploadJSONForm(forms.ModelForm):
+    json_file = forms.FileField()
+
+    def clean_json_file(self):
+        json_file = self.cleaned_data['json_file']
+        if not json_file.name.endswith('.json'):
+            raise forms.ValidationError('This file is not a JSON file')
+
+        return json_file
+
+    def validate_json_file(self, json_file):
+        errors = []
+        data = json_file.load(json_file)
+        for item in data:
+            content = item['content']
+            title = item['title']
+
+
+        return errors

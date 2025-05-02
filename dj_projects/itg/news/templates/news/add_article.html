@@ -6,6 +6,7 @@
 <div class="card p-4 mb-4">
     <h4 class="mb-3">Добавить новую статью</h4>
     <form method="post" enctype="multipart/form-data">
+
         {% csrf_token %}
 
         <div class="mb-3">
@@ -37,7 +38,8 @@
             <select name="category" class="form-select">
                 <option value="">Выберите категорию</option>
                 {% for category in all_categories %}
-                    <option value="{{ category.id }}" {% if category.id == form.category.value %}selected{% endif %}>{{ category.name }}</option>
+                    <option value="{{ category.id }}" {% if category.id == form.category.value %}
+                            selected{% endif %}>{{ category.name }}</option>
                 {% endfor %}
             </select>
             {% for error in form.category.errors %}

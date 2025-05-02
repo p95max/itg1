@@ -9,8 +9,10 @@ class Article(models.Model):
     content = models.TextField(verbose_name='Содержание')
     publication_date = models.DateTimeField(default=timezone.now, verbose_name='Дата публикации')
     views = models.IntegerField(default=0, verbose_name='Просмотры')
-    category = models.ForeignKey("Category", on_delete=models.CASCADE, verbose_name='Категория')
-    tags = models.ManyToManyField("Tag", related_name='article',  verbose_name='Теги')
+    category = models.ForeignKey("Category", on_delete=models.CASCADE, verbose_name='Категория', blank=True,
+                              null=True)
+    tags = models.ManyToManyField("Tag", related_name='article',  verbose_name='Теги', blank=True,
+                              null=True)
     likes_count = models.IntegerField(default=0)
     favourites_count = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True,  verbose_name='Теги')

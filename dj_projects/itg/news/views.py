@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
 from .forms import ArticleForm
+import json
 from .models import Article
 from datetime import datetime
 from news.models import Article, Tag, Category, Like, Favourite, Comment
@@ -274,6 +275,28 @@ def add_article(request):
     }
 
     return render(request, 'news/add_article.html', context)
+
+def add_article_JSON(request):
+    all_tags = Tag.objects.all()
+    all_categories = Category.objects.all()
+
+    if request.method == 'POST' and request.FILES['json_file']:
+        json_file = request.FILES['json_file']
+        data = json.load(json_file)
+        for article in data:
+            article = Article(
+                title=article['title'],
+                content=article['content'],
+
+            )
+            article.save()
+        return HttpResponseRedirect(request, 'news/')
+
+    context = {
+        'all_tags': all_tags,
+        'all_categories': all_categories,
+    }
+    return render(request, 'news/add_article_JSON.html', context)
 
 
 
