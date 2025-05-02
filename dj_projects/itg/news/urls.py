@@ -1,4 +1,3 @@
-from tkinter.font import names
 from django.urls import path
 from news.views import (catalog, article_detail, about, news_by_tag,
                         news_by_category, search_news, toggle_like, toggle_favorite,

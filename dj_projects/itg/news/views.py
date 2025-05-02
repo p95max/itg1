@@ -5,8 +5,6 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from .forms import ArticleForm
 import json
-from .models import Article
-from datetime import datetime
 from news.models import Article, Tag, Category, Like, Favourite, Comment
 
 def catalog(request):
