@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -12,50 +13,64 @@
 </head>
 <body>
 
+{#Language switcher#}
+<form action="{% url 'set_language' %}" method="post" class="d-inline">
+  {% csrf_token %}
+  {% get_current_language as LANGUAGE_CODE %}
+  <select name="language" onchange="this.form.submit()" class="form-select form-select-sm d-inline w-auto">
+    {% get_available_languages as LANGUAGES %}
+    {% for code, name in LANGUAGES %}
+      <option value="{{ code }}" {% if code == LANGUAGE_CODE %}selected{% endif %}>
+        {{ name }}
+      </option>
+    {% endfor %}
+  </select>
+</form>
+
 <div class="container mt-4">
     <h1 class="text-center mb-4">Fun news</h1>
     <button id="theme-toggle" class="btn btn-outline-info">🌙</button>
 
-    <!-- Меню навигации -->
+    <!-- Nav menu -->
     <nav class="mb-4">
         <ul class="nav justify-content-center">
             {% if not request.path == '/news/' %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'news:catalog' %}">Главная</a>
+                    <a class="nav-link" href="{% url 'news:catalog' %}">{% trans 'Главная' %}</a>
                 </li>
             {% endif %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'news:favourites' %}">Избранное</a>
+                <a class="nav-link" href="{% url 'news:favourites' %}">{% trans 'Избранное' %}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'news:about' %}">О нас</a>
+                <a class="nav-link" href="{% url 'news:about' %}">{% trans 'О нас' %}</a>
             </li>
              <li class="nav-item">
-                <a class="nav-link" href="{% url 'news:add_article' %}"> Добавить статью </a>
+                <a class="nav-link" href="{% url 'news:add_article' %}">{% trans 'Добавить статью' %}</a>
             </li>
         </ul>
     </nav>
 
     <div class="row">
-        <!-- Контент -->
+        <!-- Article content block -->
         <div class="col-md-8">
             {% block content %}{% endblock %}
         </div>
 
-        <!-- Боковая панель -->
+        <!-- Right panel -->
         <aside class="col-md-4">
-            <!-- Форма поиска -->
+            <!-- Search form -->
             <div class="card mb-3 p-3">
-                <h5>Поиск по новостям</h5>
+                <h5>{% trans 'Поиск по новостям' %}</h5>
                 <form method="get" action="{% url 'news:search_news' %}" class="d-flex flex-column">
-                    <input type="text" name="text" class="form-control mb-2" placeholder="Поиск" required>
-                    <button type="submit" class="btn btn-primary">Найти</button>
+                    <input type="text" name="text" class="form-control mb-2" placeholder= {% trans 'Поиск' %} required>
+                    <button type="submit" class="btn btn-primary">{% trans 'Найти' %}</button>
                 </form>
             </div>
 
-            <!-- Теги -->
+            <!-- Tags panel -->
             <div class="card mb-3 p-3">
-                <h5 class="tag-title">Новости по тегам</h5>
+                <h5 class="tag-title">{% trans 'Новости по тегам' %}</h5>
                 {% if all_tags %}
                     <ul class="list-unstyled">
                         {% for tag in all_tags %}
@@ -63,13 +78,13 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p>Нет доступных тегов.</p>
+                    <p>{% trans 'Нет доступных тегов.' %}</p>
                 {% endif %}
             </div>
 
-            <!-- Категории -->
+            <!-- Categories panel -->
             <div class="card mb-3 p-3">
-                <h5 class="category-title">Новости по категориям</h5>
+                <h5 class="category-title">{% trans 'Новости по категориям' %}</h5>
                 {% if all_categories %}
                     <ul class="list-unstyled">
                         {% for category in all_categories %}
@@ -77,7 +92,7 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p>Нет доступных категорий.</p>
+                    <p>{% trans 'Нет доступных категорий.' %}</p>
                 {% endif %}
             </div>
         </aside>

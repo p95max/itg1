@@ -1,11 +1,12 @@
 {% extends 'news/base.html' %}
+{% load i18n %}
 
-{% block title %}FN - Новости по фильтру{% endblock %}
+{% block title %}FN - {% trans 'Новости по фильтру'  %} {% endblock %}
 
 {% block content %}
 <section class="news">
     <h3>{{ filter }}</h3>
-    <p>Всего статей: {{ articles_count }}</p>
+    <p>{% trans 'Всего статей:' %} {{ articles_count }}</p>
 
     {% if news %}
         <ul>
@@ -14,7 +15,7 @@
                     <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
                     {% if item.category %}
                         <span class="category">
-                            (Категория:
+                            ({% trans 'Категория:'  %}
                             <a href="{% url 'news:news_by_category' item.category.name %}">
                                 {{ item.category.name }}
                             </a>)
@@ -23,7 +24,7 @@
                     <br>
                     {% if item.tags.all %}
                         <span class="tags">
-                            (Теги:
+                            ({% trans 'Теги:'  %}
                             {% for tag in item.tags.all %}
                                 <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                             {% endfor %}
@@ -34,7 +35,7 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>Нет новостей для отображения.</p>
+        <p>{% trans 'Нет новостей для отображения.'  %} </p>
     {% endif %}
 </section>
 {% endblock %}

@@ -1,5 +1,6 @@
 from django import forms
-from .models import Article, Category, Tag
+from .models import Article
+from django.utils.translation import gettext_lazy as _
 
 
 class ArticleForm(forms.ModelForm):
@@ -8,22 +9,22 @@ class ArticleForm(forms.ModelForm):
         model = Article
         fields = ['title', 'content', 'image', 'category', 'tags']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите заголовок'}),
-            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Введите контент статьи'}),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Введите заголовок') }),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': _('Введите контент статьи') }),
             'image': forms.FileInput(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-select'}),
             'tags': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
         }
         labels = {
-            'title': 'Заголовок',
-            'content': 'Контент',
-            'image': 'Изображение',
-            'category': 'Категория',
-            'tags': 'Теги'
+            'title': _('Заголовок'),
+            'content': _('Контент'),
+            'image': _('Изображение'),
+            'category': _('Категория'),
+            'tags': _('Теги')
         }
 
 class ArticleUploadJSONForm(forms.ModelForm):
-    json_file = forms.FileField()
+    json_file = forms.FileField(label=_("JSON файл"))
 
     def clean_json_file(self):
         json_file = self.cleaned_data['json_file']

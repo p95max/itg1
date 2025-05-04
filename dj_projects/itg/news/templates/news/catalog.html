@@ -1,4 +1,5 @@
 {% extends 'news/base.html' %}
+{% load i18n %}
 
 {% block title %}FN{% endblock %}
 
@@ -7,7 +8,7 @@
 <section class="news">
     <h3>{{ filter }}</h3>
     {% if request.path == '/news/' %}
-            <h1>Последние новости:</h1>
+            <h1>{% trans 'Последние новости:' %} </h1>
         {% endif %}
     {% if page_obj %}
         <ul>
@@ -16,7 +17,7 @@
                     <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
                     {% if item.category %}
                         <span class="category">
-                            (Категория:
+                            ({% trans 'Категория:' %}
                             <a href="{% url 'news:news_by_category' item.category.name %}">
                                 {{ item.category.name }}
                             </a>)
@@ -25,7 +26,7 @@
                     <br>
                     {% if item.tags.all %}
                         <span class="tags">
-                            (Теги:
+                            ({% trans 'Теги:' %}
                             {% for tag in item.tags.all %}
                                 <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                             {% endfor %}
@@ -35,35 +36,35 @@
                 </li>
             {% endfor %}
         </ul>
-        <p>Текущее количество статей: {{ articles_count }}</p>
+        <p>{% trans 'Текущее количество статей:' %} {{ articles_count }}</p>
     {% else %}
-        <p>Нет новостей для отображения.</p>
+        <p>{% trans 'Нет новостей для отображения.' %} </p>
     {% endif %}
 
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
-                <a href="?page=1">Первая страница</a><br>
-                <a href="?page={{ page_obj.previous_page_number }}">< Предыдущая</a>
+                <a href="?page=1">{% trans 'Первая страница' %} </a><br>
+                <a href="?page={{ page_obj.previous_page_number }}">< {% trans 'Предыдущая' %} </a>
             {% endif %}
 
             <span class="current-page">
-                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                {% trans 'Страница' %} {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
             </span>
 
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">Следующая > </a>
+                <a href="?page={{ page_obj.next_page_number }}">{% trans 'Следующая'%} > </a>
             {% endif %}
         </span>
     </div>
 
-{#    Форма сортировки статтей#}
+{# sorting articles form#}
     <form method="get" class="mb-4">
-    <label for="sort">Сортировать по:</label>
+    <label for="sort">{% trans 'Сортировать по:' %} </label>
     <select name="sort" id="sort" onchange="this.form.submit()">
-    <option value="date" {% if sort == "date" %}selected{% endif %}>Дате</option>
-    <option value="views" {% if sort == "views" %}selected{% endif %}>Просмотрам</option>
-    <option value="likes" {% if sort == "likes" %}selected{% endif %}>Лайкам</option>
+    <option value="date" {% if sort == "date" %}selected{% endif %}>{% trans 'Дате' %} </option>
+    <option value="views" {% if sort == "views" %}selected{% endif %}>{% trans 'Просмотрам' %} </option>
+    <option value="likes" {% if sort == "likes" %}selected{% endif %}>{% trans 'Лайкам' %}</option>
     </select>
     </form>
 
