@@ -11,38 +11,38 @@ from .forms import ArticleForm
 import json
 from news.models import Article, Tag, Category, Like, Favourite, Comment
 
-def catalog(request):
-    sort_by = request.GET.get('sort', 'date')  # сортировка по дате по умол
-    sort_options = {
-        'date': '-publication_date',
-        'views': '-views',
-        'likes': '-likes_count',
-    }
-
-    sort_field = sort_options.get(sort_by, '-publication_date')
-
-    articles_count = Article.objects.count()
-    all_tags = Tag.objects.all()
-    all_categories = Category.objects.all()
-    likes_count = Like.objects.count()
-    favourites_count = Favourite.objects.count()
-
-    news_list = Article.objects.filter(is_active=True).order_by(sort_field)
-    paginator = Paginator(news_list, 10)  # 10 статей на страницу
-
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-        "articles_count": articles_count,
-        "all_tags": all_tags,
-        "all_categories": all_categories,
-        "page_obj": page_obj,
-        "likes_count": likes_count,
-        "favourites_count": favourites_count,
-        "sort": sort_by,
-    }
-    return render(request, 'news/catalog.html', context=context)
+# def catalog(request):
+#     sort_by = request.GET.get('sort', 'date')  # сортировка по дате по умол
+#     sort_options = {
+#         'date': '-publication_date',
+#         'views': '-views',
+#         'likes': '-likes_count',
+#     }
+#
+#     sort_field = sort_options.get(sort_by, '-publication_date')
+#
+#     articles_count = Article.objects.count()
+#     all_tags = Tag.objects.all()
+#     all_categories = Category.objects.all()
+#     likes_count = Like.objects.count()
+#     favourites_count = Favourite.objects.count()
+#
+#     news_list = Article.objects.filter(is_active=True).order_by(sort_field)
+#     paginator = Paginator(news_list, 10)  # 10 статей на страницу
+#
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+#
+#     context = {
+#         "articles_count": articles_count,
+#         "all_tags": all_tags,
+#         "all_categories": all_categories,
+#         "page_obj": page_obj,
+#         "likes_count": likes_count,
+#         "favourites_count": favourites_count,
+#         "sort": sort_by,
+#     }
+#     return render(request, 'news/catalog.html', context=context)
 
 def article_detail(request, slug):
     article = get_object_or_404(Article, slug=slug)
