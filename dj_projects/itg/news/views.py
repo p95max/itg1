@@ -130,7 +130,7 @@ def search_news(request):
 
     if searched_text:
         articles = Article.objects.filter(
-            Q(title__icontains=searched_text),
+            Q(title__icontains=searched_text) | Q(content__icontains=searched_text),
             is_active=True
         )
 
