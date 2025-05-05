@@ -1,5 +1,6 @@
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView, CreateView
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -15,7 +16,7 @@ class GetAllNewsView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        order_by = self.request.GET.get('order_by', 'publication_date')
+        order_by = self.request.GET.get('order_by', '-publication_date')
         return Article.objects.select_related('category').prefetch_related('tags').order_by(order_by)
 
     def get_context_data(self, **kwargs):
@@ -100,6 +101,68 @@ class AboutUsView(TemplateView):
         "all_tags": all_tags,
         "all_categories": all_categories,
     }
+
+class CreateArticleView(CreateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = 'news/add_article.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['all_categories'] = Category.objects.all()
+        context['all_tags'] = Tag.objects.all()
+        return context
+
+    def post(self, request, *args, **kwargs):
+
+        if request.FILES.get('json_file'):
+            json_file = request.FILES['json_file']
+            try:
+                data = json.load(json_file)
+            except json.JSONDecodeError:
+                form = self.get_form()
+                form.add_error(None, ("Неверный формат JSON-файла"))
+                return self.form_invalid(form)
+
+            for item in data:
+                # Загружаем статью из JSON
+                article = Article(
+                    title=item['title'],
+                    content=item['content'],
+                    category=Category.objects.get(id=item['category_id'])
+                )
+                article.save()
+                if 'tags_ids' in item:
+                    article.tags.set(Tag.objects.filter(id__in=item['tags_ids']))
+
+            return redirect('news:catalog')
+
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        article = form.save()
+        return redirect('news:article_detail', slug=article.slug)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def news_by_tag(request, tag_name):
     tag = get_object_or_404(Tag, name=tag_name)
@@ -241,60 +304,7 @@ def reset_comment_flag(request):
     if 'comment_submitted' in request.session:
         del request.session['comment_submitted']
 
-def add_article(request):
-    all_tags = Tag.objects.all()
-    all_categories = Category.objects.all()
 
-# Добавить статью вручную
-    if request.method == "POST":
-        form = ArticleForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            article = form.save(commit=False)
-
-            category_id = request.POST.get('category')
-            if not category_id:
-                form.add_error('category', 'Выберите категорию.')
-
-            tags = request.POST.getlist('tags')
-            if not tags:
-                form.add_error('tags', 'Выберите хотя бы один тег.')
-
-            if form.errors:
-                return render(request, 'news/add_article.html', {
-                    'form': form,
-                    'all_tags': all_tags,
-                    'all_categories': all_categories,
-                })
-
-            article.category = Category.objects.get(id=category_id)
-            article.save()
-            article.tags.set(Tag.objects.filter(id__in=tags))
-
-            return HttpResponseRedirect('/news')
-
-    form = ArticleForm()
-
-# Добавить статью из json
-    if request.method == 'POST' and request.FILES['json_file']:
-        json_file = request.FILES['json_file']
-        data = json.load(json_file)
-        for article in data:
-            article = Article(
-                title=article['title'],
-                content=article['content'],
-
-            )
-            article.save()
-        return HttpResponseRedirect('/news/')
-
-    context = {
-        'form': form,
-        'all_tags': all_tags,
-        'all_categories': all_categories,
-    }
-
-    return render(request, 'news/add_article.html', context)
 
 
 

@@ -1,7 +1,7 @@
 from django.urls import path
 from news.views import (GetAllNewsView, ArticleDetailView, AboutUsView, news_by_tag,
                         news_by_category, search_news, toggle_like, toggle_favorite,
-                        favourites, post_comment, add_article,)
+                        favourites, post_comment, CreateArticleView,)
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -18,7 +18,7 @@ urlpatterns = [
     path('toggle_favourite/<int:article_id>/', toggle_favorite, name='toggle_favorite'),
     path('favoutires/', favourites, name='favourites'),
     path('article/<int:article_id>/comment/', post_comment, name='post_comment'),
-    path('add/', add_article, name='add_article'),
+    path('add/', CreateArticleView.as_view(), name='add_article'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

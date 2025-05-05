@@ -1,11 +1,15 @@
 [
   {
     "title": "testtitle3",
-    "content": "testcontent3"
+    "content": "testcontent3",
+    "category_id": 1,
+    "tags_ids": [1]
   },
 
   {
     "title": "testtitle4",
-    "content": "testcontent4"
+    "content": "testcontent4",
+    "category_id": 1,
+    "tags_ids": [1]
   }
 ]
