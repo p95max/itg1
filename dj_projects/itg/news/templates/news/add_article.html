@@ -75,11 +75,11 @@
 </div>
 <br>
 
-{#json tab#}
-<div class="tab-pane fade" id="json" role="tabpanel">
-<h2>{% trans 'Добавить статьи через JSON файл' %} </h2>
-<form method="post" enctype="multipart/form-data" action="{% url 'news:add_article' %}">
-            {% csrf_token %}
+            {#json tab#}
+            <div class="tab-pane fade" id="json" role="tabpanel">
+            <h2>{% trans 'Добавить статьи через JSON файл' %} </h2>
+            <form method="post" enctype="multipart/form-data" action="{% url 'news:add_article' %}">
+                        {% csrf_token %}
 
 
             <div class="form-group mt-4">
