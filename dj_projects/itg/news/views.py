@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.core import paginator
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -39,42 +39,51 @@ class GetAllNewsView(ListView):
         })
         return context
 
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'news/article_detail.html'
+    context_object_name = 'article'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.views += 1
+        self.object.save()
+
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        name = request.POST['name']
+        text = request.POST['text']
+
+        if name in text:
+            Comment.objects.create(article=self.object, text=text)
+        return self.get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        article = self.get_object()
+
+        # Simular articles
+        similar_articles = Article.objects.filter(
+            Q(category=article.category) |
+            Q(tags__in=article.tags.all())
+        ).exclude(id=article.id).distinct().order_by('-publication_date')[:3]
+
+        # Likes and favourites
+        liked_ips = article.likes.values_list('ip_address', flat=True)
+        favourite_ips = article.favourites.values_list('ip_address', flat=True)
+
+        context.update({
+                    "all_tags": Tag.objects.all(),
+                    "all_categories": Category.objects.all(),
+                    "liked_ips": liked_ips,
+                    "favourite_ips": favourite_ips,
+                    "similar_articles": similar_articles,
+        })
+        return context
 
 
-
-def article_detail(request, slug):
-    article = get_object_or_404(Article, slug=slug)
-    all_tags = Tag.objects.all()
-    all_categories = Category.objects.all()
-    liked_ips = article.likes.values_list('ip_address', flat=True)
-    favourite_ips = article.favourites.values_list('ip_address', flat=True)
-    reset_comment_flag(request)
-
-    article.views += 1              #cчётчик просмотров
-    article.save()
-
-    # Похожие статьи
-    similar_articles = Article.objects.filter(
-        Q(category=article.category) |
-        Q(tags__in=article.tags.all())
-    ).exclude(id=article.id).distinct().order_by('-publication_date')[:3]
-
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        text = request.POST.get('text')
-        if name and text:
-            Comment.objects.create(article=article, name=name, text=text)
-
-    context = {
-        "article": article,
-        "all_tags": all_tags,
-        "all_categories": all_categories,
-        "liked_ips": liked_ips,
-        "favourite_ips": favourite_ips,
-        "similar_articles": similar_articles,
-    }
-
-    return render(request, 'news/article_detail.html', context=context)
 
 def about(request):
     all_tags = Tag.objects.all()
