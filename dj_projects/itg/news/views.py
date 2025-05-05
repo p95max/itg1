@@ -1,12 +1,9 @@
-from django.views.generic import ListView, DetailView
-from django.core import paginator
+from django.views.generic import ListView, DetailView, TemplateView
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
-from django.views import View
-
 from .forms import ArticleForm
 import json
 from news.models import Article, Tag, Category, Like, Favourite, Comment
@@ -83,12 +80,13 @@ class ArticleDetailView(DetailView):
         })
         return context
 
+class AboutUsView(TemplateView):
+    template_name = 'news/about.html'
 
-
-def about(request):
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
-    context = {
+
+    extra_context = {
         'title': 'О нас',
         'description': 'Мы — команда проекта "Fun news", цель которого — предоставлять актуальные и интересные новости.',
         'contacts': {
@@ -102,7 +100,6 @@ def about(request):
         "all_tags": all_tags,
         "all_categories": all_categories,
     }
-    return render(request, 'news/about.html', context=context)
 
 def news_by_tag(request, tag_name):
     tag = get_object_or_404(Tag, name=tag_name)
