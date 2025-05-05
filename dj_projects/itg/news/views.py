@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, TemplateView, CreateView
+from django.views.generic import ListView, DetailView, TemplateView, CreateView, View
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -143,23 +143,16 @@ class CreateArticleView(CreateView):
         article = form.save()
         return redirect('news:article_detail', slug=article.slug)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+class PostCommentView(View):
+    def post(self, request, article_id):
+        commnent_text = request.POST['comment']
+        if request.session.get('comment_submitted', False):
+            messages.error(request, 'Comment already submitted')
+        else:
+            Comment.objects.create(article_id = article_id, text = commnent_text)
+            request.session['comment_submitted'] = True
+            messages.success(request, 'Comment submitted')
+        return redirect('news:article_detail', article_id=article_id)
 
 
 
@@ -288,17 +281,7 @@ def favourites(request):
 
     return render(request, 'news/favourites.html', context)
 
-def post_comment(request, article_id):
-    if request.method == "POST":
-        comment_text = request.POST.get('comment')
-        if request.session.get('comment_submitted', False):
-            messages.error(request, "Комментарий уже был отправлен.")
-            return redirect('news:article', article_id=article_id)
-        new_comment = Comment(article_id=article_id, text=comment_text)
-        new_comment.save()
-        request.session['comment_submitted'] = True
-        messages.success(request, "Комментарий успешно отправлен!")
-        return redirect('news:article', article_id=article_id)
+
 
 def reset_comment_flag(request):
     if 'comment_submitted' in request.session:
