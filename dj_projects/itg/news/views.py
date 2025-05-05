@@ -154,39 +154,37 @@ class PostCommentView(View):
             messages.success(request, 'Comment submitted')
         return redirect('news:article_detail', article_id=article_id)
 
+class ArticleFilterView(ListView):
+    model = Article
+    template_name = 'news/category_and_tag.html'
+    context_object_name = 'articles'
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.filter_type = self.kwargs.get('filter_type')
+        self.name = self.kwargs.get('name')
+
+        if self.filter_type == 'tag':
+            self.filter_object = get_object_or_404(Tag, name=self.name)
+            return Article.objects.filter(tags = self.filter_object, is_active=True)
+        elif self.filter_type == 'category':
+            self.filter_object = get_object_or_404(Category, name=self.name)
+            return Article.objects.filter(category = self.filter_object, is_active=True)
+        else:
+            return Article.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['articles_count'] = self.object_list.count()
+        context['filter'] = f"{'Tag' if self.filter_type == 'tag' else 'Category'}: {self.name}"
+        context['all_tags'] = Tag.objects.all()
+        context['all_categories'] = Category.objects.all()
+        if self.filter_type == 'tag':
+            context['selected_tag'] = self.name
+        return context
 
 
 
-def news_by_tag(request, tag_name):
-    tag = get_object_or_404(Tag, name=tag_name)
-    news = Article.objects.filter(tags=tag)
-    all_tags = Tag.objects.all()
-    articles_count = news.count()
-    all_categories = Category.objects.all()
-    context = {
-        "news": news,
-        "articles_count": articles_count,
-        'filter': f"Тег {tag.name}",
-        "all_tags": all_tags,
-        "selected_tag": tag_name,
-        "all_categories": all_categories,
-    }
-    return render(request, 'news/category_and_tag.html', context)
-
-def news_by_category(request, category_name):
-    category = get_object_or_404(Category, name=category_name)
-    news = Article.objects.filter(category=category, is_active=True)
-    all_tags = Tag.objects.all()
-    all_categories = Category.objects.all()
-    articles_count = news.count()
-    context = {
-        'news': news,
-        'filter': f"Категория: {category.name}",
-        "all_tags": all_tags,
-        "all_categories": all_categories,
-        "articles_count": articles_count
-    }
-    return render(request, 'news/category_and_tag.html', context)
 
 def search_news(request):
     searched_text = request.GET.get('text')
@@ -280,8 +278,6 @@ def favourites(request):
     }
 
     return render(request, 'news/favourites.html', context)
-
-
 
 def reset_comment_flag(request):
     if 'comment_submitted' in request.session:

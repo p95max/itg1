@@ -8,15 +8,15 @@
     <h3>{{ filter }}</h3>
     <p>{% trans 'Всего статей:' %} {{ articles_count }}</p>
 
-    {% if news %}
+    {% if articles %}
         <ul>
-            {% for item in news %}
+            {% for item in articles %}
                 <li>
                     <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
                     {% if item.category %}
                         <span class="category">
                             ({% trans 'Категория:'  %}
-                            <a href="{% url 'news:news_by_category' item.category.name %}">
+                            <a href="{% url 'news:filtered_news' 'category' item.category.name %}">
                                 {{ item.category.name }}
                             </a>)
                         </span>
@@ -26,7 +26,7 @@
                         <span class="tags">
                             ({% trans 'Теги:'  %}
                             {% for tag in item.tags.all %}
-                                <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                                <a href="{% url 'news:filtered_news' 'tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                             {% endfor %}
                             )
                         </span>
