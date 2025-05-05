@@ -230,27 +230,25 @@ class ToggleLikeView(View):
         likes_count = article.likes.count()
         return JsonResponse({'likes_count': likes_count, 'like': liked})
 
+class ToggleFavoriteView(View):
+    def post(self, request, article_id):
+        if request.headers.get("x-requested-with") != "XMLHttpRequest":
+            return HttpResponseBadRequest("Wrong request.")
 
-def toggle_favorite(request, article_id):
-    ip_address = request.META.get('REMOTE_ADDR')
-    article = get_object_or_404(Article, id=article_id)
-    existing_favourite = Favourite.objects.filter(article=article, ip_address=ip_address)
-
-    if existing_favourite.exists():
-        existing_favourite.delete()
-        article.favourites_count -= 1
+        article = get_object_or_404(Article, id=article_id)
+        ip_address = request.META.get('REMOTE_ADDR')
         liked = False
-    else:
-        Favourite.objects.create(article=article, ip_address=ip_address)
-        article.favourites_count += 1
-        liked = True
 
-    article.save()
+        existing_favorite = Favourite.objects.filter(article=article, ip_address=ip_address)
+        if existing_favorite.exists():
+            existing_favorite.delete()
+        else:
+            Favourite.objects.create(article=article, ip_address=ip_address)
+            liked = True
 
-    return JsonResponse({
-        'favourites_count': article.favourites_count,
-        'liked': liked
-    })
+        favorites_count = article.favourites.count()
+        return JsonResponse({'favorites_count': favorites_count, 'like': liked})
+
 
 def favourites(request):
     ip_address = request.META.get('REMOTE_ADDR')
