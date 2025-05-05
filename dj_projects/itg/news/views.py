@@ -1,14 +1,10 @@
-from ipaddress import ip_address
-
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, View
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect, request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
-from django.core.paginator import Paginator
 from django.contrib import messages
 from .forms import ArticleForm
 import json
-import requests
 from news.models import Article, Tag, Category, Like, Favourite, Comment
 
 class GetAllNewsView(ListView):
@@ -44,44 +40,33 @@ class ArticleDetailView(DetailView):
     template_name = 'news/article_detail.html'
     context_object_name = 'article'
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.views += 1
-        self.object.save()
-
-        return super().get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        name = request.POST['name']
-        text = request.POST['text']
-
-        if name in text:
-            Comment.objects.create(article=self.object, text=text)
-        return self.get(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         article = self.get_object()
 
-        # Simular articles
-        similar_articles = Article.objects.filter(
-            Q(category=article.category) |
-            Q(tags__in=article.tags.all())
-        ).exclude(id=article.id).distinct().order_by('-publication_date')[:3]
+        # Комментарии
+        context['comments'] = article.comments.order_by('-created_at')
 
-        # Likes and favourites
-        liked_ips = article.likes.values_list('ip_address', flat=True)
-        favourite_ips = article.favourites.values_list('ip_address', flat=True)
+        # Похожие статьи по тегам и категории
+        by_tags = Article.objects.filter(tags__in=article.tags.all()).exclude(id=article.id)
+        by_category = Article.objects.filter(category=article.category).exclude(id=article.id) if article.category else Article.objects.none()
+        context['similar_articles'] = (by_tags | by_category).distinct()[:5]
 
-        context.update({
-                    "all_tags": Tag.objects.all(),
-                    "all_categories": Category.objects.all(),
-                    "liked_ips": liked_ips,
-                    "favourite_ips": favourite_ips,
-                    "similar_articles": similar_articles,
-        })
+        # Панель тегов и категорий
+        context['all_tags'] = Tag.objects.all()
+        context['all_categories'] = Category.objects.all()
+
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        name = request.POST.get('name')
+        text = request.POST.get('text')
+
+        if name and text:
+            Comment.objects.create(article=self.object, name=name, text=text)
+
+        return self.get(request, *args, **kwargs)
 
 class AboutUsView(TemplateView):
     template_name = 'news/about.html'
@@ -230,7 +215,7 @@ class ToggleLikeView(View):
         likes_count = article.likes.count()
         return JsonResponse({'likes_count': likes_count, 'like': liked})
 
-class ToggleFavoriteView(View):
+class ToggleFavouriteView(View):
     def post(self, request, article_id):
         if request.headers.get("x-requested-with") != "XMLHttpRequest":
             return HttpResponseBadRequest("Wrong request.")
@@ -239,48 +224,54 @@ class ToggleFavoriteView(View):
         ip_address = request.META.get('REMOTE_ADDR')
         liked = False
 
-        existing_favorite = Favourite.objects.filter(article=article, ip_address=ip_address)
-        if existing_favorite.exists():
-            existing_favorite.delete()
+        existing_favourite = Favourite.objects.filter(article=article, ip_address=ip_address)
+        if existing_favourite.exists():
+            existing_favourite.delete()
         else:
             Favourite.objects.create(article=article, ip_address=ip_address)
             liked = True
 
-        favorites_count = article.favourites.count()
-        return JsonResponse({'favorites_count': favorites_count, 'like': liked})
+        favourites_count = article.favourites.count()
+        return JsonResponse({'favorites_count': favourites_count, 'like': liked})
 
+class FavouritesView(View):
+    def get(self, request):
+        ip_address = request.META.get('REMOTE_ADDR')
+        favourites_articles = Favourite.objects.filter(ip_address=ip_address)
+        favourites_count = favourites_articles.count()
 
-def favourites(request):
-    ip_address = request.META.get('REMOTE_ADDR')
-    favourites_articles = Favourite.objects.filter(ip_address=ip_address)
-    favourites_articles_count = favourites_articles.count()
+        all_tags = Tag.objects.all()
+        all_categories = Category.objects.all()
 
-    all_tags = Tag.objects.all()
-    all_categories = Category.objects.all()
+        context = {
+            'favourites_count': favourites_count,
+            'favourites_articles': favourites_articles,
+            'all_tags': all_tags,
+            'all_categories': all_categories
+        }
+        return render(request, 'news/favourites.html', context)
 
-    if request.method == 'POST':
+    def post(self, request):
+        ip_address = request.META.get('REMOTE_ADDR')
         article_id = request.POST.get('article_id')
+
         if article_id:
             favourite_to_remove = Favourite.objects.filter(article_id=article_id, ip_address=ip_address)
             if favourite_to_remove.exists():
                 favourite_to_remove.delete()
-            else:
-                return HttpResponseBadRequest("Статья не найдена в избранном.")
 
-        return redirect('news:favourites')
+            favourites_articles = Favourite.objects.filter(ip_address=ip_address)
+            favourites_count = favourites_articles.count()
 
-    context = {
-        "all_tags": all_tags,
-        "all_categories": all_categories,
-        'favourites_articles': favourites_articles,
-        'favourites_count': favourites_articles_count,
-    }
+            return redirect('news:favourites')
 
-    return render(request, 'news/favourites.html', context)
+        return HttpResponseBadRequest('No such article in favourites')
 
-def reset_comment_flag(request):
-    if 'comment_submitted' in request.session:
-        del request.session['comment_submitted']
+class ResetCommentFlagView(View):
+    def post(self, request):
+        if 'comment_submitted' in request.session:
+            del request.session['comment_submitted']
+        return JsonResponse({'status':'success'})
 
 
 
