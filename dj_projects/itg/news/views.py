@@ -1,11 +1,14 @@
+from ipaddress import ip_address
+
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, View
-from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect, request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
 from .forms import ArticleForm
 import json
+import requests
 from news.models import Article, Tag, Category, Like, Favourite, Comment
 
 class GetAllNewsView(ListView):
@@ -208,26 +211,25 @@ class SearchArticleView(ListView):
         })
         return context
 
+class ToggleLikeView(View):
+    def post(self, request, article_id):
+        if request.headers.get("x-requested-with") != "XMLHttpRequest":
+            return HttpResponseBadRequest("Wrong request.")
 
-def toggle_like(request, article_id):
-    if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
-        ip_address = request.META.get('REMOTE_ADDR')
         article = get_object_or_404(Article, id=article_id)
+        ip_address = request.META.get('REMOTE_ADDR')
         liked = False
 
         existing_like = Like.objects.filter(article=article, ip_address=ip_address)
         if existing_like.exists():
             existing_like.delete()
-            article.likes_count -= 1
         else:
             Like.objects.create(article=article, ip_address=ip_address)
-            article.likes_count += 1
             liked = True
 
-        article.save()
-        return JsonResponse({'likes_count': article.likes_count, 'liked': liked})
-    else:
-        return HttpResponseBadRequest("Invalid request")
+        likes_count = article.likes.count()
+        return JsonResponse({'likes_count': likes_count, 'like': liked})
+
 
 def toggle_favorite(request, article_id):
     ip_address = request.META.get('REMOTE_ADDR')

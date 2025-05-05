@@ -37,7 +37,7 @@
           <p><strong>{% trans "Теги:"  %}</strong></p>
           <ul>
             {% for tag in article.tags.all %}
-              <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
+              <li><a href="{% url 'news:filtered_news' 'tag' tag.name %}">{{ tag.name }}</a></li>
             {% endfor %}
           </ul>
         {% endif %}
@@ -45,7 +45,7 @@
         {# Категория #}
         <p><strong>{% trans 'Категория:'  %}</strong>
           {% if article.category %}
-            <a href="{% url 'news:news_by_category' article.category.name %}">{{ article.category.name }}</a>
+            <a href="{% url 'news:filtered_news' 'category' article.category.name %}">{{ article.category.name }}</a>
           {% else %}
            {% trans 'Нет категории'  %}
           {% endif %}
