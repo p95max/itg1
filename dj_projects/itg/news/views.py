@@ -1,6 +1,5 @@
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, View
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
-from django.urls import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -183,32 +182,32 @@ class ArticleFilterView(ListView):
             context['selected_tag'] = self.name
         return context
 
+class SearchArticleView(ListView):
+    model = Article
+    template_name = 'news/catalog.html'
+    context_object_name = 'page_obj'
+    paginate_by = 20
 
+    def get_queryset(self):
+        searched_text = self.request.GET.get('text')
+        if searched_text:
+            return Article.objects.filter(
+                Q(title__icontains=searched_text) | Q(content__icontains=searched_text),
+                is_active=True
+            )
+        return Article.objects.none()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        searched_text = self.request.GET.get('text', '')
+        context.update({
+            'articles_count': self.get_queryset().count(),
+            'filter': f"Результаты поиска: '{searched_text}'",
+            'all_tags': Tag.objects.all(),
+            'all_categories': Category.objects.all()
+        })
+        return context
 
-def search_news(request):
-    searched_text = request.GET.get('text')
-    articles = []
-
-    if searched_text:
-        articles = Article.objects.filter(
-            Q(title__icontains=searched_text),
-            is_active=True
-        )
-
-    paginator = Paginator(articles, 5)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-        'page_obj': page_obj,
-        'articles_count': articles.count(),
-        'filter': f"Результаты поиска: '{searched_text}'",
-        'all_tags': Tag.objects.all(),
-        'all_categories': Category.objects.all(),
-    }
-
-    return render(request, 'news/catalog.html', context)
 
 def toggle_like(request, article_id):
     if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":

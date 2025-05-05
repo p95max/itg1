@@ -18,7 +18,7 @@
                     {% if item.category %}
                         <span class="category">
                             ({% trans 'Категория:' %}
-                            <a href="{% url 'news:news_by_category' item.category.name %}">
+                            <a href="{% url 'news:filtered_news' 'category' item.category.name %}">
                                 {{ item.category.name }}
                             </a>)
                         </span>
@@ -28,7 +28,7 @@
                         <span class="tags">
                             ({% trans 'Теги:' %}
                             {% for tag in item.tags.all %}
-                                <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                                <a href="{% url 'news:filtered_news' 'tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                             {% endfor %}
                             )
                         </span>
