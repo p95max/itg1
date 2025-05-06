@@ -194,24 +194,6 @@
         });
     });
 </script>
-    <!-- Отображение карты Leaflet -->
-<script defer>
-    document.addEventListener("DOMContentLoaded", function () {
-        if (typeof L !== "undefined") {
-            const map = L.map('map').setView([{{ latitude | safe}}, {{ longitude | safe }}], 13);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
-
-            L.marker([{{ latitude | safe }}, {{ longitude | safe }}]).addTo(map)
-                .bindPopup('{{ company_name }}')
-                .openPopup();
-        } else {
-            console.error("Leaflet не загрузился!");
-        }
-    });
-</script>
 <script>
   function copyToClipboard() {
     const dummy = document.createElement("input");
