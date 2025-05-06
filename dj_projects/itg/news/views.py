@@ -237,7 +237,6 @@ def add_article(request):
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
 
-# Добавить статью вручную
     if request.method == "POST":
         form = ArticleForm(request.POST, request.FILES)
 
@@ -267,7 +266,7 @@ def add_article(request):
 
     form = ArticleForm()
 
-# Добавить статью из json
+
     if request.method == 'POST' and request.FILES['json_file']:
         json_file = request.FILES['json_file']
         data = json.load(json_file)

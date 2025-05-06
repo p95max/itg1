@@ -6,7 +6,7 @@
 {% block content %}
 <section>
 
-  {# Вкладки #}
+  {# Tabs #}
   <ul class="nav nav-tabs" id="addArticleTabs" role="tablist">
     <li class="nav-item" role="presentation">
       <button class="nav-link active" id="article-tab" data-bs-toggle="tab" data-bs-target="#article" type="button" role="tab">
@@ -22,7 +22,7 @@
 
   <div class="tab-content mt-3">
 
-    {# Вкладка---------------------------------------- Статья #}
+    {# Tab ---------------------------------------- article #}
     <div class="tab-pane fade show active" id="article" role="tabpanel">
       <div class="news">
         <h2>{{ article.title }}</h2>
@@ -32,7 +32,7 @@
 
         <p>{{ article.content }} </p>
 
-        {# Теги #}
+        {# Tags #}
         {% if article.tags.all %}
           <p><strong>{% trans "Теги:"  %}</strong></p>
           <ul>
@@ -42,7 +42,7 @@
           </ul>
         {% endif %}
 
-        {# Категория #}
+        {# Category #}
         <p><strong>{% trans 'Категория:'  %}</strong>
           {% if article.category %}
             <a href="{% url 'news:news_by_category' article.category.name %}">{{ article.category.name }}</a>
@@ -51,7 +51,7 @@
           {% endif %}
         </p>
 
-        {# Лайки и избранное #}
+        {# Likes and favourites #}
         <div class="buttons-container d-flex gap-3 mb-3">
           <form id="like-form-{{ article.id }}" data-article-id="{{ article.id }}">
             {% csrf_token %}
@@ -70,6 +70,18 @@
 
         <p> {% trans '👁 Количество просмотров этой статьи:'  %} '{{ article.views }}' </p>
 
+
+{#      Share article#}
+        <div class="mt-4">
+  <h5>{%  trans '🔗Поделиться:' %}</h5>
+  <div class="btn-group" role="group">
+    <button class="btn btn-outline-secondary btn-sm" onclick="copyToClipboard()">
+      <i class="bi bi-clipboard"></i>{% trans '📋Копировать ссылку' %}
+    </button>
+  </div>
+</div>
+
+{#      Similar articles#}
         <hr>
         <h3>{% trans 'Похожие статьи'  %}</h3>
         <ul>
@@ -86,7 +98,7 @@
       </div>
     </div>
 
-    {# Вкладка -------------------------------- Комментарии #}
+    {# Tab -------------------------------- Comments #}
     <div class="tab-pane fade" id="comments" role="tabpanel">
 
         <h5 class="mt-5 mb-3">{% trans '💬 Комментарии:'  %} </h5>
