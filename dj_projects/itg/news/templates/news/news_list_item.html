@@ -1,0 +1,21 @@
+{% load i18n %}
+<li>
+                    <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
+                    {% if item.category %}
+                        <span class="category">
+                            {% trans 'Категория:' %}
+                            <a href="{% url 'news:sort_by_category' item.category.pk %}">
+                                {{ item.category.name }}
+                            </a>
+                        </span>
+                    {% endif %}
+                    <br>
+                    {% if item.tags.all %}
+                        <span class="tags">
+                            {% trans 'Теги:' %}
+                            {% for tag in item.tags.all %}
+                                <a href="{% url 'news:sort_by_tag' tag.pk %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </li>

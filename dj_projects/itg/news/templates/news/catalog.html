@@ -13,29 +13,11 @@
     {% if page_obj %}
         <ul>
             {% for item in page_obj %}
-                <li>
-                    <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
-                    {% if item.category %}
-                        <span class="category">
-                            ({% trans 'Категория:' %}
-                            <a href="{% url 'news:filtered_news' 'category' item.category.name %}">
-                                {{ item.category.name }}
-                            </a>)
-                        </span>
-                    {% endif %}
-                    <br>
-                    {% if item.tags.all %}
-                        <span class="tags">
-                            ({% trans 'Теги:' %}
-                            {% for tag in item.tags.all %}
-                                <a href="{% url 'news:filtered_news' 'tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                            )
-                        </span>
-                    {% endif %}
-                </li>
+                {% include 'news/news_list_item.html' with item=item %}
             {% endfor %}
         </ul>
+
+
         <p>{% trans 'Текущее количество статей:' %} {{ articles_count }}</p>
     {% else %}
         <p>{% trans 'Нет новостей для отображения.' %} </p>

@@ -1,8 +1,43 @@
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.db.models import Q
 from django.utils.text import slugify
 from django.utils import timezone
 
+class ArticleQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(is_active=True)
+
+    def by_category(self, category_id):
+        return self.active().filter(category_id=category_id)
+
+    def by_tag(self, tag_id):
+        return self.active().filter(tags__id=tag_id)
+
+    def search(self, query):
+        return self.active().filter(Q(title__icontains=query) | Q(description__icontains=query))
+
+    def sorted(self, sort_by='publication_date', order='desc'):
+        valid_sort_field = {'publication_date': 'views',}
+        if sort_by not in valid_sort_field:
+            sort = 'publication_date'
+        order_by = f'-{sort_by}' if order == 'desc' else sort
+        return self.active().order_by(order_by)
+
+class ArticleUserMananger(models.Manager):
+    def get_queryset(self):
+        return ArticleQuerySet(self.model, using=self._db)
+
+    def sorted(self, sort, order):
+        return self.get_queryset().sorted(sort, order)
+
+    def create(self, **kwargs):
+        if 'slug' not in kwargs:
+            kwargs['slug'] = slugify(kwargs.get('title')) if kwargs.get('title') else None
+        return super().create(**kwargs)
+
+    def by_tag(self, tag_id):
+        return self.get_queryset().by_tag(tag_id)
 
 class Article(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок')
@@ -21,6 +56,8 @@ class Article(models.Model):
                               validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'jpeg'])],
                               blank=True,
                               null=True)
+
+    objects = ArticleUserMananger()
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -61,19 +98,6 @@ class Tag(models.Model):
         verbose_name = 'Тег'  # единственное число для отображения в админке
         verbose_name_plural = 'Теги'  # мн. число для отображения в админке
 
-class ArticleUserMananger(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(is_active=True)
-
-    def sorted_by_abc(self):
-        return self.get_queryset().all().order_by('title')
-
-    def create(self, **kwargs):
-
-        if 'slug' not in kwargs:
-            kwargs['slug'] = slugify(kwargs.get('title')) if kwargs.get('title') else None
-        return super().create(**kwargs)
-
 class Like(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='likes')
     ip_address = models.GenericIPAddressField()
@@ -98,3 +122,7 @@ class Comment(models.Model):
     name = models.CharField(max_length=100)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+
+

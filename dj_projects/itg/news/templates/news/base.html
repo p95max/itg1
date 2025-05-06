@@ -75,7 +75,7 @@
                 {% if all_tags %}
                     <ul class="list-unstyled">
                         {% for tag in all_tags %}
-                            <li><a href="{% url 'news:filtered_news' 'tag' tag.name %}">{{ tag.name }}</a></li>
+                            <li><a href="{% url 'news:sort_by_tag' tag.pk %}">{{ tag.name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% else %}
@@ -89,7 +89,7 @@
                 {% if all_categories %}
                     <ul class="list-unstyled">
                         {% for category in all_categories %}
-                            <li><a href="{% url 'news:filtered_news' 'category' category.name %}">{{ category.name }}</a></li>
+                            <li><a href="{% url 'news:sort_by_category' category.pk %}">{{ category.name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% else %}

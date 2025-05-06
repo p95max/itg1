@@ -1,5 +1,5 @@
 from django.urls import path
-from news.views import (GetAllNewsView, ArticleDetailView, AboutUsView, ArticleFilterView, SearchArticleView, ToggleLikeView, ToggleFavouriteView,
+from news.views import (GetAllNewsView, ArticleDetailView, AboutUsView, ArticleByTagView, ArticleByCategoryView, SearchArticleView, ToggleLikeView, ToggleFavouriteView,
                         FavouritesView, PostCommentView, CreateArticleView, ResetCommentFlagView)
 from django.conf import settings
 from django.conf.urls.static import static
@@ -9,7 +9,8 @@ app_name = 'news'
 urlpatterns = [
     path('', GetAllNewsView.as_view(), name='catalog'),
     path('article/<slug:slug>/', ArticleDetailView.as_view(), name='article_detail'),
-    path('news/<str:filter_type>/<str:name>/', ArticleFilterView.as_view(), name='filtered_news'),
+    path('news/<str:tag_id>/', ArticleByTagView.as_view(), name='sort_by_tag'),
+    path('news/<str:category_id>/', ArticleByCategoryView.as_view(), name='sort_by_category'),
     path('about/', AboutUsView.as_view(), name='about'),
     path('search/', SearchArticleView.as_view(), name='search_news'),
     path('toggle_like/<int:article_id>/', ToggleLikeView.as_view(), name='toggle_like'),

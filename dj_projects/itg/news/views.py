@@ -1,24 +1,24 @@
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, View
+from news.models import Article, Tag, Category, Like, Favourite, Comment
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect, request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib import messages
 from .forms import ArticleForm
 import json
-from news.models import Article, Tag, Category, Like, Favourite, Comment
 
 class GetAllNewsView(ListView):
-    model = Article
     template_name = 'news/catalog.html'
-    context_object_name = 'news'
-    paginate_by = 20
+    context_object_name = 'page_obj'
 
     def get_queryset(self):
-        order_by = self.request.GET.get('order_by', '-publication_date')
-        return Article.objects.select_related('category').prefetch_related('tags').order_by(order_by)
+        return Article.objects.sorted(
+            sort=self.request.GET.get('sort', 'publication_date'),
+            order= self.request.GET.get('order', 'desc')
+        )
 
     def get_context_data(self, **kwargs):
-        context = super(GetAllNewsView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         articles_count = Article.objects.count()
         all_tags = Tag.objects.all()
@@ -34,6 +34,84 @@ class GetAllNewsView(ListView):
             "favourites_count": favourites_count,
         })
         return context
+
+
+class ArticleByCategoryView(ListView):
+    template_name = 'news/catalog.html'
+    context_object_name = 'page_obj'
+
+    def get_queryset(self):
+        return Article.objects.by_category(self.kwargs['category_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        articles_count = Article.objects.count()
+        all_tags = Tag.objects.all()
+        all_categories = Category.objects.all()
+        likes_count = Like.objects.count()
+        favourites_count = Favourite.objects.count()
+
+        context.update({
+            "articles_count": articles_count,
+            "all_tags": all_tags,
+            "all_categories": all_categories,
+            "likes_count": likes_count,
+            "favourites_count": favourites_count,
+        })
+        return context
+
+class ArticleByTagView(ListView):
+    template_name = 'news/catalog.html'
+    context_object_name = 'page_obj'
+
+    def queryset(self):
+        return Article.objects.by_tag(self.kwargs['tag_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        articles_count = Article.objects.count()
+        all_tags = Tag.objects.all()
+        all_categories = Category.objects.all()
+        likes_count = Like.objects.count()
+        favourites_count = Favourite.objects.count()
+
+        context.update({
+            "articles_count": articles_count,
+            "all_tags": all_tags,
+            "all_categories": all_categories,
+            "likes_count": likes_count,
+            "favourites_count": favourites_count,
+        })
+        return context
+
+class SearchArticleView(ListView):
+    def queryset(self):
+        return Article.objects.search(self.request.GET.get('query'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        articles_count = Article.objects.count()
+        all_tags = Tag.objects.all()
+        all_categories = Category.objects.all()
+        likes_count = Like.objects.count()
+        favourites_count = Favourite.objects.count()
+
+        context.update({
+            "articles_count": articles_count,
+            "all_tags": all_tags,
+            "all_categories": all_categories,
+            "likes_count": likes_count,
+            "favourites_count": favourites_count,
+        })
+        return context
+
+
+
+
+
 
 class ArticleDetailView(DetailView):
     model = Article
@@ -112,7 +190,6 @@ class CreateArticleView(CreateView):
                 return self.form_invalid(form)
 
             for item in data:
-                # Загружаем статью из JSON
                 article = Article(
                     title=item['title'],
                     content=item['content'],
@@ -141,60 +218,9 @@ class PostCommentView(View):
             messages.success(request, 'Comment submitted')
         return redirect('news:article_detail', article_id=article_id)
 
-class ArticleFilterView(ListView):
-    model = Article
-    template_name = 'news/category_and_tag.html'
-    context_object_name = 'articles'
-    paginate_by = 20
 
-    def get_queryset(self):
-        self.filter_type = self.kwargs.get('filter_type')
-        self.name = self.kwargs.get('name')
 
-        if self.filter_type == 'tag':
-            self.filter_object = get_object_or_404(Tag, name=self.name)
-            return Article.objects.filter(tags = self.filter_object, is_active=True)
-        elif self.filter_type == 'category':
-            self.filter_object = get_object_or_404(Category, name=self.name)
-            return Article.objects.filter(category = self.filter_object, is_active=True)
-        else:
-            return Article.objects.none()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['articles_count'] = self.object_list.count()
-        context['filter'] = f"{'Tag' if self.filter_type == 'tag' else 'Category'}: {self.name}"
-        context['all_tags'] = Tag.objects.all()
-        context['all_categories'] = Category.objects.all()
-        if self.filter_type == 'tag':
-            context['selected_tag'] = self.name
-        return context
-
-class SearchArticleView(ListView):
-    model = Article
-    template_name = 'news/catalog.html'
-    context_object_name = 'page_obj'
-    paginate_by = 20
-
-    def get_queryset(self):
-        searched_text = self.request.GET.get('text')
-        if searched_text:
-            return Article.objects.filter(
-                Q(title__icontains=searched_text) | Q(content__icontains=searched_text),
-                is_active=True
-            )
-        return Article.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        searched_text = self.request.GET.get('text', '')
-        context.update({
-            'articles_count': self.get_queryset().count(),
-            'filter': f"Результаты поиска: '{searched_text}'",
-            'all_tags': Tag.objects.all(),
-            'all_categories': Category.objects.all()
-        })
-        return context
 
 class ToggleLikeView(View):
     def post(self, request, article_id):
