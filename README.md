@@ -1,4 +1,4 @@
-Fun News?
+Fun News:
 Fun News is a multilingual news website built with Django, featuring a responsive interface, likes, favorites, comments, and content filtering.
 
 Key Features:
