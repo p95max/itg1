@@ -57,7 +57,7 @@
         <div class="col-md-8">
             {% block content %}{% endblock %}
         </div>
-
+        {% if user.is_authenticated %}
         <!-- Right panel -->
         <aside class="col-md-4">
             <!-- Search form -->
@@ -97,6 +97,7 @@
                 {% endif %}
             </div>
         </aside>
+    {% endif %}
     </div>
 </div>
 

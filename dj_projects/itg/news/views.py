@@ -35,7 +35,6 @@ class GetAllNewsView(ListView):
         })
         return context
 
-
 class ArticleByCategoryView(ListView):
     template_name = 'news/catalog.html'
     context_object_name = 'page_obj'
@@ -107,11 +106,6 @@ class SearchArticleView(ListView):
             "favourites_count": favourites_count,
         })
         return context
-
-
-
-
-
 
 class ArticleDetailView(DetailView):
     model = Article
@@ -217,10 +211,6 @@ class PostCommentView(View):
             request.session['comment_submitted'] = True
             messages.success(request, 'Comment submitted')
         return redirect('news:article_detail', article_id=article_id)
-
-
-
-
 
 class ToggleLikeView(View):
     def post(self, request, article_id):
