@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, View
 from news.models import Article, Tag, Category, Like, Favourite, Comment
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect, request
@@ -7,7 +8,7 @@ from django.contrib import messages
 from .forms import ArticleForm
 import json
 
-class GetAllNewsView(ListView):
+class GetAllNewsView(LoginRequiredMixin, ListView):
     template_name = 'news/catalog.html'
     context_object_name = 'page_obj'
 
@@ -35,7 +36,7 @@ class GetAllNewsView(ListView):
         })
         return context
 
-class ArticleByCategoryView(ListView):
+class ArticleByCategoryView(LoginRequiredMixin, ListView):
     template_name = 'news/catalog.html'
     context_object_name = 'page_obj'
 
@@ -60,7 +61,7 @@ class ArticleByCategoryView(ListView):
         })
         return context
 
-class ArticleByTagView(ListView):
+class ArticleByTagView(LoginRequiredMixin, ListView):
     template_name = 'news/catalog.html'
     context_object_name = 'page_obj'
 
@@ -85,7 +86,7 @@ class ArticleByTagView(ListView):
         })
         return context
 
-class SearchArticleView(ListView):
+class SearchArticleView(LoginRequiredMixin, ListView):
     def queryset(self):
         return Article.objects.search(self.request.GET.get('query'))
 
@@ -107,7 +108,7 @@ class SearchArticleView(ListView):
         })
         return context
 
-class ArticleDetailView(DetailView):
+class ArticleDetailView(LoginRequiredMixin, DetailView):
     model = Article
     template_name = 'news/article_detail.html'
     context_object_name = 'article'
@@ -140,7 +141,7 @@ class ArticleDetailView(DetailView):
 
         return self.get(request, *args, **kwargs)
 
-class AboutUsView(TemplateView):
+class AboutUsView(LoginRequiredMixin, TemplateView):
     template_name = 'news/about.html'
 
     all_tags = Tag.objects.all()
@@ -161,7 +162,7 @@ class AboutUsView(TemplateView):
         "all_categories": all_categories,
     }
 
-class CreateArticleView(CreateView):
+class CreateArticleView(LoginRequiredMixin, CreateView):
     model = Article
     form_class = ArticleForm
     template_name = 'news/add_article.html'
@@ -201,7 +202,7 @@ class CreateArticleView(CreateView):
         article = form.save()
         return redirect('news:article_detail', slug=article.slug)
 
-class PostCommentView(View):
+class PostCommentView(LoginRequiredMixin, View):
     def post(self, request, article_id):
         commnent_text = request.POST['comment']
         if request.session.get('comment_submitted', False):
@@ -212,7 +213,7 @@ class PostCommentView(View):
             messages.success(request, 'Comment submitted')
         return redirect('news:article_detail', article_id=article_id)
 
-class ToggleLikeView(View):
+class ToggleLikeView(LoginRequiredMixin, View):
     def post(self, request, article_id):
         if request.headers.get("x-requested-with") != "XMLHttpRequest":
             return HttpResponseBadRequest("Wrong request.")
@@ -231,7 +232,7 @@ class ToggleLikeView(View):
         likes_count = article.likes.count()
         return JsonResponse({'likes_count': likes_count, 'like': liked})
 
-class ToggleFavouriteView(View):
+class ToggleFavouriteView(LoginRequiredMixin, View):
     def post(self, request, article_id):
         if request.headers.get("x-requested-with") != "XMLHttpRequest":
             return HttpResponseBadRequest("Wrong request.")
@@ -250,7 +251,7 @@ class ToggleFavouriteView(View):
         favourites_count = article.favourites.count()
         return JsonResponse({'favorites_count': favourites_count, 'like': liked})
 
-class FavouritesView(View):
+class FavouritesView(LoginRequiredMixin, View):
     def get(self, request):
         ip_address = request.META.get('REMOTE_ADDR')
         favourites_articles = Favourite.objects.filter(ip_address=ip_address)
@@ -283,7 +284,7 @@ class FavouritesView(View):
 
         return HttpResponseBadRequest('No such article in favourites')
 
-class ResetCommentFlagView(View):
+class ResetCommentFlagView(LoginRequiredMixin, View):
     def post(self, request):
         if 'comment_submitted' in request.session:
             del request.session['comment_submitted']
