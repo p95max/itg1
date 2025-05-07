@@ -1,13 +1,31 @@
 {% extends 'news/base.html' %}
+{% load i18n %}
 
 {% block content %}
-
-<div>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit"> Login </button>
-</form>
+<div class="container mt-5">
+    <h2 class="mb-4">{%  trans 'Вход в аккаунт' %} </h2>
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        <div class="mb-3">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="text-danger">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+            {% if form.password.errors %}
+                <div class="text-danger">{{ form.password.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">{% trans 'Войти' %}</button>
+    </form>
 </div>
-
 {% endblock %}

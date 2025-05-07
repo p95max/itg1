@@ -1,8 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.views.decorators.http import require_POST
+
 from .forms import ArticleForm
 import json
 from news.models import Article, Tag, Category, Like, Favourite, Comment
@@ -148,6 +151,8 @@ def search_news(request):
 
     return render(request, 'news/catalog.html', context)
 
+@require_POST
+@login_required(login_url='accounts:login')
 def toggle_like(request, article_id):
     if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
         ip_address = request.META.get('REMOTE_ADDR')
@@ -168,6 +173,8 @@ def toggle_like(request, article_id):
     else:
         return HttpResponseBadRequest("Invalid request")
 
+@require_POST
+@login_required(login_url='accounts:login')
 def toggle_favorite(request, article_id):
     ip_address = request.META.get('REMOTE_ADDR')
     article = get_object_or_404(Article, id=article_id)
@@ -189,6 +196,7 @@ def toggle_favorite(request, article_id):
         'liked': liked
     })
 
+@login_required(login_url='accounts:login')
 def favourites(request):
     ip_address = request.META.get('REMOTE_ADDR')
     favourites_articles = Favourite.objects.filter(ip_address=ip_address)
@@ -217,6 +225,8 @@ def favourites(request):
 
     return render(request, 'news/favourites.html', context)
 
+@require_POST
+@login_required(login_url='accounts:login')
 def post_comment(request, article_id):
     if request.method == "POST":
         comment_text = request.POST.get('comment')
@@ -233,6 +243,7 @@ def reset_comment_flag(request):
     if 'comment_submitted' in request.session:
         del request.session['comment_submitted']
 
+@login_required(login_url='accounts:login')
 def add_article(request):
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
@@ -286,6 +297,7 @@ def add_article(request):
     }
 
     return render(request, 'news/add_article.html', context)
+
 
 
 
