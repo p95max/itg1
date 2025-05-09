@@ -17,7 +17,7 @@
                     <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
                     {% if item.category %}
                         <span class="category">
-                            ({% trans 'Категория:' %}
+                            ({% trans '🗂️' %}
                             <a href="{% url 'news:news_by_category' item.category.name %}">
                                 {{ item.category.name }}
                             </a>)
@@ -26,7 +26,7 @@
                     <br>
                     {% if item.tags.all %}
                         <span class="tags">
-                            ({% trans 'Теги:' %}
+                            ({% trans '#️⃣ :' %}
                             {% for tag in item.tags.all %}
                                 <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                             {% endfor %}
@@ -36,7 +36,7 @@
                 </li>
             {% endfor %}
         </ul>
-        <p>{% trans 'Текущее количество статей:' %} {{ articles_count }}</p>
+        <p>{% trans '📊 Текущее количество статей:' %} {{ articles_count }}</p>
     {% else %}
         <p>{% trans 'Нет новостей для отображения.' %} </p>
     {% endif %}
@@ -49,7 +49,7 @@
             {% endif %}
 
             <span class="current-page">
-                {% trans 'Страница' %} {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                {% trans '🧭 Страница' %} {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
             </span>
 
             {% if page_obj.has_next %}
@@ -60,11 +60,11 @@
 
 {# sorting articles form#}
     <form method="get" class="mb-4">
-    <label for="sort">{% trans 'Сортировать по:' %} </label>
+    <label for="sort">{% trans '🧮 Сортировать по:' %} </label>
     <select name="sort" id="sort" onchange="this.form.submit()">
-    <option value="date" {% if sort == "date" %}selected{% endif %}>{% trans 'Дате' %} </option>
-    <option value="views" {% if sort == "views" %}selected{% endif %}>{% trans 'Просмотрам' %} </option>
-    <option value="likes" {% if sort == "likes" %}selected{% endif %}>{% trans 'Лайкам' %}</option>
+    <option value="date" {% if sort == "date" %}selected{% endif %}>{% trans '🔽 Дате' %} </option>
+    <option value="views" {% if sort == "views" %}selected{% endif %}>{% trans '👁️ Просмотрам' %} </option>
+    <option value="likes" {% if sort == "likes" %}selected{% endif %}>{% trans '👍 Лайкам' %}</option>
     </select>
     </form>
 

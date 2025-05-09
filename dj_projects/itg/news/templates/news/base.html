@@ -34,13 +34,13 @@
     <form method="post" action="{% url 'accounts:logout' %}" style="display: inline;">
         {% csrf_token %}
         <button type="submit" class="btn btn-link p-0" style="color: inherit; text-decoration: none;">
-            {% trans 'Выйти' %}
+            {% trans '🚪 Выйти' %}
         </button>
     </form>
 {% else %}
-    <a class="nav-link me-2" href="{% url 'accounts:login' %}">{% trans 'Авторизация' %}</a>
+    <a class="nav-link me-2" href="{% url 'accounts:login' %}">{% trans '🔑 Авторизация' %}</a>
     <a class="nav-link me-2"> /  </a>
-    <a class="nav-link" href="{% url 'accounts:registration' %}">{% trans 'Регистрация' %}</a>
+    <a class="nav-link" href="{% url 'accounts:registration' %}">{% trans '➕ Регистрация' %}</a>
 {% endif %}
 </div>
 
@@ -53,28 +53,28 @@
             <ul class="nav justify-content-center">
                 {% if not request.path == '/news/' %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'news:catalog' %}">{% trans 'Главная' %}</a>
+                        <a class="nav-link" href="{% url 'news:catalog' %}">{% trans '🏠 Главная' %}</a>
                     </li>
                 {% endif %}
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'news:favourites' %}">{% trans 'Избранное' %}</a>
+                        <a class="nav-link" href="{% url 'news:favourites' %}">{% trans '⭐ Избранное' %}</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{% trans 'Избранное' %}</a>
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{% trans '⭐ Избранное' %}</a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'news:about' %}">{% trans 'О нас' %}</a>
+                    <a class="nav-link" href="{% url 'news:about' %}">{% trans 'ℹ️ О нас' %}</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'news:add_article' %}">{% trans 'Добавить статью' %}</a>
+                        <a class="nav-link" href="{% url 'news:add_article' %}">{% trans '✍️ Добавить статью' %}</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{% trans 'Добавить статью' %}</a>
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{% trans '✍️ Добавить статью' %}</a>
                     </li>
                 {% endif %}
             </ul>
@@ -93,7 +93,7 @@
         <aside class="col-md-4">
             <!-- Search form -->
             <div class="card mb-3 p-3">
-                <h5>{% trans 'Поиск по новостям' %}</h5>
+                <h5>{% trans '🔍 Поиск по новостям' %}</h5>
                 <form method="get" action="{% url 'news:search_news' %}" class="d-flex flex-column">
                     <input type="text" name="text" class="form-control mb-2" placeholder= {% trans 'Поиск' %} required>
                     <button type="submit" class="btn btn-primary">{% trans 'Найти' %}</button>
@@ -102,7 +102,7 @@
 
             <!-- Tags panel -->
             <div class="card mb-3 p-3">
-                <h5 class="tag-title">{% trans 'Новости по тегам' %}</h5>
+                <h5 class="tag-title">{% trans '#️⃣ Новости по тегам' %}</h5>
                 {% if all_tags %}
                     <ul class="list-unstyled">
                         {% for tag in all_tags %}
@@ -110,13 +110,13 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p>{% trans 'Нет доступных тегов.' %}</p>
+                    <p>{% trans '😕 Нет доступных тегов.' %}</p>
                 {% endif %}
             </div>
 
             <!-- Categories panel -->
             <div class="card mb-3 p-3">
-                <h5 class="category-title">{% trans 'Новости по категориям' %}</h5>
+                <h5 class="category-title">{% trans '🗂️ Новости по категориям' %}</h5>
                 {% if all_categories %}
                     <ul class="list-unstyled">
                         {% for category in all_categories %}
@@ -124,7 +124,7 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p>{% trans 'Нет доступных категорий.' %}</p>
+                    <p>{% trans '😕 Нет доступных категорий.' %}</p>
                 {% endif %}
             </div>
         </aside>

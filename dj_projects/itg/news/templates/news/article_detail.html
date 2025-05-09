@@ -10,19 +10,19 @@
   <ul class="nav nav-tabs" id="addArticleTabs" role="tablist">
     <li class="nav-item" role="presentation">
       <button class="nav-link active" id="article-tab" data-bs-toggle="tab" data-bs-target="#article" type="button" role="tab">
-        {% trans 'Статья' %}
+        {% trans '📄 Статья' %}
       </button>
     </li>
     {% if user.is_authenticated %}
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab">
-        {% trans 'Комментарии' %} ({{ article.comments.count }})
+        {% trans '💬 Комментарии' %} ({{ article.comments.count }})
       </button>
     </li>
     {% else %}
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab" disabled>
-        {% trans 'Комментарии' %}
+        {% trans '💬 Комментарии' %}
       </button>
     </li>
     {% endif %}
@@ -42,7 +42,7 @@
 
         {# Tags #}
         {% if article.tags.all %}
-          <p><strong>{% trans "Теги:"  %}</strong></p>
+          <p><strong>{% trans "#️⃣ Теги:"  %}</strong></p>
           <ul>
             {% for tag in article.tags.all %}
               <li><a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a></li>
@@ -51,7 +51,7 @@
         {% endif %}
 
         {# Category #}
-        <p><strong>{% trans 'Категория:'  %}</strong>
+        <p><strong>{% trans '🗂️ Категория:'  %}</strong>
           {% if article.category %}
             <a href="{% url 'news:news_by_category' article.category.name %}">{{ article.category.name }}</a>
           {% else %}
@@ -83,14 +83,14 @@
 
         {# Similar articles#}
         <hr>
-        <h3>{% trans 'Похожие статьи'  %}</h3>
+        <h3>{% trans '🔗 Похожие статьи'  %}</h3>
         <ul>
           {% for sim in similar_articles %}
             <li>
               <a href="{% url 'news:article_detail' slug=sim.slug %}">{{ sim.title }}</a>
             </li>
           {% empty %}
-            <p> {% trans 'Похожие статьи не найдены' %} </p>
+            <p> {% trans '🔗 Похожие статьи не найдены' %} </p>
           {% endfor %}
         </ul>
 
@@ -101,19 +101,18 @@
     {# Tab -------------------------------- Comments #}
     <div class="tab-pane fade" id="comments" role="tabpanel">
       {% if user.is_authenticated %}
-        <h5 class="mt-5 mb-3">{% trans '💬 Комментарии:'  %}</h5>
         {% if article.comments.all %}
           <div class="list-group">
             {% for comment in article.comments.all %}
               <div class="list-group-item">
-                <h6 class="mb-1">{{ comment.name }}</h6>
-                <p class="mb-1">{{ comment.text }}</p>
+                <h6 class="mb-1">🧑‍💼 {{ comment.name }}</h6>
+                <p class="mb-1">🗨️ {{ comment.text }}</p>
                 <small class="text-muted">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
               </div>
             {% endfor %}
           </div>
         {% else %}
-          <p>{% trans 'Пока нет комментариев'  %}</p>
+          <p>{% trans '😕 Пока нет комментариев'  %}</p>
         {% endif %}
 
         <form method="post" class="mb-4 mt-3">

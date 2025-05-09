@@ -5,14 +5,14 @@
 
 {% block content %}
     <div class="card p-4">
-        <h3>{{ title }}</h3>
+        <h3>💡  {{ title }}</h3>
         <p>{{ description }}</p>
 
-        <h4>{% trans 'Контактная информация' %}</h4>
+        <h4>{% trans '📞 Контактная информация' %}</h4>
         <ul class="list-unstyled">
-            <li><strong>Email:</strong> {{ contacts.email }}</li>
-            <li><strong>{% trans 'Телефон' %}:</strong> {{ contacts.phone }}</li>
-            <li><strong>{% trans 'Адрес:' %}</strong> {{ contacts.address }}</li>
+            <li><strong>📨 Email:</strong> {{ contacts.email }}</li>
+            <li><strong>{% trans '📱 Телефон' %}:</strong> {{ contacts.phone }}</li>
+            <li><strong>{% trans '🏢 Адрес:' %}</strong> {{ contacts.address }}</li>
         </ul>
 
      <div id="map" style="height: 400px;"></div>

@@ -6,7 +6,6 @@
 {% block content %}
 
 <section class="news">
-    <h2> {% trans 'Избранные статьи' %}</h2>
     {% if favourites_articles %}
         <ul style="display: flex; flex-wrap: wrap; gap: 20px;">
             {% for favourite in favourites_articles %}
@@ -16,15 +15,16 @@
                     </a>
                     <form method="POST" action="{% url 'news:favourites' %}" style="display:inline;" class="search-form">
                         {% csrf_token %}
-                        <input type="hidden" name="article_id" value="{{ favourite.article.id }}">
-                        <button type="submit" class="btn btn-danger">{% trans 'Удалить из избранного' %} </button>
+                        <input type="hidden" name="article_id" value=" {{ favourite.article.id }}">
+                        📌
+                        <button type="submit" class="btn btn-danger">{% trans '🗑️ Удалить' %} </button>
                     </form>
                 </li>
             {% endfor %}
         </ul>
-        <p>{% trans 'Всего статей:' %} {{ favourites_count }}</p>
+        <p>{% trans '📊 Всего статей:' %} {{ favourites_count }}</p>
     {% else %}
-        <p>{% trans 'У вас нет избранных статей.' %} </p>
+        <p>{% trans '😕 У вас нет избранных статей.' %} </p>
     {% endif %}
 </section>
 

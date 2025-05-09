@@ -5,8 +5,8 @@
 
 {% block content %}
 <section class="news">
-    <h3>{{ filter }}</h3>
-    <p>{% trans 'Всего статей:' %} {{ articles_count }}</p>
+    <h3> 🗂️ {{ filter }}</h3>
+    <p>{% trans '📊 Всего статей:' %} {{ articles_count }}</p>
 
     {% if news %}
         <ul>
@@ -15,7 +15,7 @@
                     <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
                     {% if item.category %}
                         <span class="category">
-                            ({% trans 'Категория:'  %}
+                            ({% trans '🗂️:'  %}
                             <a href="{% url 'news:news_by_category' item.category.name %}">
                                 {{ item.category.name }}
                             </a>)
@@ -24,9 +24,9 @@
                     <br>
                     {% if item.tags.all %}
                         <span class="tags">
-                            ({% trans 'Теги:'  %}
+                            ({% trans '#️⃣ '  %}
                             {% for tag in item.tags.all %}
-                                <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                                <a href="{% url 'news:news_by_tag' tag.name %}"> {{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                             {% endfor %}
                             )
                         </span>
@@ -35,7 +35,7 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>{% trans 'Нет новостей для отображения.'  %} </p>
+        <p>{% trans '😕 Нет новостей для отображения.'  %} </p>
     {% endif %}
 </section>
 {% endblock %}
