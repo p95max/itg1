@@ -1,14 +1,18 @@
 {% extends 'news/base.html' %}
 {% load i18n %}
-
+{% block title %} FN - Registration {% endblock %}
 {% block content %}
 
 <div>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary w-100"> {% trans 'Зарегистрироваться' %} </button>
-</form>
+    <form method="post" style="margin-left: 525px">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary w-40"> {% trans 'Зарегистрироваться' %} </button>
+    </form>
+</div>
+
+<div style="margin-left: 525px; margin-top: 20px;">
+    <a href="login.html"> {% trans 'Уже есть аккаунт?' %} </a>
 </div>
 
 {% endblock %}

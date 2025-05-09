@@ -17,7 +17,7 @@ class Article(models.Model):
     likes_count = models.IntegerField(default=0)
     favourites_count = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True,  verbose_name='Теги')
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(blank=True, null=True, unique=True)
     image = models.ImageField(upload_to='articles/%Y/%m/%d/',
                               validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'jpeg'])],
                               blank=True,

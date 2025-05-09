@@ -1,25 +1,21 @@
 {% extends 'news/base.html' %}
 {% load i18n %}
-
+{% block title %} FN - Login {% endblock %}
 {% block content %}
 
-<form method="post" class="w-100" style="max-width: 400px;">
+
+<div>
+<form method="post" style="margin-left: 525px">
     {% csrf_token %}
-    <div class="mb-3">
-        {{ form.username.label_tag }}
-        {{ form.username }}
-        {% if form.username.errors %}
-            <div class="text-danger small">{{ form.username.errors }}</div>
-        {% endif %}
-    </div>
-    <div class="mb-3">
-        {{ form.password.label_tag }}
-        {{ form.password }}
-        {% if form.password.errors %}
-            <div class="text-danger small">{{ form.password.errors }}</div>
-        {% endif %}
-    </div>
-    <button type="submit" class="btn btn-primary w-100">Войти</button>
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary w-40"> {% trans 'Войти' %} </button>
 </form>
+</div>
+
+<div style="margin-left: 525px; margin-top: 20px;">
+    <a href="auth.html"> {% trans 'Регистрация' %} </a>
+</div>
+
+
 
 {% endblock %}

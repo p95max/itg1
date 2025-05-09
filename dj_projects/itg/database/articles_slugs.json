@@ -197,7 +197,11 @@
             "publication_date": "2023-10-01T12:00:00Z",
             "views": 0,
             "category": 1,
-            "tags": [1, 2]
+            "tags": [
+                1,
+                2
+            ],
+            "slug": "koshki-nauchilis-govorit"
         }
     },
     {
@@ -209,7 +213,11 @@
             "publication_date": "2023-10-02T12:00:00Z",
             "views": 0,
             "category": 2,
-            "tags": [3, 4]
+            "tags": [
+                3,
+                4
+            ],
+            "slug": "letayuschie-sobaki-zamecheny-nad-gorodom"
         }
     },
     {
@@ -221,7 +229,11 @@
             "publication_date": "2023-10-03T12:00:00Z",
             "views": 0,
             "category": 3,
-            "tags": [5, 6]
+            "tags": [
+                5,
+                6
+            ],
+            "slug": "derevya-nachali-hodit"
         }
     },
     {
@@ -233,7 +245,11 @@
             "publication_date": "2023-10-04T12:00:00Z",
             "views": 0,
             "category": 4,
-            "tags": [7, 8]
+            "tags": [
+                7,
+                8
+            ],
+            "slug": "ryby-poyut-operu"
         }
     },
     {
@@ -245,7 +261,11 @@
             "publication_date": "2023-10-05T12:00:00Z",
             "views": 0,
             "category": 5,
-            "tags": [9, 10]
+            "tags": [
+                9,
+                10
+            ],
+            "slug": "ptitsy-stroyat-neboskreby"
         }
     },
     {
@@ -257,7 +277,11 @@
             "publication_date": "2023-10-06T12:00:00Z",
             "views": 0,
             "category": 6,
-            "tags": [11, 12]
+            "tags": [
+                11,
+                12
+            ],
+            "slug": "medvedi-otkryli-restoran"
         }
     },
     {
@@ -269,7 +293,11 @@
             "publication_date": "2023-10-07T12:00:00Z",
             "views": 0,
             "category": 7,
-            "tags": [13, 14]
+            "tags": [
+                13,
+                14
+            ],
+            "slug": "kroliki-igrayut-v-futbol"
         }
     },
     {
@@ -281,7 +309,12 @@
             "publication_date": "2023-10-08T12:00:00Z",
             "views": 0,
             "category": 1,
-            "tags": [1, 2, 3]
+            "tags": [
+                1,
+                2,
+                3
+            ],
+            "slug": "lyagushki-uchatsya-v-universitete"
         }
     },
     {
@@ -293,7 +326,12 @@
             "publication_date": "2023-10-09T12:00:00Z",
             "views": 0,
             "category": 2,
-            "tags": [4, 5, 6]
+            "tags": [
+                4,
+                5,
+                6
+            ],
+            "slug": "myshi-otkryli-bank"
         }
     },
     {
@@ -305,7 +343,12 @@
             "publication_date": "2023-10-10T12:00:00Z",
             "views": 0,
             "category": 3,
-            "tags": [7, 8, 9]
+            "tags": [
+                7,
+                8,
+                9
+            ],
+            "slug": "pchely-stroyat-kosmicheskie-korabli"
         }
     },
     {
@@ -317,7 +360,12 @@
             "publication_date": "2023-10-11T12:00:00Z",
             "views": 0,
             "category": 4,
-            "tags": [10, 11, 12]
+            "tags": [
+                10,
+                11,
+                12
+            ],
+            "slug": "slony-igrayut-v-shahmaty"
         }
     },
     {
@@ -329,7 +377,12 @@
             "publication_date": "2023-10-12T12:00:00Z",
             "views": 0,
             "category": 5,
-            "tags": [13, 14, 15]
+            "tags": [
+                13,
+                14,
+                15
+            ],
+            "slug": "kury-otkryli-teatr"
         }
     },
     {
@@ -341,7 +394,13 @@
             "publication_date": "2023-10-13T12:00:00Z",
             "views": 0,
             "category": 6,
-            "tags": [1, 2, 3, 4]
+            "tags": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "slug": "lisy-otkryli-shkolu"
         }
     },
     {
@@ -353,7 +412,13 @@
             "publication_date": "2023-10-14T12:00:00Z",
             "views": 0,
             "category": 7,
-            "tags": [5, 6, 7, 8]
+            "tags": [
+                5,
+                6,
+                7,
+                8
+            ],
+            "slug": "belki-otkryli-magazin"
         }
     },
     {
@@ -365,7 +430,13 @@
             "publication_date": "2023-10-15T12:00:00Z",
             "views": 0,
             "category": 1,
-            "tags": [9, 10, 11, 12]
+            "tags": [
+                9,
+                10,
+                11,
+                12
+            ],
+            "slug": "zaytsy-otkryli-biblioteku"
         }
     },
     {
@@ -377,7 +448,13 @@
             "publication_date": "2023-10-16T12:00:00Z",
             "views": 0,
             "category": 2,
-            "tags": [13, 14, 15, 16]
+            "tags": [
+                13,
+                14,
+                15,
+                16
+            ],
+            "slug": "ezhiki-otkryli-muzey"
         }
     },
     {
@@ -389,7 +466,13 @@
             "publication_date": "2023-10-17T12:00:00Z",
             "views": 0,
             "category": 3,
-            "tags": [17, 18, 19, 20]
+            "tags": [
+                17,
+                18,
+                19,
+                20
+            ],
+            "slug": "kroty-otkryli-restoran"
         }
     },
     {
@@ -401,7 +484,13 @@
             "publication_date": "2023-10-18T12:00:00Z",
             "views": 0,
             "category": 4,
-            "tags": [1, 2, 3, 4]
+            "tags": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "slug": "letuchie-myshi-otkryli-kinoteatr"
         }
     },
     {
@@ -413,7 +502,13 @@
             "publication_date": "2023-10-19T12:00:00Z",
             "views": 0,
             "category": 5,
-            "tags": [5, 6, 7, 8]
+            "tags": [
+                5,
+                6,
+                7,
+                8
+            ],
+            "slug": "pauki-otkryli-sportzal"
         }
     },
     {
@@ -425,7 +520,13 @@
             "publication_date": "2023-10-20T12:00:00Z",
             "views": 0,
             "category": 6,
-            "tags": [9, 10, 11, 12]
+            "tags": [
+                9,
+                10,
+                11,
+                12
+            ],
+            "slug": "zhaby-otkryli-kafe"
         }
     },
     {
@@ -437,7 +538,13 @@
             "publication_date": "2023-10-21T12:00:00Z",
             "views": 0,
             "category": 7,
-            "tags": [13, 14, 15, 16]
+            "tags": [
+                13,
+                14,
+                15,
+                16
+            ],
+            "slug": "utki-otkryli-salon-krasoty"
         }
     },
     {
@@ -449,7 +556,13 @@
             "publication_date": "2023-10-22T12:00:00Z",
             "views": 0,
             "category": 1,
-            "tags": [17, 18, 19, 20]
+            "tags": [
+                17,
+                18,
+                19,
+                20
+            ],
+            "slug": "gusi-otkryli-fitnes-tsentr"
         }
     },
     {
@@ -461,7 +574,13 @@
             "publication_date": "2023-10-23T12:00:00Z",
             "views": 0,
             "category": 2,
-            "tags": [1, 2, 3, 4]
+            "tags": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "slug": "lebedi-otkryli-spa-salon"
         }
     },
     {
@@ -473,7 +592,13 @@
             "publication_date": "2023-10-24T12:00:00Z",
             "views": 0,
             "category": 3,
-            "tags": [5, 6, 7, 8]
+            "tags": [
+                5,
+                6,
+                7,
+                8
+            ],
+            "slug": "flamingo-otkryli-tantsevalnuyu-studiyu"
         }
     },
     {
@@ -485,7 +610,13 @@
             "publication_date": "2023-10-25T12:00:00Z",
             "views": 0,
             "category": 4,
-            "tags": [9, 10, 11, 12]
+            "tags": [
+                9,
+                10,
+                11,
+                12
+            ],
+            "slug": "pelikany-otkryli-yoga-studiyu"
         }
     },
     {
@@ -497,7 +628,13 @@
             "publication_date": "2023-10-26T12:00:00Z",
             "views": 0,
             "category": 5,
-            "tags": [13, 14, 15, 16]
+            "tags": [
+                13,
+                14,
+                15,
+                16
+            ],
+            "slug": "aisty-otkryli-detskiy-sad"
         }
     },
     {
@@ -509,7 +646,13 @@
             "publication_date": "2023-10-27T12:00:00Z",
             "views": 0,
             "category": 6,
-            "tags": [17, 18, 19, 20]
+            "tags": [
+                17,
+                18,
+                19,
+                20
+            ],
+            "slug": "tsapli-otkryli-shkolu-iskusstv"
         }
     },
     {
@@ -521,7 +664,13 @@
             "publication_date": "2023-10-28T12:00:00Z",
             "views": 0,
             "category": 7,
-            "tags": [1, 2, 3, 4]
+            "tags": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "slug": "ibisy-otkryli-muzykalnuyu-shkolu"
         }
     },
     {
@@ -533,7 +682,13 @@
             "publication_date": "2023-10-29T12:00:00Z",
             "views": 0,
             "category": 1,
-            "tags": [5, 6, 7, 8]
+            "tags": [
+                5,
+                6,
+                7,
+                8
+            ],
+            "slug": "kuropatki-otkryli-kulinarnuyu-shkolu"
         }
     },
     {
@@ -545,7 +700,13 @@
             "publication_date": "2023-10-30T12:00:00Z",
             "views": 0,
             "category": 2,
-            "tags": [9, 10, 11, 12]
+            "tags": [
+                9,
+                10,
+                11,
+                12
+            ],
+            "slug": "fazany-otkryli-shkolu-tantsev"
         }
     },
     {
@@ -557,7 +718,13 @@
             "publication_date": "2023-10-31T12:00:00Z",
             "views": 0,
             "category": 3,
-            "tags": [13, 14, 15, 16]
+            "tags": [
+                13,
+                14,
+                15,
+                16
+            ],
+            "slug": "koshki-nauchilis-govorit"
         }
     },
     {
@@ -569,7 +736,13 @@
             "publication_date": "2023-11-01T12:00:00Z",
             "views": 0,
             "category": 4,
-            "tags": [17, 18, 19, 20]
+            "tags": [
+                17,
+                18,
+                19,
+                20
+            ],
+            "slug": "letayuschie-sobaki-zamecheny-nad-gorodom"
         }
     },
     {
@@ -581,7 +754,13 @@
             "publication_date": "2023-11-02T12:00:00Z",
             "views": 0,
             "category": 5,
-            "tags": [1, 2, 3, 4]
+            "tags": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "slug": "derevya-nachali-hodit"
         }
     },
     {
@@ -593,7 +772,13 @@
             "publication_date": "2023-11-03T12:00:00Z",
             "views": 0,
             "category": 6,
-            "tags": [5, 6, 7, 8]
+            "tags": [
+                5,
+                6,
+                7,
+                8
+            ],
+            "slug": "ryby-poyut-operu"
         }
     },
     {
@@ -605,7 +790,13 @@
             "publication_date": "2023-11-04T12:00:00Z",
             "views": 0,
             "category": 7,
-            "tags": [9, 10, 11, 12]
+            "tags": [
+                9,
+                10,
+                11,
+                12
+            ],
+            "slug": "ptitsy-stroyat-neboskreby"
         }
     },
     {
@@ -617,7 +808,13 @@
             "publication_date": "2023-11-05T12:00:00Z",
             "views": 0,
             "category": 1,
-            "tags": [13, 14, 15, 16]
+            "tags": [
+                13,
+                14,
+                15,
+                16
+            ],
+            "slug": "medvedi-otkryli-restoran"
         }
     },
     {
@@ -629,7 +826,13 @@
             "publication_date": "2023-11-06T12:00:00Z",
             "views": 0,
             "category": 2,
-            "tags": [17, 18, 19, 20]
+            "tags": [
+                17,
+                18,
+                19,
+                20
+            ],
+            "slug": "kroliki-igrayut-v-futbol"
         }
     },
     {
@@ -641,7 +844,13 @@
             "publication_date": "2023-11-07T12:00:00Z",
             "views": 0,
             "category": 3,
-            "tags": [1, 2, 3, 4]
+            "tags": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "slug": "lyagushki-uchatsya-v-universitete"
         }
     },
     {
@@ -653,7 +862,13 @@
             "publication_date": "2023-11-08T12:00:00Z",
             "views": 0,
             "category": 4,
-            "tags": [5, 6, 7, 8]
+            "tags": [
+                5,
+                6,
+                7,
+                8
+            ],
+            "slug": "myshi-otkryli-bank"
         }
     },
     {
@@ -665,7 +880,13 @@
             "publication_date": "2023-11-09T12:00:00Z",
             "views": 0,
             "category": 5,
-            "tags": [9, 10, 11, 12]
+            "tags": [
+                9,
+                10,
+                11,
+                12
+            ],
+            "slug": "pchely-stroyat-kosmicheskie-korabli"
         }
     },
     {
@@ -677,7 +898,13 @@
             "publication_date": "2023-11-10T12:00:00Z",
             "views": 0,
             "category": 6,
-            "tags": [13, 14, 15, 16]
+            "tags": [
+                13,
+                14,
+                15,
+                16
+            ],
+            "slug": "slony-igrayut-v-shahmaty"
         }
     },
     {
@@ -689,7 +916,13 @@
             "publication_date": "2023-11-11T12:00:00Z",
             "views": 0,
             "category": 7,
-            "tags": [17, 18, 19, 20]
+            "tags": [
+                17,
+                18,
+                19,
+                20
+            ],
+            "slug": "kury-otkryli-teatr"
         }
     },
     {
@@ -701,7 +934,13 @@
             "publication_date": "2023-11-12T12:00:00Z",
             "views": 0,
             "category": 1,
-            "tags": [1, 2, 3, 4]
+            "tags": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "slug": "lisy-otkryli-shkolu"
         }
     },
     {
@@ -713,7 +952,13 @@
             "publication_date": "2023-11-13T12:00:00Z",
             "views": 0,
             "category": 2,
-            "tags": [5, 6, 7, 8]
+            "tags": [
+                5,
+                6,
+                7,
+                8
+            ],
+            "slug": "belki-otkryli-magazin"
         }
     },
     {
@@ -725,7 +970,13 @@
             "publication_date": "2023-11-14T12:00:00Z",
             "views": 0,
             "category": 3,
-            "tags": [9, 10, 11, 12]
+            "tags": [
+                9,
+                10,
+                11,
+                12
+            ],
+            "slug": "zaytsy-otkryli-biblioteku"
         }
     },
     {
@@ -737,7 +988,13 @@
             "publication_date": "2023-11-15T12:00:00Z",
             "views": 0,
             "category": 4,
-            "tags": [13, 14, 15, 16]
+            "tags": [
+                13,
+                14,
+                15,
+                16
+            ],
+            "slug": "ezhiki-otkryli-muzey"
         }
     },
     {
@@ -749,7 +1006,13 @@
             "publication_date": "2023-11-16T12:00:00Z",
             "views": 0,
             "category": 5,
-            "tags": [17, 18, 19, 20]
+            "tags": [
+                17,
+                18,
+                19,
+                20
+            ],
+            "slug": "kroty-otkryli-restoran"
         }
     },
     {
@@ -761,7 +1024,13 @@
             "publication_date": "2023-11-17T12:00:00Z",
             "views": 0,
             "category": 6,
-            "tags": [1, 2, 3, 4]
+            "tags": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "slug": "letuchie-myshi-otkryli-kinoteatr"
         }
     },
     {
@@ -773,7 +1042,13 @@
             "publication_date": "2023-11-18T12:00:00Z",
             "views": 0,
             "category": 7,
-            "tags": [5, 6, 7, 8]
+            "tags": [
+                5,
+                6,
+                7,
+                8
+            ],
+            "slug": "pauki-otkryli-sportzal"
         }
     },
     {
@@ -785,7 +1060,13 @@
             "publication_date": "2023-11-19T12:00:00Z",
             "views": 0,
             "category": 1,
-            "tags": [9, 10, 11, 12]
+            "tags": [
+                9,
+                10,
+                11,
+                12
+            ],
+            "slug": "zhaby-otkryli-kafe"
         }
     }
 ]

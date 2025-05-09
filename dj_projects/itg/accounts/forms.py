@@ -6,25 +6,25 @@ from django.utils.translation import gettext_lazy as _
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(
         label = _('Введите логин:'),
-        widget = forms.TextInput(attrs={'class': 'form-control'}),
+        widget = forms.TextInput(attrs={'class': 'form-control', 'style': 'width: 250px;'}),
     )
     password = forms.CharField(
         label = _('Введите пароль:'),
-        widget = forms.PasswordInput(attrs={'class': 'form-control'}),
+        widget = forms.PasswordInput(attrs={'class': 'form-control', 'style': 'width: 250px;'}),
     )
 
 class UserRegistrationForm(forms.ModelForm):
     email = forms.CharField(
         label=_('Введите ваш Email:'),
-        widget=forms.EmailInput(attrs={'class': 'form-control'})
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'style': 'width: 250px;'}),
     )
     password = forms.CharField(
         label=_('Введите ваш пароль:'),
-        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'style': 'width: 250px;'})
     )
     password2 = forms.CharField(
         label=_('Введите ваш пароль еще раз:'),
-        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'style': 'width: 250px;'})
     )
 
     def save(self, commit=True):
