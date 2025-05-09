@@ -1,9 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, View
 from news.models import Article, Tag, Category, Like, Favourite, Comment
-from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseRedirect, request
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Q
 from django.contrib import messages
 from .forms import ArticleForm
 import json
