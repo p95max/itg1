@@ -239,10 +239,6 @@ def post_comment(request, article_id):
         messages.success(request, "Комментарий успешно отправлен!")
         return redirect('news:article', article_id=article_id)
 
-def reset_comment_flag(request):
-    if 'comment_submitted' in request.session:
-        del request.session['comment_submitted']
-
 @login_required(login_url='accounts:login')
 def add_article(request):
     all_tags = Tag.objects.all()
@@ -298,6 +294,9 @@ def add_article(request):
 
     return render(request, 'news/add_article.html', context)
 
+def reset_comment_flag(request):
+    if 'comment_submitted' in request.session:
+        del request.session['comment_submitted']
 
 
 
