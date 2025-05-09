@@ -1,7 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
+from django.views.generic import FormView, CreateView
+from .forms import UserRegistrationForm
 from accounts.forms import CustomAuthenticationForm
 
 class LoginUser(LoginView):
@@ -9,6 +12,13 @@ class LoginUser(LoginView):
     template_name = 'news/login.html'
     extra_context = {'title': 'Login'}
     redirect_field_name = 'next'
+
+    def get_success_url(self):
+        return reverse_lazy('news:catalog')
+
+class UserAuthenticationView(CreateView):
+    form_class = UserRegistrationForm
+    template_name = 'news/auth.html'
 
     def get_success_url(self):
         return reverse_lazy('news:catalog')

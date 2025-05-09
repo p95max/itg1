@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.db.models import Q
@@ -56,6 +57,8 @@ class Article(models.Model):
                               validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'jpeg'])],
                               blank=True,
                               null=True)
+    author = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True,
+                               default=None, verbose_name='Author')
 
     objects = ArticleUserMananger()
 
