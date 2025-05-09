@@ -22,6 +22,8 @@ Configure database and environment variables in settings.py.
 Run migrations:python manage.py migrate
 Start the server:python manage.py runserver
 
+Test Database included!
+
 Structure:
 news/templates/news/: Templates (base, catalog, articles, favorites, about).
 news/static/: CSS, images, favicon.
