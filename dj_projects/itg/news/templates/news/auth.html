@@ -1,0 +1,14 @@
+{% extends 'news/base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+<div>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary w-100"> {% trans 'Зарегистрироваться' %} </button>
+</form>
+</div>
+
+{% endblock %}

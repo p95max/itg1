@@ -1,19 +1,8 @@
-from django import forms
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from .forms import CustomAuthenticationForm, UserRegistrationForm
 
-
-class CustomAuthenticationForm(AuthenticationForm):
-    username = forms.CharField(
-        label = 'Username',
-        widget = forms.TextInput(attrs={'class': 'form-control'}),
-    )
-    password = forms.CharField(
-        label = 'Password',
-        widget = forms.PasswordInput(attrs={'class': 'form-control'}),
-    )
 
 class LoginUser(LoginView):
     form_class = CustomAuthenticationForm
@@ -23,3 +12,11 @@ class LoginUser(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('news:catalog')
+
+class UserAuthenticationView(CreateView):
+    form_class = UserRegistrationForm
+    template_name = 'news/auth.html'
+
+    def get_success_url(self):
+        return reverse_lazy('news:catalog')
+
