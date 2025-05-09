@@ -14,13 +14,13 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 class UserRegistrationForm(forms.ModelForm):
     email = forms.CharField(
-        label = 'Username',
+        label = 'Enter your Email:',
     )
     password = forms.CharField(
-        label = 'Password',
+        label = 'Enter your Password:',
     )
     password2 = forms.CharField(
-        label = 'Again password',
+        label = 'Enter your Password again:',
     )
 
     def save(self, commit=True):
