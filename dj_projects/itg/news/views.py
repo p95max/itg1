@@ -245,54 +245,44 @@ def add_article(request):
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
 
-    if request.method == "POST":
-        form = ArticleForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            article = form.save(commit=False)
-
-            category_id = request.POST.get('category')
-            if not category_id:
-                form.add_error('category', 'Выберите категорию.')
-
-            tags = request.POST.getlist('tags')
-            if not tags:
-                form.add_error('tags', 'Выберите хотя бы один тег.')
-
-            if form.errors:
-                return render(request, 'news/add_article.html', {
-                    'form': form,
-                    'all_tags': all_tags,
-                    'all_categories': all_categories,
-                })
-
-            article.category = Category.objects.get(id=category_id)
-            article.save()
-            article.tags.set(Tag.objects.filter(id__in=tags))
-
-            return HttpResponseRedirect('/news')
-
-    form = ArticleForm()
-
-
-    if request.method == 'POST' and request.FILES['json_file']:
+    # Обработка загрузки из JSON
+    if request.method == 'POST' and request.FILES.get('json_file'):
         json_file = request.FILES['json_file']
         data = json.load(json_file)
-        for article in data:
+        for article_data in data:
             article = Article(
-                title=article['title'],
-                content=article['content'],
-
+                title=article_data['title'],
+                content=article_data['content'],
+                author=request.user
             )
             article.save()
         return HttpResponseRedirect('/news/')
+
+    if request.method == "POST":
+        form = ArticleForm(request.POST, request.FILES)
+        category_id = request.POST.get('category')
+        tags = request.POST.getlist('tags')
+
+        if not category_id:
+            form.add_error('category', 'Выберите категорию.')
+        if not tags:
+            form.add_error('tags', 'Выберите хотя бы один тег.')
+
+        if form.is_valid() and not form.errors:
+            article = form.save(commit=False)
+            article.author = request.user
+            article.category = Category.objects.get(id=category_id)
+            article.save()
+            article.tags.set(Tag.objects.filter(id__in=tags))
+            return HttpResponseRedirect('/news')
+    else:
+        form = ArticleForm()
 
     context = {
         'form': form,
         'all_tags': all_tags,
         'all_categories': all_categories,
     }
-
     return render(request, 'news/add_article.html', context)
 
 def reset_comment_flag(request):
