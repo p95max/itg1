@@ -1,11 +1,15 @@
-import os
-import sys
+from decouple import config, Config, RepositoryEnv
 from pathlib import Path
-from config import (SECRET_KEY, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD,
-                    DEFAULT_FROM_EMAIL)
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import os
+
+DOTENV_FILE = Path('/home/maxx/itg1/dj_projects/itg/.env')
+config = Config(RepositoryEnv(DOTENV_FILE))
+
 
 BASE_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+SECRET_KEY = config('SECRET_KEY')
+
 """
 Django settings for itg project.
 
@@ -24,9 +28,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='127.0.0.1,localhost',
+    cast=lambda v: [s.strip() for s in v.split(',')]
+)
 
 
 # Application definition
@@ -319,6 +327,9 @@ else:
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 
 LOGIN_REDIRECT_URL = '/news/'
