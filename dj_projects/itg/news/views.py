@@ -153,7 +153,7 @@ def search_news(request):
     return render(request, 'news/catalog.html', context)
 
 @require_POST
-@login_required(login_url='accounts:login')
+@login_required(login_url='account:login')
 def toggle_like(request, article_id):
     if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
         ip_address = request.META.get('REMOTE_ADDR')
@@ -175,7 +175,7 @@ def toggle_like(request, article_id):
         return HttpResponseBadRequest("Invalid request")
 
 @require_POST
-@login_required(login_url='accounts:login')
+@login_required(login_url='account:login')
 def toggle_favorite(request, article_id):
     ip_address = request.META.get('REMOTE_ADDR')
     article = get_object_or_404(Article, id=article_id)
@@ -197,7 +197,7 @@ def toggle_favorite(request, article_id):
         'liked': liked
     })
 
-@login_required(login_url='accounts:login')
+@login_required(login_url='account:login')
 def favourites(request):
     ip_address = request.META.get('REMOTE_ADDR')
     favourites_articles = Favourite.objects.filter(ip_address=ip_address)
@@ -227,7 +227,7 @@ def favourites(request):
     return render(request, 'news/favourites.html', context)
 
 @require_POST
-@login_required(login_url='accounts:login')
+@login_required(login_url='account:login')
 def post_comment(request, article_id):
     if request.method == "POST":
         comment_text = request.POST.get('comment')
@@ -240,7 +240,7 @@ def post_comment(request, article_id):
         messages.success(request, "Комментарий успешно отправлен!")
         return redirect('news:article', article_id=article_id)
 
-@login_required(login_url='accounts:login')
+@login_required(login_url='account:login')
 def add_article(request):
     all_tags = Tag.objects.all()
     all_categories = Category.objects.all()
