@@ -1,6 +1,9 @@
 import os
 import sys
 from pathlib import Path
+from config import (SECRET_KEY, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD,
+                    DEFAULT_FROM_EMAIL)
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 BASE_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 """
@@ -14,8 +17,6 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -41,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_extensions',
     'news',
-    # 'debug_toolbar',
+    'debug_toolbar',
     'accounts',
     'allauth',
     'allauth.account',
@@ -59,7 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "allauth.account.middleware.AccountMiddleware",
 ]
 
@@ -315,15 +316,11 @@ if DEBUG:
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtp.mail.me.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'maxpetrikin@gmail.com'
-EMAIL_HOST_PASSWORD = 'tsed-axlt-zpem-ctoc'
-DEFAULT_FROM_EMAIL = 'maxpetrikin@gmail.com'
+
 
 LOGIN_REDIRECT_URL = '/news/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/news/'
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import SECRET_KEY
