@@ -12,7 +12,7 @@
 </div>
 
 <div style="margin-left: 525px; margin-top: 20px;">
-    <a href="login.html"> {% trans '👤 Уже есть аккаунт?' %} </a>
+    <a href={% url 'accounts:login' %}> {% trans '👤 Уже есть аккаунт?' %} </a>
 </div>
 
 {% endblock %}
