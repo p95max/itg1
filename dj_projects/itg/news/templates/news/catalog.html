@@ -3,70 +3,69 @@
 
 {% block title %}FN - Main {% endblock %}
 
-{% block content %}
-
-<section class="news">
-    <h3>{{ filter }}</h3>
-    {% if request.path == '/news/' %}
-            <h1>{% trans 'Последние новости:' %} </h1>
+    {% block content %}
+    <section class="news">
+        <h3>{{ filter }}</h3>
+        {% if request.path == '/news/' %}
+                <h1>{% trans 'Последние новости:' %} </h1>
+            {% endif %}
+        {% if page_obj %}
+            <ul>
+                {% for item in page_obj %}
+                    <li>
+                        <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
+                        {% if item.category %}
+                            <span class="category">
+                                ({% trans '🗂️' %}
+                                <a href="{% url 'news:news_by_category' item.category.name %}">
+                                    {{ item.category.name }}
+                                </a>)
+                            </span>
+                        {% endif %}
+                        <br>
+                        {% if item.tags.all %}
+                            <span class="tags">
+                                ({% trans '#️⃣ :' %}
+                                {% for tag in item.tags.all %}
+                                    <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                                )
+                            </span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <p>{% trans '📊 Текущее количество статей:' %} {{ articles_count }}</p>
+        {% else %}
+            <p>{% trans 'Нет новостей для отображения.' %} </p>
         {% endif %}
-    {% if page_obj %}
-        <ul>
-            {% for item in page_obj %}
-                <li>
-                    <a href="{% url 'news:article_detail' slug=item.slug %}">{{ item.title }}</a>
-                    {% if item.category %}
-                        <span class="category">
-                            ({% trans '🗂️' %}
-                            <a href="{% url 'news:news_by_category' item.category.name %}">
-                                {{ item.category.name }}
-                            </a>)
-                        </span>
-                    {% endif %}
-                    <br>
-                    {% if item.tags.all %}
-                        <span class="tags">
-                            ({% trans '#️⃣ :' %}
-                            {% for tag in item.tags.all %}
-                                <a href="{% url 'news:news_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                            )
-                        </span>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        <p>{% trans '📊 Текущее количество статей:' %} {{ articles_count }}</p>
-    {% else %}
-        <p>{% trans 'Нет новостей для отображения.' %} </p>
-    {% endif %}
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">{% trans 'Первая страница' %} </a><br>
-                <a href="?page={{ page_obj.previous_page_number }}">< {% trans 'Предыдущая' %} </a>
-            {% endif %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">{% trans 'Первая страница' %} </a><br>
+                    <a href="?page={{ page_obj.previous_page_number }}">< {% trans 'Предыдущая' %} </a>
+                {% endif %}
 
-            <span class="current-page">
-                {% trans '🧭 Страница' %} {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                <span class="current-page">
+                    {% trans '🧭 Страница' %} {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">{% trans 'Следующая'%} > </a>
+                {% endif %}
             </span>
+        </div>
 
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">{% trans 'Следующая'%} > </a>
-            {% endif %}
-        </span>
-    </div>
+    {# sorting articles form#}
+        <form method="get" class="mb-4">
+        <label for="sort">{% trans '🧮 Сортировать по:' %} </label>
+        <select name="sort" id="sort" onchange="this.form.submit()">
+        <option value="date" {% if sort == "date" %}selected{% endif %}>{% trans '🔽 Дате' %} </option>
+        <option value="views" {% if sort == "views" %}selected{% endif %}>{% trans '👁️ Просмотрам' %} </option>
+        <option value="likes" {% if sort == "likes" %}selected{% endif %}>{% trans '👍 Лайкам' %}</option>
+        </select>
+        </form>
 
-{# sorting articles form#}
-    <form method="get" class="mb-4">
-    <label for="sort">{% trans '🧮 Сортировать по:' %} </label>
-    <select name="sort" id="sort" onchange="this.form.submit()">
-    <option value="date" {% if sort == "date" %}selected{% endif %}>{% trans '🔽 Дате' %} </option>
-    <option value="views" {% if sort == "views" %}selected{% endif %}>{% trans '👁️ Просмотрам' %} </option>
-    <option value="likes" {% if sort == "likes" %}selected{% endif %}>{% trans '👍 Лайкам' %}</option>
-    </select>
-    </form>
-
-</section>
-{% endblock %}
+    </section>
+    {% endblock %}

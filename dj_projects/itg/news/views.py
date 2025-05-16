@@ -6,7 +6,6 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.utils.translation import gettext_lazy as _
-
 from .forms import ArticleForm
 import json
 from news.models import Article, Tag, Category, Like, Favourite, Comment

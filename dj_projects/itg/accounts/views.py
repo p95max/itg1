@@ -6,7 +6,7 @@ from .forms import CustomAuthenticationForm, UserRegistrationForm
 
 class LoginUser(LoginView):
     form_class = CustomAuthenticationForm
-    template_name = 'news/login.html'
+    template_name = 'news/custom_auth/login.html'
     extra_context = {'title': 'Login'}
     redirect_field_name = 'next'
 
@@ -15,7 +15,7 @@ class LoginUser(LoginView):
 
 class UserAuthenticationView(CreateView):
     form_class = UserRegistrationForm
-    template_name = 'news/auth.html'
+    template_name = 'news/custom_auth/auth.html'
 
     def get_success_url(self):
         return reverse_lazy('news:catalog')
