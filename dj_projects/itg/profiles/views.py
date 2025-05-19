@@ -6,7 +6,7 @@ from django.shortcuts import render
 from news.models import Tag, Category, Article
 from profiles.forms import ProfileEditForm
 
-
+@login_required
 def user_info(request):
     username = request.user.username
     all_tags = Tag.objects.all()
@@ -31,6 +31,7 @@ def user_info(request):
 
     return render(request, 'profiles/user_info.html', context=context)
 
+@login_required
 def user_articles(request):
     username = request.user.username
     all_tags = Tag.objects.all()
@@ -55,20 +56,20 @@ def user_articles(request):
 
 @login_required
 def user_activities(request):
-
     actions = {
         1: 'Create',
         2: 'Change',
         3: 'Remove',
     }
-
     logs = (
         LogEntry.objects
         .filter(user=request.user)
         .select_related('content_type')
     )
-
+    all_tags = Tag.objects.all()
+    all_categories = Category.objects.all()
     formatted_logs = []
+
     for entry in logs:
         formatted_logs.append({
             'time': entry.action_time,
@@ -80,8 +81,8 @@ def user_activities(request):
     context = {
         'username': request.user.username,
         'user_logs': formatted_logs,
-        'all_tags': Tag.objects.all(),
-        'all_categories': Category.objects.all(),
+        'all_tags': all_tags,
+        'all_categories': all_categories,
     }
 
     return render(request, 'profiles/user_activities.html', context)
