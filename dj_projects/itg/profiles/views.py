@@ -6,6 +6,7 @@ from django.shortcuts import render
 from news.models import Tag, Category, Article
 from profiles.forms import ProfileEditForm
 
+
 @login_required
 def user_info(request):
     username = request.user.username
