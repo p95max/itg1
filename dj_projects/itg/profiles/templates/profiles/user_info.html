@@ -1,22 +1,31 @@
 {% extends 'news/base.html' %}
 
-{% block title %} User info {% endblock %}
+{% block title %}User Info{% endblock %}
 
 {% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title mb-4">Hello, {{ user.profile.username }}</h3>
 
-    <a>Hello {{ user.profile.username }}</a>
-{% if user.profile.avatar %}
-    <img src="{{ user.profile.avatar.url }}" alt="{{ user.profile.username }}">
-{% endif %}
+            {% if user.profile.avatar %}
+                <div class="mb-3">
+                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.profile.username }}" class="img-thumbnail" style="max-width: 500px;">
+                </div>
+            {% endif %}
 
-    <form>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit"> Edit </button>
-    </form>
+            <div class="mb-3">
+                <a href="{% url 'account_reset_password' %}" class="btn btn-outline-primary me-2 mb-2">Change your password</a>
+                <a href="{% url 'profiles:user_activities' %}" class="btn btn-outline-secondary me-2 mb-2">Your activity</a>
+            </div>
 
-    <a href="{% url 'account_reset_password' %}">Сменить пароль?</a>
-
-
-
+            <h5 class="mt-4">Change your username or avatar</h5>
+            <form method="post" enctype="multipart/form-data" class="mt-3">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Save changes</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -4,10 +4,33 @@
 
 {% block content %}
 
-    <a>Hello {{ user.profile.username }}</a> <br>
+   <h2> User '{{ username }}' activity</h2>
 
-    {{ user_action }}
+<table class="table align-middle">
+  <thead>
+    <tr>
+      <th class="px-4">Date</th>
+      <th class="px-4">Action</th>
+      <th class="px-4">Model</th>
+      <th class="px-4">Object</th>
+    </tr>
+  </thead>
 
+  <tbody>
+    {% for log in user_logs %}
+    <tr>
+      <td class="px-4 py-2">{{ log.time|date:"d.m.Y H:i" }}</td>
+      <td class="px-4 py-2">{{ log.action }}</td>
+      <td class="px-4 py-2">{{ log.model }}</td>
+      <td class="px-4 py-2">{{ log.object }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td class="px-4 py-2" colspan="5">No activity yet</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 
 {% endblock %}

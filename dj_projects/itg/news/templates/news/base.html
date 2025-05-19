@@ -29,19 +29,21 @@
         </select>
     </form>
 
-    <!-- Authorisation / Logout -->
+    <!-- Authorisation / Logout / UserProfile -->
     {% if user.is_authenticated %}
     <form method="post" action="{% url 'account_logout' %}" style="display: inline;">
         {% csrf_token %}
         <button type="submit" class="btn btn-link p-0" style="color: inherit; text-decoration: none;">
             {% trans '🚪 Выйти' %}
         </button>
+        <a class="nav-link" href="{% url 'profiles:user_info' %}">{% trans '👤 Мой профиль' %}</a>
     </form>
 {% else %}
     <a class="nav-link me-2" href="{% url 'account_login' %}">{% trans '🔑 Авторизация' %}</a>
     <a class="nav-link me-2"> / </a>
     <a class="nav-link" href="{% url 'account_signup' %}">{% trans '➕ Регистрация' %}</a>
 {% endif %}
+
     </div>
 
     <div class="container mt-4">

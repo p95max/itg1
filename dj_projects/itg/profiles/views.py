@@ -1,4 +1,5 @@
 from django.contrib.admin.models import LogEntry
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -52,18 +53,35 @@ def user_articles(request):
 
     return render(request, 'news/catalog.html', context=context)
 
+@login_required
 def user_activities(request):
-    username = request.user.username
-    all_tags = Tag.objects.all()
-    all_categories = Category.objects.all()
 
-    user_action = LogEntry.objects.filter(user_id=request.user.id)
-
-    context = {
-        'username': username,
-        'all_tags': all_tags,
-        'all_categories': all_categories,
-        'user_action': user_action,
+    actions = {
+        1: 'Create',
+        2: 'Change',
+        3: 'Remove',
     }
 
-    return render(request, 'profiles/user_activities.html', context=context)
+    logs = (
+        LogEntry.objects
+        .filter(user=request.user)
+        .select_related('content_type')
+    )
+
+    formatted_logs = []
+    for entry in logs:
+        formatted_logs.append({
+            'time': entry.action_time,
+            'action': actions.get(entry.action_flag, 'None'),
+            'model': entry.content_type.model_class().__name__ if entry.content_type else '—',
+            'object': entry.object_repr,
+        })
+
+    context = {
+        'username': request.user.username,
+        'user_logs': formatted_logs,
+        'all_tags': Tag.objects.all(),
+        'all_categories': Category.objects.all(),
+    }
+
+    return render(request, 'profiles/user_activities.html', context)
