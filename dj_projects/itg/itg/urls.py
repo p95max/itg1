@@ -10,6 +10,7 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('account/', include('allauth.urls')),
     # path('auth/', include('accounts.urls')),  custom auth/login
+    path('profiles/', include('profiles.urls')),
 ]
 
 urlpatterns += i18n_patterns(

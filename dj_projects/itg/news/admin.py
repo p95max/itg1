@@ -1,5 +1,8 @@
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter, FieldListFilter
+from django.core.exceptions import PermissionDenied
+
+from profiles.models import Profile
 from .models import Article, Category, Tag
 
 class ArticleSpiderFilter(FieldListFilter):
@@ -20,6 +23,8 @@ class ArticleSpiderFilter(FieldListFilter):
         return queryset
 
 def make_inactive(self, modeladmin, request, queryset):
+    if not request.user.has_perm('news.make_active'):
+        raise PermissionDenied('Permission denied')
     if queryset:
         queryset.update(is_active=False)
     make_inactive.short_description = 'Сделать неактивными выбранные статьи'
@@ -45,6 +50,7 @@ class ArticleAdmin(admin.ModelAdmin):
     inlines = [TagInline]
     actions = [make_inactive]
 
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     pass
@@ -52,5 +58,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     pass
+
+
 
 

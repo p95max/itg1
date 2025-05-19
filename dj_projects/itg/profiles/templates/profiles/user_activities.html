@@ -1,0 +1,13 @@
+{% extends 'news/base.html' %}
+
+{% block title %} User log {% endblock %}
+
+{% block content %}
+
+    <a>Hello {{ user.profile.username }}</a> <br>
+
+    {{ user_action }}
+
+
+
+{% endblock %}

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'news',
     'accounts',
+    'profiles.apps.ProfilesConfig',
 ]
 
 # --- Middleware ---

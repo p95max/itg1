@@ -88,6 +88,7 @@
 
     <!-- Right panel -->
     {% if user.is_authenticated %}
+    {% if all_tags and all_categories %}
     <aside class="col-md-4">
         <!-- Search form -->
         <div class="card mb-3 p-3">
@@ -123,6 +124,7 @@
                 </ul>
             {% else %}
                 <p>{% trans '😕 Нет доступных категорий.' %}</p>
+            {% endif %}
             {% endif %}
         </div>
     </aside>

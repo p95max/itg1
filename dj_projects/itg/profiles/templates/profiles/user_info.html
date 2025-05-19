@@ -1,0 +1,22 @@
+{% extends 'news/base.html' %}
+
+{% block title %} User info {% endblock %}
+
+{% block content %}
+
+    <a>Hello {{ user.profile.username }}</a>
+{% if user.profile.avatar %}
+    <img src="{{ user.profile.avatar.url }}" alt="{{ user.profile.username }}">
+{% endif %}
+
+    <form>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"> Edit </button>
+    </form>
+
+    <a href="{% url 'account_reset_password' %}">Сменить пароль?</a>
+
+
+
+{% endblock %}

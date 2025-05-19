@@ -41,8 +41,14 @@ class Article(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'Статья'  # единственное число для отображения в админке
-        verbose_name_plural = 'Статьи'  # мн. число для отображения в админке
+        verbose_name = 'Статья'
+        verbose_name_plural = 'Статьи'
+        ordering = ['-publication_date']
+
+        permissions = [
+        ('publish_article', 'Publish Article'),
+            ('make_active', 'Make Active'),
+        ]
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
