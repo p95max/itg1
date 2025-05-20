@@ -19,7 +19,10 @@
   <!-- Left: Profile / Authorisation -->
   <div class="d-flex align-items-center">
     {% if user.is_authenticated %}
+        {% if request.resolver_match.url_name != 'user_info' %}
       <a class="nav-link me-3" href="{% url 'profiles:user_info' %}">👤 {% trans 'Мой профиль' %}</a>
+            {% endif %}
+
       <form method="post" action="{% url 'account_logout' %}" class="d-inline">
         {% csrf_token %}
         <button type="submit" class="btn btn-outline-secondary btn-sm">{% trans '🚪 Выйти' %}</button>

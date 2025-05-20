@@ -1,18 +1,19 @@
 {% extends 'news/base.html' %}
+{% load i18n %}
 
-{% block title %} User log {% endblock %}
+{% block title %} {% trans 'Активность пользователя' %} {% endblock %}
 
 {% block content %}
 
-   <h2> User '{{ username }}' activity</h2>
+   <h2> {% trans 'Активность пользователя' %} '{{ username }}' </h2>
 
 <table class="table align-middle">
   <thead>
     <tr>
-      <th class="px-4">Date</th>
-      <th class="px-4">Action</th>
-      <th class="px-4">Model</th>
-      <th class="px-4">Object</th>
+      <th class="px-4"> {% trans 'Дата' %} </th>
+      <th class="px-4"> {% trans 'Действие' %} </th>
+      <th class="px-4"> {% trans 'Модель' %} </th>
+      <th class="px-4"> {% trans 'Объект' %}</th>
     </tr>
   </thead>
 
@@ -26,11 +27,15 @@
     </tr>
     {% empty %}
     <tr>
-      <td class="px-4 py-2" colspan="5">No activity yet</td>
+      <td class="px-4 py-2" colspan="5"> {% trans 'Действий пользователя еще нет' %} </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+
+     <div class="mb-3">
+         <a href="{% url 'profiles:user_info' %}" class="btn btn-outline-secondary me-2 mb-2"> {% trans 'Назад к вашему профилю' %} </a>
+     </div>
 
 
 {% endblock %}

@@ -75,7 +75,7 @@ def user_activities(request):
         formatted_logs.append({
             'time': entry.action_time,
             'action': actions.get(entry.action_flag, 'None'),
-            'model': entry.content_type.model_class().__name__ if entry.content_type else '—',
+            'model': entry.content_type.model_class().__name__ if entry.content_type and entry.content_type.model_class() else '—',
             'object': entry.object_repr,
         })
 
@@ -86,4 +86,4 @@ def user_activities(request):
         'all_categories': all_categories,
     }
 
-    return render(request, 'profiles/user_activities.html', context)
+    return render(request, 'profiles/user_activities.html', context=context)

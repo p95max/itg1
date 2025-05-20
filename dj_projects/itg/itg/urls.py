@@ -11,6 +11,7 @@ urlpatterns = [
     path('account/', include('allauth.urls')),
     # path('auth/', include('accounts.urls')),  custom auth/login
     path('profiles/', include('profiles.urls')),
+    path('user_actions/', include('user_actions.urls')),
 ]
 
 urlpatterns += i18n_patterns(

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'news',
     'accounts',
     'profiles.apps.ProfilesConfig',
+    'user_actions.apps.UserActionsConfig',
 ]
 
 # --- Middleware ---
