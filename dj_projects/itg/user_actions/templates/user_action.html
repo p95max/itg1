@@ -1,0 +1,36 @@
+{% extends 'news/base.html' %}
+{% load i18n %}
+
+{% block title %} {% trans 'Действия пользователя со статьями' %} {%  endblock %}
+
+{% block content %}
+
+    <h2> {% trans 'Активность пользователя' %} '{{ username }}' </h2>
+
+<table class="table align-middle">
+  <thead>
+    <tr>
+      <th class="px-4"> {% trans 'Дата' %} </th>
+      <th class="px-4"> {% trans 'Действие' %} </th>
+      <th class="px-4"> {% trans 'Модель' %} </th>
+      <th class="px-4"> {% trans 'Изменение' %}</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for log in user_actions %}
+    <tr>
+      <td class="px-4 py-2">{{ log.created_at|date:"d.m.Y H:i" }}</td>
+      <td class="px-4 py-2">{{ log.action }}</td>
+      <td class="px-4 py-2">{{ log.model_name }}</td>
+      <td class="px-4 py-2">{{ log.diff }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td class="px-4 py-2" colspan="5"> {% trans 'Действий пользователя еще нет' %} </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

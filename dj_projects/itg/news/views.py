@@ -51,9 +51,6 @@ def article_detail(request, slug):
     favourite_ips = article.favourites.values_list('ip_address', flat=True)
     reset_comment_flag(request)
 
-    article.views += 1              #cчётчик просмотров
-    article.save()
-
     # Похожие статьи
     similar_articles = Article.objects.filter(
         Q(category=article.category) |

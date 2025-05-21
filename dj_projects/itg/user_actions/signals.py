@@ -2,12 +2,13 @@ from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
 
 from news.models import Article, Category, Tag
+from user_actions.middlewares import get_current_user
 from user_actions.models import UserAction
 
 
 def diff_model(new, old):
-    new_data = new.__dict__()
-    old_data = old.__dict__()
+    new_data = new.__dict__
+    old_data = old.__dict__
 
     keys = []
 
@@ -26,11 +27,10 @@ def diff_model(new, old):
             diff[key] = {'old': old_value, 'new': new_value}
     return diff
 
-@receiver(pre_save, sender=(Article, Category, Tag) )
 def changes(sender, instance, **kwargs):
     id = getattr(instance, 'id', None)
     if id:
-        old_value = instance.__model__.objects.get(id=id)
+        old_value = sender.objects.get(id=id)
         diff = diff_model(instance, old_value)
 
         action = 'change'
@@ -38,8 +38,13 @@ def changes(sender, instance, **kwargs):
         action = 'add'
         diff = {}
 
-    UserAction.objects.create(action=action,diff=diff, model_name=instance.__model__.__name__)
+    UserAction.objects.create(action=action,diff=diff, model_name=instance._meta.model_name, user=get_current_user())
 
-@receiver(post_delete, sender=(Article, Category, Tag) )
 def delete(sender, instance, **kwargs):
-    UserAction.objects.create(action='delete', diff={}, model_name=instance.__model__.__name__)
+    UserAction.objects.create(action='delete', diff={}, model_name=instance._meta.model_name, user=get_current_user())
+
+
+
+pre_save.connect(changes, sender=Article)
+pre_save.connect(changes, sender=Category)
+pre_save.connect(changes, sender=Tag)
