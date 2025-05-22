@@ -28,20 +28,40 @@ def diff_model(new, old):
     return diff
 
 def changes(sender, instance, **kwargs):
+    if kwargs.get("raw", False):
+        return
+
     id = getattr(instance, 'id', None)
     if id:
-        old_value = sender.objects.get(id=id)
-        diff = diff_model(instance, old_value)
-
-        action = 'change'
+        try:
+            old_value = sender.objects.get(id=id)
+            diff = diff_model(instance, old_value)
+            action = 'change'
+        except sender.DoesNotExist:
+            action = 'add'
+            diff = {}
     else:
         action = 'add'
         diff = {}
 
-    UserAction.objects.create(action=action,diff=diff, model_name=instance._meta.model_name, user=get_current_user())
+    UserAction.objects.create(
+        action=action,
+        diff=diff,
+        model_name=instance._meta.model_name,
+        user=get_current_user()
+    )
 
 def delete(sender, instance, **kwargs):
-    UserAction.objects.create(action='delete', diff={}, model_name=instance._meta.model_name, user=get_current_user())
+    if kwargs.get("raw", False):
+        return
+
+    UserAction.objects.create(
+        action='delete',
+        diff={},
+        model_name=instance._meta.model_name,
+        user=get_current_user()
+    )
+
 
 
 
