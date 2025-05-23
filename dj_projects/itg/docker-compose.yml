@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   db:
-    image: postgres:13-alpine
+    image: postgres
     restart: always
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
@@ -17,19 +17,30 @@ services:
       timeout: 5s
       retries: 5
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: secret
+  web:
+    build: .
+    container_name: django-docker
     ports:
-      - "5050:80"
+      - "8002:8000"
     depends_on:
       - db
     links:
       - db
+    environment:
+      DJANGO_SECRET_KEY: ${SECRET_KEY}
+      DEBUG: ${DEBUG}
+      DJANGO_LOGLEVEL: ${DJANGO_LOGLEVEL}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+      DATABASE_ENGINE: ${DATABASE_ENGINE}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DB_USERNAME}
+
+      DATABASE_PASSWORD: ${DB_PASSWORD}
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+    env_file:
+      - .env
+
 
 volumes:
   postgres_data:

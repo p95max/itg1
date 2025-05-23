@@ -7,13 +7,9 @@ BASE_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DOTENV_FILE = BASE_DIR / '.env'
 config = Config(RepositoryEnv(DOTENV_FILE))
 
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = config(
-    'ALLOWED_HOSTS',
-    default='127.0.0.1,localhost',
-    cast=lambda v: [s.strip() for s in v.split(',')]
-)
+SECRET_KEY = os.environ.get("SECRET_KEY")
+DEBUG = bool(os.environ.get("DEBUG", default=0))
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS","127.0.0.1").split(",")
 
 # --- Installed Applications ---
 INSTALLED_APPS = [
@@ -91,11 +87,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'my_pg_database',
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': '127.0.0.1',
-        'PORT': '5455',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'supersecurepassword',
+        'HOST': 'db',
+        'PORT': '5432',
     },
 }
 
